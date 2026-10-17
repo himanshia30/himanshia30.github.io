@@ -13,9 +13,9 @@ Ted is an AI strength coach for gym beginners. Every morning it reads your sleep
 
 I built Ted as my capstone for Maven's AI Product Management Certification.
 
-## Featured project: SWAN, autonomous supply chain manager 
+## Featured project: SWAN, autonomous supply chain manager
 
-SWAN is a prototype of a practive, always-on agent for supply chains. It watches connected systems around the clock, investigates disruptions, simulates every option before it acts, and brings a person in only when a decision is theirs to make. All data is fictional.
+SWAN is a prototype of a proactive, always-on agent for supply chains. It watches connected systems around the clock, investigates disruptions, simulates every option before it acts, and brings a person in only when a decision is theirs to make. All data is fictional.
 
 - [Read the case study](https://himanshia30.github.io/projects/swan/)
 - Three demos that play themselves: [incident response](https://himanshia30.github.io/projects/swan/incident-response.html), [exception management](https://himanshia30.github.io/projects/swan/exceptions.html), and [control tower](https://himanshia30.github.io/projects/swan/tower.html)
