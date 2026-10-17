@@ -1,5 +1,5 @@
 /* ============================================================================
-   SWAN Demo — CONVERSATION SCRIPT
+   Demo — CONVERSATION SCRIPT
    Edit this file to change the chat narrative, reasoning steps, and beats.
    Text supports **bold**; blank line = new paragraph.
    ============================================================================ */
@@ -49,7 +49,7 @@ const SCRIPT = {
 
     briefing: {
       steps: [
-        { tool: 'swan.load_context', system: 'SWAN', label: 'Resuming run context · memory: 2 relevant items', ms: 90 }
+        { tool: 'agent.load_context', system: 'Agent', label: 'Resuming run context · memory: 2 relevant items', ms: 90 }
       ],
       text: 'Good morning, Maya. While you were out I confirmed a supply disruption: **Astrel Semiconductor has slipped MCU-8347 by 14 days** (PO 4500128733 · 24,000 units).\n\nI verified it across **three independent sources** — the supplier email, the matching ASN change in SAP, and the freight ETA slip — before flagging it. Confidence: **96%**.\n\nI’ve started assessing impact. **No plan data has been changed.**',
       cards: []
@@ -68,8 +68,8 @@ const SCRIPT = {
 
     orchestration: {
       steps: [
-        { tool: 'swan.decompose_goal', system: 'SWAN', label: 'Decomposing goal: protect revenue & OTD within cost policy → 3 workstreams', ms: 120 },
-        { tool: 'swan.spawn_agents',   system: 'SWAN', label: 'Spinning up 3 specialists from reusable skills · model: Haiku 4.5 (auto)',   ms: 150 }
+        { tool: 'agent.decompose_goal', system: 'Agent', label: 'Decomposing goal: protect revenue & OTD within cost policy → 3 workstreams', ms: 120 },
+        { tool: 'agent.spawn_agents',   system: 'Agent', label: 'Spinning up 3 specialists from reusable skills · model: Haiku 4.5 (auto)',   ms: 150 }
       ],
       text: 'Working this as **three parallel workstreams** — alternates, inventory, and logistics. Each specialist is assembled from reusable skills, not hand-built. **Their job is to find what’s possible in their lane — not to decide.** I’ll compose the recovery plan from what they bring back:',
       cards: ['orchestration']
@@ -77,10 +77,10 @@ const SCRIPT = {
 
     solver: {
       steps: [
-        { tool: 'swan.compose_options',    system: 'SWAN',    label: 'Assembling the 3 findings into candidate plans A · B · C',            ms: 900 },
+        { tool: 'agent.compose_options',    system: 'Agent',    label: 'Assembling the 3 findings into candidate plans A · B · C',            ms: 900 },
         { tool: 'planner.create_scenario', system: 'Planner', label: 'One simulation scenario per candidate · children of Enterprise baseline', ms: 260 },
         { tool: 'planner.run_solver',      system: 'Planner', label: 'Supply Planning solver · testing all 3 candidates',           ms: 3200 },
-        { tool: 'swan.validate',           system: 'SWAN',    label: 'Self-check vs hard constraints: capacity, policy floors, logistics budget', ms: 180 }
+        { tool: 'agent.validate',           system: 'Agent',    label: 'Self-check vs hard constraints: capacity, policy floors, logistics budget', ms: 180 }
       ],
       text: 'My specialists found the **ingredients** — what’s possible in each lane. I composed those into **three candidate plans**, each built from named findings.\n\nBut proposing isn’t proving. Whether a plan actually holds — against capacity, safety-stock floors, and every other commitment in your plan — is **deterministic math, not judgment**. So each candidate went into its own scenario and through the **Supply Planning solver**. **Zero violations across all three:**',
       cards: ['compose', 'solver']
@@ -88,8 +88,8 @@ const SCRIPT = {
 
     recommend: {
       steps: [
-        { tool: 'swan.rank_options', system: 'SWAN', label: 'Ranking by revenue protected, cost, risk — weighted by your preferences', ms: 140 },
-        { tool: 'swan.recall',       system: 'SWAN', label: 'Memory: substitution preferred over expedite · precedent Mar 2026',       ms: 60 }
+        { tool: 'agent.rank_options', system: 'Agent', label: 'Ranking by revenue protected, cost, risk — weighted by your preferences', ms: 140 },
+        { tool: 'agent.recall',       system: 'Agent', label: 'Memory: substitution preferred over expedite · precedent Mar 2026',       ms: 60 }
       ],
       text: 'Three viable recoveries, ranked. I’m leading with **substitution** — last time Astrel slipped (March), you substituted and hit **100% OTD with zero expedite spend**. Same playbook applies:',
       cards: ['options']
@@ -105,7 +105,7 @@ const SCRIPT = {
 
     wrapup: {
       steps: [
-        { tool: 'swan.log_decisions', system: 'SWAN', label: 'Writing decision record · arming outcome tracking for Aug month-end', ms: 130 }
+        { tool: 'agent.log_decisions', system: 'Agent', label: 'Writing decision record · arming outcome tracking for Aug month-end', ms: 130 }
       ],
       text: 'Done. **6 actions executed across 4 systems**, 1 held for your sign-off (the Astrel email). The recovery plan is live in the planning model and the account teams are briefed.\n\nI’ll keep watching the requal batch and hold Vantek as fallback — if anything drifts, you’ll hear from me first. The full decision record is in the Control Plane:',
       cards: ['controlPlaneLink']

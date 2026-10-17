@@ -1,5 +1,5 @@
 /* ============================================================================
-   SWAN Control Tower Demo — engine
+   Autonomous Exception Management — Control Tower Demo — engine
    Fleet-level vision demo: 11 guided beats (0–10).
    Story content lives in tower-data.js; this file rarely needs edits.
 
@@ -70,7 +70,7 @@ function bumpTile(agentId, dSignals, dActions) {
 }
 
 function toast(title, sub) {
-  const t = el('div', 'toast', '<span class="avatar">S</span><div><div class="tt">' + esc(title) + '</div><div class="ts">' + esc(sub) + '</div></div>');
+  const t = el('div', 'toast', '<span class="avatar">A</span><div><div class="tt">' + esc(title) + '</div><div class="ts">' + esc(sub) + '</div></div>');
   document.body.appendChild(t);
   setTimeout(() => { t.style.transition = 'opacity .5s'; t.style.opacity = '0'; setTimeout(() => t.remove(), 550); }, 3400);
 }
@@ -239,7 +239,7 @@ const BEATS = [
     const escCard = el('div', 'escalation',
       '<div class="et">◉ Needs your decision · INC-0613</div>' +
       '<h3>Rotterdam lane down — $1.9M strategic exposure</h3>' +
-      '<div class="es">Briefing is ready: impact assessed, 3 options pre-simulated with the planning solver, recommendation prepared. SWAN is holding air slots until 14:00 CET.</div>' +
+      '<div class="es">Briefing is ready: impact assessed, 3 options pre-simulated with the planning solver, recommendation prepared. The agent is holding air slots until 14:00 CET.</div>' +
       '<div class="efoot"><button class="ebtn" id="open-brief">Open briefing</button>' +
       '<span class="estat">prepared unattended in 7 min · nothing has been changed</span></div>');
     escCard.id = 'esc-card';
@@ -272,7 +272,7 @@ const BEATS = [
     bumpTile('transport', 0, 1);
     today.escalated = 2; today.awaitingHuman = 0; renderStats(); addTasks(6);
     setFleetChip('<b>All quiet</b> · fleet healthy', false);
-    if (!instant) toast('INC-0613 executed', 'Your decision · SWAN’s legwork · full audit trail');
+    if (!instant) toast('INC-0613 executed', 'Your decision · the agent’s legwork · full audit trail');
   },
 
   /* 9 · Govern — the close */
@@ -332,7 +332,7 @@ const OVERLAYS = {
         '<div class="cp-sec"><div class="h">Fleet audit trail — today · every decision, assumption &amp; action</div><div class="b">' +
           TDATA.audit.map(a =>
             '<div class="audit-row"><span class="at">' + a.time + '</span>' +
-            '<span class="actor"><span class="' + (a.actor === 'SWAN' ? 'actor-swan' : 'actor-user') + '">' + a.actor + '</span></span>' +
+            '<span class="actor"><span class="' + (a.actor === 'Agent' ? 'actor-swan' : 'actor-user') + '">' + a.actor + '</span></span>' +
             '<span class="e">' + esc(a.entry) + '</span>' +
             (a.rollback ? '<span class="rb">↩ roll back</span>' : '') + '</div>').join('') +
         '</div></div>' +

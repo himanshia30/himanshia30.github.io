@@ -1,5 +1,5 @@
 /* ============================================================================
-   SWAN Demo — styles
+   Demo — styles
    Two registers on purpose:
      · agent surfaces (console, chat, trace)  = calm, modern AI product
      · drill-ins (worksheet, scorecard)       = dense enterprise planning grids
@@ -17,7 +17,7 @@
   --text: #1c2733;
   --text-2: #55637a;
   --text-3: #8794a8;
-  --accent: #0e8f80;          /* SWAN teal */
+  --accent: #0e8f80;          /* agent teal */
   --accent-soft: #e2f3f0;
   --alert-red: #d5281b;          
   --high: #c62828;  --high-bg: #fdecea;
@@ -148,7 +148,7 @@ main { height: calc(100vh - 50px); position: relative; }
 .feed-h .sub { font-size: 12px; color: var(--text-3); }
 .live-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #3ecf8e; margin-right: 6px; animation: pulse 2s ease-in-out infinite; }
 
-/* Act 1: narrator strip — SWAN explains what it's doing, as it does it */
+/* Act 1: narrator strip — the agent explains what it's doing, as it does it */
 .narrator {
   display: flex; align-items: center; gap: 11px;
   background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
@@ -157,7 +157,7 @@ main { height: calc(100vh - 50px); position: relative; }
 }
 .narrator b { color: var(--text); }
 
-/* Act 1: facts SWAN extracted from each signal */
+/* Act 1: facts Agent extracted from each signal */
 .xchips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 9px; align-items: center; animation: fadeUp .35s ease; }
 .xchips .xl { font-size: 9.5px; font-weight: 800; letter-spacing: .6px; text-transform: uppercase; color: var(--text-3); }
 .xchip { font-size: 11px; font-family: var(--mono); background: #f1f4f8; border: 1px solid var(--line); border-radius: 6px; padding: 1px 8px; animation: pop .35s ease; }

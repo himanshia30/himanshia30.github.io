@@ -1,5 +1,5 @@
 /* ============================================================================
-   SWAN Exception Management Demo — WORLD STATE
+   Autonomous Exception Management — Exception Triage Demo — WORLD STATE
    Persona: Arjun, supply planner. Monday morning, the plan has just run.
    Same Northbridge Electronics world as the other two demos.
    Edit this file to change names, numbers, and story facts.
@@ -236,7 +236,7 @@ const XDATA = {
       id: 'RI-08', title: 'SO-10502 — customer requested cancellation', sub: 'Osprey Telecom · $290K · never-do list',
       revenue: 290000, confidence: null, held: true,
       reco: 'HELD — cancelling a customer order is on the never-do list; requires your explicit action in ERP',
-      why: 'SWAN prepared the impact summary (freed supply covers RI-03 partially) but will not execute or recommend automation for order cancellation.',
+      why: 'The agent prepared the impact summary (freed supply covers RI-03 partially) but will not execute or recommend automation for order cancellation.',
       alts: []
     }
   ],
@@ -253,7 +253,7 @@ const XDATA = {
     { system: 'GlobalFreight', icon: 'G', action: '5 shipments rebooked to alternate carrier', ref: 'GF-91188' },
     { system: 'Salesforce',    icon: 'C', action: 'Account teams notified — 6 affected strategic/key accounts', ref: 'TASK-91240…45' },
     { system: 'Outlook',       icon: 'O', action: 'Vantek escalation email — awaiting your sign-off', ref: 'draft', held: true },
-    { system: 'SWAN',          icon: 'W', action: 'SO-10502 cancellation — held for explicit human action (never-do)', ref: 'policy', held: true }
+    { system: 'Agent',          icon: 'W', action: 'SO-10502 cancellation — held for explicit human action (never-do)', ref: 'policy', held: true }
   ],
 
   autoNote: '6 staged resolutions auto-applied within your autonomy level (low-risk, ≤$25K, no strategic accounts). The 7 you approved executed on sign-off.',
@@ -262,17 +262,17 @@ const XDATA = {
      Act 7 — govern & learn
   -------------------------------------------------------------------------- */
   audit: [
-    { time: '06:58', actor: 'SWAN', entry: 'Plan run detected complete — began reading 812 exceptions (plan, ERP, supplier signals via MCP)' },
-    { time: '07:03', actor: 'SWAN', entry: 'Clustered 812 exceptions → 14 root issues via semantic graph · 493 symptom links traced' },
-    { time: '07:04', actor: 'SWAN', entry: 'Ranked by revenue & service impact — account value from Salesforce' },
-    { time: '07:11', actor: 'SWAN', entry: '14 investigation worksheets created at runtime · 3 specialists from reusable skills' },
-    { time: '07:19', actor: 'SWAN', entry: '41 candidate resolutions simulated (planning solver) · 29 survived hard constraints', rollback: false },
-    { time: '07:21', actor: 'SWAN', entry: '6 low-risk resolutions staged & auto-applied within autonomy level', rollback: true },
-    { time: '07:22', actor: 'SWAN', entry: 'Briefing prepared: 760 cleared · 6 staged · 8 for review — queued for Arjun' },
+    { time: '06:58', actor: 'Agent', entry: 'Plan run detected complete — began reading 812 exceptions (plan, ERP, supplier signals via MCP)' },
+    { time: '07:03', actor: 'Agent', entry: 'Clustered 812 exceptions → 14 root issues via semantic graph · 493 symptom links traced' },
+    { time: '07:04', actor: 'Agent', entry: 'Ranked by revenue & service impact — account value from Salesforce' },
+    { time: '07:11', actor: 'Agent', entry: '14 investigation worksheets created at runtime · 3 specialists from reusable skills' },
+    { time: '07:19', actor: 'Agent', entry: '41 candidate resolutions simulated (planning solver) · 29 survived hard constraints', rollback: false },
+    { time: '07:21', actor: 'Agent', entry: '6 low-risk resolutions staged & auto-applied within autonomy level', rollback: true },
+    { time: '07:22', actor: 'Agent', entry: 'Briefing prepared: 760 cleared · 6 staged · 8 for review — queued for Arjun' },
     { time: '08:07', actor: 'Arjun', entry: 'Adjusted RI-03: re-allocate 400 + partial expedite (99% EMEA service)' },
     { time: '08:08', actor: 'Arjun', entry: 'Approved 7 of 8 — SO-10502 cancellation retained for manual ERP action' },
-    { time: '08:08', actor: 'SWAN', entry: 'Executed 5 writebacks across Planner, SAP, GlobalFreight, Salesforce', rollback: true },
-    { time: '08:09', actor: 'SWAN', entry: 'Outcome tracking armed on all 14 root issues · results feed the learning loop at month-end' }
+    { time: '08:08', actor: 'Agent', entry: 'Executed 5 writebacks across Planner, SAP, GlobalFreight, Salesforce', rollback: true },
+    { time: '08:09', actor: 'Agent', entry: 'Outcome tracking armed on all 14 root issues · results feed the learning loop at month-end' }
   ],
 
   learning: [

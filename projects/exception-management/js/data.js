@@ -1,5 +1,5 @@
 /* ============================================================================
-   SWAN Demo — WORLD STATE
+   Demo — WORLD STATE
    Edit this file to change names, numbers, and story facts.
    No code lives here; app.js renders whatever these objects say.
    ============================================================================ */
@@ -7,7 +7,7 @@
 const DATA = {
 
   meta: {
-    platform: 'SWAN',
+    platform: 'Agent',
     tagline: 'Agentic Supply Chain',
     company: 'Northbridge Electronics',
     persona: 'Maya Chen',
@@ -120,7 +120,7 @@ const DATA = {
       { m: 'asn',   label: 'Same shipment — ASN 8000234571 · MSKU-4471982', srcs: ['S', 'G'] }
     ],
     steps: {
-      'sig-outlook':   { conf: 41, note: 'Single source — unverified. SWAN holds all action and watches for corroboration.',
+      'sig-outlook':   { conf: 41, note: 'Single source — unverified. The agent holds all action and watches for corroboration.',
                          narrator: 'Read the supplier email and extracted the facts. <b>One source isn’t enough</b> — watching for corroboration…' },
       'sig-erp':       { conf: 78, note: 'Two independent sources agree — same PO, same part, same 14-day slip.',
                          narrator: 'The SAP ASN change matches the email — <b>same PO, same slip</b>. Two independent sources. Confidence rising…' },
@@ -150,7 +150,7 @@ const DATA = {
   -------------------------------------------------------------------------- */
   worksheet: {
     name: 'MCU-8347 Recovery',
-    createdBy: 'SWAN · created at runtime',
+    createdBy: 'Agent · created at runtime',
     sources: 'Planning model · Salesforce · SAP S/4HANA',
     columns: ['Order', 'Customer', 'Tier', 'Product', 'Qty', 'Promise', 'Proj. slip', 'Revenue at risk'],
     provenance: { Tier: 'crm', 'Revenue at risk': 'erp' }
@@ -318,7 +318,7 @@ const DATA = {
     ],
     auto: [
       { system: 'Salesforce',   icon: 'C', action: 'Notify account teams — 3 strategic accounts', risk: 'Low' },
-      { system: 'SWAN',         icon: 'W', action: 'Generate S&OP-ready impact summary',          risk: 'Low' }
+      { system: 'Agent',         icon: 'W', action: 'Generate S&OP-ready impact summary',          risk: 'Low' }
     ],
     held: [
       { system: 'Outlook',      icon: 'O', action: 'Supplier follow-up email to Astrel — drafted', note: 'Requires your sign-off before sending' }
@@ -336,7 +336,7 @@ const DATA = {
     { id: 'x-dates',   system: 'SAP S/4HANA',   icon: 'S', action: 'Promise dates updated on 12 sales orders', ref: 'Δ avg +1.8 days' },
     { id: 'x-crm',     system: 'Salesforce',    icon: 'C', action: 'Account-team tasks created — Helios, TransCore, Meridian', ref: 'TASK-88231…33' },
     { id: 'x-freight', system: 'GlobalFreight', icon: 'G', action: 'Air expedite booked — 2 shipments, Thu uplift', ref: 'GF-88213' },
-    { id: 'x-sop',     system: 'SWAN',          icon: 'W', action: 'S&OP impact summary generated', ref: 'DSR-1847_Impact.pptx' },
+    { id: 'x-sop',     system: 'Agent',          icon: 'W', action: 'S&OP impact summary generated', ref: 'DSR-1847_Impact.pptx' },
     { id: 'x-email',   system: 'Outlook',       icon: 'O', action: 'Supplier follow-up drafted — awaiting your sign-off', ref: 'draft', held: true }
   ],
 
@@ -354,25 +354,25 @@ const DATA = {
       'Regards,',
       'Maya Chen · Supply Planning, Northbridge Electronics'
     ],
-    footer: 'Drafted by SWAN · reviewed content only — will not send without sign-off'
+    footer: 'Drafted by the agent · reviewed content only — will not send without sign-off'
   },
 
   /* --------------------------------------------------------------------------
      Act 7 — Control Plane: audit, cost, learning, SLAs
   -------------------------------------------------------------------------- */
   audit: [
-    { time: '06:53', actor: 'SWAN', entry: 'Disruption DSR-1847 confirmed — 3 corroborating sources (Outlook, SAP ASN, GlobalFreight) · confidence 96%' },
-    { time: '06:54', actor: 'SWAN', entry: 'Impact assessment started · semantic graph traversal: MCU-8347 → 2 BOMs → 3 products → 12 sales orders' },
+    { time: '06:53', actor: 'Agent', entry: 'Disruption DSR-1847 confirmed — 3 corroborating sources (Outlook, SAP ASN, GlobalFreight) · confidence 96%' },
+    { time: '06:54', actor: 'Agent', entry: 'Impact assessment started · semantic graph traversal: MCU-8347 → 2 BOMs → 3 products → 12 sales orders' },
     { time: '08:14', actor: 'Maya', entry: 'Joined run · asked for impact assessment' },
-    { time: '08:14', actor: 'SWAN', entry: 'Runtime worksheet "MCU-8347 Recovery" created · sources: Planner, Salesforce, SAP' },
-    { time: '08:16', actor: 'SWAN', entry: 'Delegated to 3 specialist agents (reusable skills) · arbitration: safety-stock pull capped at 1,850 units (policy floor)' },
-    { time: '08:18', actor: 'SWAN', entry: '3 scenarios simulated via Supply Planning solver · 0 hard-constraint violations · assumption: MCU-8351 requal batch passes (same silicon rev as Mar 2026)' },
-    { time: '08:19', actor: 'SWAN', entry: 'Recommended Option A (confidence 92%) · precedent: Mar 2026 MCU-8214 substitution' },
+    { time: '08:14', actor: 'Agent', entry: 'Runtime worksheet "MCU-8347 Recovery" created · sources: Planner, Salesforce, SAP' },
+    { time: '08:16', actor: 'Agent', entry: 'Delegated to 3 specialist agents (reusable skills) · arbitration: safety-stock pull capped at 1,850 units (policy floor)' },
+    { time: '08:18', actor: 'Agent', entry: '3 scenarios simulated via Supply Planning solver · 0 hard-constraint violations · assumption: MCU-8351 requal batch passes (same silicon rev as Mar 2026)' },
+    { time: '08:19', actor: 'Agent', entry: 'Recommended Option A (confidence 92%) · precedent: Mar 2026 MCU-8214 substitution' },
     { time: '08:22', actor: 'Maya', entry: 'Approved Option A — 4 gated actions authorized', rollback: false },
-    { time: '08:22', actor: 'SWAN', entry: 'Writeback: SAP receipts revised · PO 4500128733', rollback: true },
-    { time: '08:22', actor: 'SWAN', entry: 'Writeback: promise dates updated · 12 sales orders', rollback: true },
-    { time: '08:23', actor: 'SWAN', entry: 'GlobalFreight expedite booked · GF-88213', rollback: true },
-    { time: '08:23', actor: 'SWAN', entry: 'Policy hold: supplier email awaiting sign-off · never-do list enforced (0 attempts)' }
+    { time: '08:22', actor: 'Agent', entry: 'Writeback: SAP receipts revised · PO 4500128733', rollback: true },
+    { time: '08:22', actor: 'Agent', entry: 'Writeback: promise dates updated · 12 sales orders', rollback: true },
+    { time: '08:23', actor: 'Agent', entry: 'GlobalFreight expedite booked · GF-88213', rollback: true },
+    { time: '08:23', actor: 'Agent', entry: 'Policy hold: supplier email awaiting sign-off · never-do list enforced (0 attempts)' }
   ],
 
   learning: {
