@@ -15,7 +15,7 @@ I built Ted as my capstone for Maven's AI Product Management Certification.
 
 ## Featured project: SWAN, autonomous exception management
 
-SWAN is a prototype of an autonomous, governed agent for supply chains. It watches connected systems around the clock, investigates disruptions, simulates every option before it acts, and brings a person in only when a decision is theirs to make. It is an independent personal project, not affiliated with or endorsed by my employer, and all data is fictional.
+SWAN is a prototype of an autonomous, governed agent for supply chains. It watches connected systems around the clock, investigates disruptions, simulates every option before it acts, and brings a person in only when a decision is theirs to make. All data is fictional.
 
 - [Read the case study](https://himanshia30.github.io/projects/swan/)
 - Three demos that play themselves: [incident response](https://himanshia30.github.io/projects/swan/incident-response.html), [exception management](https://himanshia30.github.io/projects/swan/exceptions.html), and [control tower](https://himanshia30.github.io/projects/swan/tower.html)
