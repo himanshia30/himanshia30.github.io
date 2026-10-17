@@ -1,6 +1,6 @@
 # Himanshi Arora, AI Product Manager
 
-I lead and build autonomous agentic products for enterprise supply chains at Kinaxis. I have 6+ years of experience taking products from 0 to 1, and an MBA from UC Berkeley Haas.
+I lead the strategy, roadmap and evals for enterprise-grade autonomous agents at Kinaxis. I have 6+ years of experience taking products from 0 to 1, most recently with agents for enterprise supply chains, and an MBA from UC Berkeley Haas.
 
 This repository is my portfolio site, live at **[himanshia30.github.io](https://himanshia30.github.io)**. It's where I share my personal projects and AI products prototypes I design and build.
 
