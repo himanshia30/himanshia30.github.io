@@ -20,7 +20,8 @@ function build() {
     '<button type="button" id="pl-next" aria-label="Next step">Next ▸</button>' +
     '<div class="pl-cap" aria-live="polite"><span id="pl-cap">Starting…</span><div class="pl-bar"><i id="pl-fill"></i></div></div>' +
     '<button type="button" id="pl-restart" aria-label="Restart demo">↺</button>' +
-    '<a class="pl-link" href="./">About</a>';
+    '<a class="pl-link" href="./">About</a>' +
+    '<div class="pl-note">Independent personal project · fictional data</div>';
   btnPlay = box.querySelector('#pl-play');
   btnNext = box.querySelector('#pl-next');
   btnRestart = box.querySelector('#pl-restart');

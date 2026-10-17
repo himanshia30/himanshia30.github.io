@@ -156,6 +156,9 @@ p { margin: 0 0 1em; }
 .cta-band h2 { font-size: clamp(32px, 4.4vw, 52px); line-height: 1.02; max-width: 14em; margin-bottom: 20px; }
 
 /* desktop screenshots (SWAN) */
+.disclaimer { font-size: 15px; line-height: 1.5; color: var(--muted); max-width: 40em; margin: 20px 0 0; }
+.disclaimer b { color: var(--ink); font-weight: 600; }
+.project .disclaimer { margin: 28px 0 0; }
 .shot { margin: 0; }
 .shot img { border-radius: 14px; border: 1px solid var(--line); box-shadow: 0 24px 48px -28px rgba(30, 26, 58, 0.45); background: #fff; }
 .shots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px, 2vw, 24px); padding-bottom: 16px; }
