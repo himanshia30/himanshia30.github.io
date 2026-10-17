@@ -1,5 +1,5 @@
 /* ============================================================================
-   Autonomous Exception Management — Exception Triage Demo — engine
+   SWAN Exception Management Demo — engine
    11 guided beats (0–10): processing console → Arjun's briefing.
    Story content lives in exceptions-data.js.
 
@@ -43,7 +43,7 @@ function updateBudget() {
 function addTasks(n) { tasks += n; updateBudget(); }
 
 function toast(title, sub) {
-  const t = el('div', 'toast', '<span class="avatar">A</span><div><div class="tt">' + esc(title) + '</div><div class="ts">' + esc(sub) + '</div></div>');
+  const t = el('div', 'toast', '<span class="avatar">S</span><div><div class="tt">' + esc(title) + '</div><div class="ts">' + esc(sub) + '</div></div>');
   document.body.appendChild(t);
   setTimeout(() => { t.style.transition = 'opacity .5s'; t.style.opacity = '0'; setTimeout(() => t.remove(), 550); }, 3400);
 }
@@ -98,7 +98,7 @@ const BEATS = [
       '<div class="sub">Full net-change · <b>812 exceptions generated</b> across 6 exception types</div></div>');
     feed().appendChild(card);
     feed().appendChild(el('div', 'signal', sysIcon('W') +
-      '<div class="body"><div class="head"><span class="src">AGENT</span><span class="time">06:58</span></div>' +
+      '<div class="body"><div class="head"><span class="src">SWAN</span><span class="time">06:58</span></div>' +
       '<div class="title">Exception Management Agent — picked up the work</div>' +
       '<div class="sub">Nobody launched it. Reading every exception from the plan, ERP, and supplier signals via MCP — the instant there was work to do.</div></div>'));
     setStatus('<b>Processing</b> · reading 812 exceptions', true);
@@ -167,7 +167,7 @@ const BEATS = [
   async function (instant) {
     setClock('Mon · 07:11');
     const card = el('div', 'ccard',
-      '<div class="chead"><span class="avatar">A</span><span class="t">Investigating all 14 issues at once</span>' +
+      '<div class="chead"><span class="avatar">S</span><span class="t">Investigating all 14 issues at once</span>' +
       '<span class="sub">agents + workflows · specialists from reusable skills · Haiku 4.5 (auto-selected)</span></div>' +
       '<div class="cbody">' +
         '<div style="font-size:12.5px;color:var(--text-2);margin-bottom:10px">' + esc(XDATA.delegation) + '</div>' +
@@ -273,7 +273,7 @@ const BEATS = [
     setClock('Mon · 07:22');
     const T = XDATA.totals;
     const card = el('div', 'ccard',
-      '<div class="chead"><span class="avatar">A</span><span class="t">Run triaged — briefing queued for Arjun</span>' +
+      '<div class="chead"><span class="avatar">S</span><span class="t">Run triaged — briefing queued for Arjun</span>' +
       '<span class="sub">07:22 · 24 minutes after the plan run finished · unattended</span></div>' +
       '<div class="cbody">' +
         '<div style="font-size:12.5px;color:var(--text-2);margin-bottom:10px">The 14 recommendations split by risk: <b>6 low-risk ones auto-applied</b> within Arjun’s autonomy level (≤$25K, no strategic accounts) — <b>8 need his judgment</b>.</div>' +
@@ -304,7 +304,7 @@ const BEATS = [
     const B = $('#briefing-inner');
 
     B.appendChild(el('div', 'brief-hero',
-      '<div class="bt"><span class="avatar">A</span> Daily briefing · Monday · prepared unattended</div>' +
+      '<div class="bt"><span class="avatar">S</span> Daily briefing · Monday · prepared unattended</div>' +
       '<h2>Good morning, Arjun. 812 exceptions this run — I cleared 760.</h2>' +
       '<div class="bs">Grouped into <b>14 root issues</b>. <b>6 are resolved and staged</b> (applied within your autonomy level), and <b>8 need your call</b> — each with a recommendation, confidence, reasoning, and trade-offs.</div>' +
       '<div class="bstats">' +
@@ -496,7 +496,7 @@ const OVERLAYS = {
         '<div class="cp-sec"><div class="h">Audit trail — this run · why every exception was closed</div><div class="b">' +
           XDATA.audit.map(a =>
             '<div class="audit-row"><span class="at">' + a.time + '</span>' +
-            '<span class="actor"><span class="' + (a.actor === 'Agent' ? 'actor-swan' : 'actor-user') + '">' + a.actor + '</span></span>' +
+            '<span class="actor"><span class="' + (a.actor === 'SWAN' ? 'actor-swan' : 'actor-user') + '">' + a.actor + '</span></span>' +
             '<span class="e">' + esc(a.entry) + '</span>' +
             (a.rollback ? '<span class="rb">↩ roll back</span>' : '') + '</div>').join('') +
         '</div></div>' +

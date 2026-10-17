@@ -1,5 +1,5 @@
 /* ============================================================================
-   Demo — engine
+   SWAN Demo — engine
    Beat state machine + chat renderer + overlays. Story content lives in
    data.js / chat-script.js; this file rarely needs edits.
 
@@ -82,7 +82,7 @@ function updateBudget() {
 function addTasks(n) { runTasks += n; updateBudget(); }
 
 function toast(title, sub) {
-  const t = el('div', 'toast', '<span class="avatar">A</span><div><div class="tt">' + esc(title) + '</div><div class="ts">' + esc(sub) + '</div></div>');
+  const t = el('div', 'toast', '<span class="avatar">S</span><div><div class="tt">' + esc(title) + '</div><div class="ts">' + esc(sub) + '</div></div>');
   document.body.appendChild(t);
   setTimeout(() => { t.style.transition = 'opacity .5s'; t.style.opacity = '0'; setTimeout(() => t.remove(), 550); }, 3400);
 }
@@ -188,7 +188,7 @@ async function beatSignal(beat, instant) {
   // the agent visibly READS the signal, then extracts structured facts from it
   if (!instant) { setNarrator('<span class="think-shimmer">Reading ' + esc(sig.system) + ' signal…</span>'); await sleep(1100); }
   card.querySelector('.body').appendChild(el('div', 'xchips',
-    '<span class="xl">Agent extracted</span>' +
+    '<span class="xl">SWAN extracted</span>' +
     sig.extracted.map(e => '<span class="xchip" data-m="' + e.m + '">' + esc(e.t) + '</span>').join('')));
   if (!instant) await sleep(700);
 
@@ -224,14 +224,14 @@ async function beatFuse(instant) {
     '<div class="foot">' +
       '<span class="conf">' + d.confidence + '% confidence</span>' +
       '<span class="srcs">' + sysIcon('O', 1) + sysIcon('S', 1) + sysIcon('G', 1) + ' 3 corroborating sources</span>' +
-      '<span class="open">Open with the agent</span>' +
+      '<span class="open">Open with SWAN</span>' +
     '</div>');
   card.id = 'disruption-card';
   card.addEventListener('click', () => { if (beatIdx === 4 && !busy) advance(); });
   feed.insertBefore(card, feed.firstChild);
   $('#feed-sub').textContent = 'disruption confirmed · agent investigating';
   setAgentStatus('<b>Investigating</b> · DSR-1847', true);
-  if (!instant) toast('Disruption confirmed — DSR-1847', 'Fused from 3 sources · the agent is investigating');
+  if (!instant) toast('Disruption confirmed — DSR-1847', 'Fused from 3 sources · SWAN is investigating');
 }
 
 /* ---------------------------- chat rendering ---------------------------- */
@@ -240,7 +240,7 @@ function chatEl() { return $('#chat'); }
 function scrollChat() { const s = $('#chat-scroll'); s.scrollTop = s.scrollHeight; }
 
 function addTrace(step) {
-  const cls = step.system === 'Agent' ? 'tool sys-swan' : 'tool';
+  const cls = step.system === 'SWAN' ? 'tool sys-swan' : 'tool';
   $('#trace').appendChild(el('div', 'titem',
     '<span class="tl">' + traceTime + '</span>' +
     '<span><span class="' + cls + '">' + esc(step.tool) + '</span><span class="lbl">' + esc(step.label) + '</span></span>'));
@@ -258,7 +258,7 @@ async function addUserMsg(text, instant) {
 async function agentTurn(turnName, instant) {
   const turn = SCRIPT.turns[turnName];
   const msg = el('div', 'msg agent',
-    '<div class="who"><span class="avatar">A</span> Agent <span class="model-tag">' + DATA.models.lead.name + ' · ' + DATA.models.lead.selection + '</span></div>');
+    '<div class="who"><span class="avatar">S</span> SWAN <span class="model-tag">' + DATA.models.lead.name + ' · ' + DATA.models.lead.selection + '</span></div>');
   chatEl().appendChild(msg);
 
   // reasoning block
@@ -266,7 +266,7 @@ async function agentTurn(turnName, instant) {
     const rb = el('div', 'reasoning', '<div class="rhead"><span class="think-shimmer">Working…</span></div>');
     msg.appendChild(rb); scrollChat();
     for (const step of turn.steps) {
-      const cls = step.system === 'Agent' ? 'tool sys-swan' : 'tool';
+      const cls = step.system === 'SWAN' ? 'tool sys-swan' : 'tool';
       const row = el('div', 'rstep',
         '<span class="st"><span class="spinner"></span></span>' +
         '<span class="' + cls + '">' + esc(step.tool) + '</span>' +
@@ -372,7 +372,7 @@ const CARDS = {
 
   async orchestration(instant, mount) {
     const card = el('div', 'ccard',
-      '<div class="chead"><span class="avatar">A</span>' +
+      '<div class="chead"><span class="avatar">S</span>' +
         '<span class="t">' + esc(DATA.leadAgent.name) + '</span>' +
         '<span class="sub">delegating to 3 specialists · ' + DATA.models.specialists.name + ' (' + DATA.models.specialists.selection + ')</span></div>' +
       '<div class="cbody"><div class="lanes"></div></div>');
@@ -415,14 +415,14 @@ const CARDS = {
       '<b>⚖ Conflict detected:</b> ' + esc(cf.issue) +
       '<div class="res"><b>Arbitrated by lead:</b> ' + esc(cf.resolution) + '</div>'));
     if (!instant) { scrollChat(); await sleep(700); }
-    addTrace({ tool: 'agent.arbitrate', system: 'Agent', label: 'Safety-stock pull capped at 1,850 units (policy floor)' });
+    addTrace({ tool: 'swan.arbitrate', system: 'SWAN', label: 'Safety-stock pull capped at 1,850 units (policy floor)' });
     return card;
   },
 
   /* the bridge between findings and scenarios: WHAT the lead built from WHOM */
   async compose(instant, mount) {
     const card = el('div', 'ccard',
-      '<div class="chead"><span class="avatar">A</span><span class="t">From findings to candidate plans</span>' +
+      '<div class="chead"><span class="avatar">S</span><span class="t">From findings to candidate plans</span>' +
       '<span class="sub">the specialists found what’s possible — the lead composes what to do</span></div>' +
       '<div class="cbody" id="composelist"></div>');
     if (mount) mount(card);
@@ -533,7 +533,7 @@ async function beatApproval(instant) {
   await addUserMsg('Proceed with Option A.', instant);
   const ap = DATA.approval;
   const msg = el('div', 'msg agent',
-    '<div class="who"><span class="avatar">A</span> Agent <span class="model-tag">' + DATA.models.lead.name + '</span></div>' +
+    '<div class="who"><span class="avatar">S</span> SWAN <span class="model-tag">' + DATA.models.lead.name + '</span></div>' +
     '<div class="bubble"><p>Here is exactly what that authorizes. Four actions need your approval; two low-risk actions will run automatically; one is held for your sign-off. Everything is logged and reversible.</p></div>');
   chatEl().appendChild(msg);
 
@@ -555,7 +555,7 @@ async function beatApproval(instant) {
       '<div class="appr-sec"><div class="sh">Held for sign-off</div>' + ap.held.map(a =>
         '<div class="appr-row">' + sysIcon(a.icon, 1) + '<span class="sys">' + esc(a.system) + '</span><span class="act">' + esc(a.action) + '</span><span class="risk Medium">Sign-off</span></div>' +
         '<div class="appr-note">' + esc(a.note) + '</div>').join('') + '</div>' +
-      '<div class="appr-sec"><div class="sh">The agent will never do <span style="text-transform:none;font-weight:500">(never-do list · policy)</span></div>' +
+      '<div class="appr-sec"><div class="sh">SWAN will never do <span style="text-transform:none;font-weight:500">(never-do list · policy)</span></div>' +
         ap.neverDo.map(n => '<div class="appr-row blocked">' + sysIcon('W', 1) + '<span class="sys">Policy</span><span class="act">' + esc(n) + '</span><span class="blocked-pill">BLOCKED</span></div>').join('') + '</div>' +
       '<div class="appr-cta"><button class="btn-primary" id="btn-approve">Approve &amp; execute</button>' +
         '<button class="btn-ghost">Modify…</button><button class="btn-ghost">Reject</button>' +
@@ -578,7 +578,7 @@ async function beatExecution(instant) {
   await addUserMsg('Approved — execute.', instant);
 
   const msg = el('div', 'msg agent',
-    '<div class="who"><span class="avatar">A</span> Agent <span class="model-tag">' + DATA.models.lead.name + '</span></div>' +
+    '<div class="who"><span class="avatar">S</span> SWAN <span class="model-tag">' + DATA.models.lead.name + '</span></div>' +
     '<div class="bubble"><p>Executing now — writebacks are gated, validated, and logged as they land:</p></div>');
   chatEl().appendChild(msg);
   if (!instant) { scrollChat(); await sleep(700); }
@@ -627,7 +627,7 @@ const OVERLAYS = {
     let totQ = 0, totR = 0;
     DATA.orders.forEach(o => { totQ += o.qty; totR += o.revenue; });
     b.innerHTML =
-      '<div class="ws-banner">✦ Created at runtime by the agent — no one authored this worksheet.<span class="save" id="ws-save">Save as planning resource</span></div>' +
+      '<div class="ws-banner">✦ Created at runtime by SWAN — no one authored this worksheet.<span class="save" id="ws-save">Save as planning resource</span></div>' +
       '<div class="ws-toolbar"><span class="scen">scenario: SCN-1847 (child of Enterprise)</span>' +
         '<span class="filter">Part = MCU-8347 (via BOM)</span><span class="filter">Status = Open</span>' +
         '<span class="right">Sources: ' + esc(w.sources) + ' · 12 rows</span></div>' +
@@ -695,7 +695,7 @@ const OVERLAYS = {
         '<div class="cp-sec"><div class="h">Audit trail — DSR-1847 · every decision, assumption &amp; action</div><div class="b">' +
           DATA.audit.map(a =>
             '<div class="audit-row"><span class="at">' + a.time + '</span>' +
-            '<span class="actor"><span class="' + (a.actor === 'Agent' ? 'actor-swan' : 'actor-user') + '">' + a.actor + '</span></span>' +
+            '<span class="actor"><span class="' + (a.actor === 'SWAN' ? 'actor-swan' : 'actor-user') + '">' + a.actor + '</span></span>' +
             '<span class="e">' + esc(a.entry) + '</span>' +
             (a.rollback ? '<span class="rb">↩ roll back</span>' : '') + '</div>').join('') +
         '</div></div>' +
@@ -735,7 +735,7 @@ function renderInput() {
   if (armed) {
     inp.innerHTML = esc(typedText.slice(0, typedPos)) + '<span class="caret"></span>';
   } else {
-    inp.innerHTML = '<span class="ph">Message the agent…</span>';
+    inp.innerHTML = '<span class="ph">Message SWAN…</span>';
     $('#inputwrap').classList.remove('focus');
     $('#send-btn').classList.add('idle');
   }

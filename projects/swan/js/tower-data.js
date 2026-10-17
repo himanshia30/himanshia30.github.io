@@ -1,5 +1,5 @@
 /* ============================================================================
-   Autonomous Exception Management — Control Tower Demo — WORLD STATE
+   SWAN Control Tower Demo — WORLD STATE
    Same Northbridge Electronics world as the incident-response demo (incident-response.html), one
    layer up: the whole agent fleet, seen by supply chain leadership.
    Edit this file to change names, numbers, and story facts.
@@ -152,15 +152,15 @@ const TDATA = {
   ],
 
   audit: [
-    { time: '05:12', actor: 'Agent', entry: 'Inventory Agent: safety-stock rebalance Rotterdam → Lyon — coverage floors validated', rollback: true },
-    { time: '05:47', actor: 'Agent', entry: 'Transportation Agent: lane re-tender CHI → DAL — carrier SLA check passed', rollback: true },
-    { time: '06:41', actor: 'Agent', entry: 'INC-0612 detected (demand surge, EMEA) · context assembled via semantic graph in 1.6 min' },
-    { time: '06:44', actor: 'Agent', entry: 'INC-0612 conflict arbitrated: Demand vs Supply → hybrid plan · scenarios TWR-0612-D/S/H · 0 violations' },
-    { time: '06:45', actor: 'Agent', entry: 'INC-0612 auto-executed under policy (Medium · 94% · $142K) — 4 writebacks', rollback: true },
-    { time: '06:52', actor: 'Agent', entry: 'INC-0613 detected (Rotterdam rail strike) · strategic exposure $1.9M → escalated with briefing' },
+    { time: '05:12', actor: 'SWAN', entry: 'Inventory Agent: safety-stock rebalance Rotterdam → Lyon — coverage floors validated', rollback: true },
+    { time: '05:47', actor: 'SWAN', entry: 'Transportation Agent: lane re-tender CHI → DAL — carrier SLA check passed', rollback: true },
+    { time: '06:41', actor: 'SWAN', entry: 'INC-0612 detected (demand surge, EMEA) · context assembled via semantic graph in 1.6 min' },
+    { time: '06:44', actor: 'SWAN', entry: 'INC-0612 conflict arbitrated: Demand vs Supply → hybrid plan · scenarios TWR-0612-D/S/H · 0 violations' },
+    { time: '06:45', actor: 'SWAN', entry: 'INC-0612 auto-executed under policy (Medium · 94% · $142K) — 4 writebacks', rollback: true },
+    { time: '06:52', actor: 'SWAN', entry: 'INC-0613 detected (Rotterdam rail strike) · strategic exposure $1.9M → escalated with briefing' },
     { time: '07:04', actor: 'VP',   entry: 'INC-0613 Option A approved — reroute via Antwerp + partial air' },
-    { time: '07:05', actor: 'Agent', entry: 'INC-0613 executed — 4 writebacks · outcome tracking armed', rollback: true },
-    { time: '07:05', actor: 'Agent', entry: 'Never-do boundaries: 0 violation attempts fleet-wide today' }
+    { time: '07:05', actor: 'SWAN', entry: 'INC-0613 executed — 4 writebacks · outcome tracking armed', rollback: true },
+    { time: '07:05', actor: 'SWAN', entry: 'Never-do boundaries: 0 violation attempts fleet-wide today' }
   ],
 
   sla: [

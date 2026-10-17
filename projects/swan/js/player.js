@@ -1,4 +1,4 @@
-/* On-screen guided player for the demos.
+/* On-screen guided player for the SWAN demos.
    Visitors don't need to know any keys: the story plays itself, and they can
    pause it, step it, or restart it with the buttons. */
 (function () {
