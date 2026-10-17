@@ -56,6 +56,7 @@ p { margin: 0 0 1em; }
 .project { background: linear-gradient(var(--line), var(--line)) no-repeat center top / calc(100% - 2 * var(--gutter)) 1px; padding-top: clamp(40px, 6vw, 72px); padding-bottom: clamp(56px, 8vw, 104px); }
 .project-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: clamp(32px, 5vw, 72px); align-items: center; }
 .project h2 { font-size: clamp(56px, 7vw, 96px); line-height: 0.95; letter-spacing: -0.045em; color: var(--ink); margin-bottom: 16px; }
+.project h2.long { font-size: clamp(38px, 4.8vw, 64px); line-height: 1; letter-spacing: -0.04em; }
 .project .kind { font-size: 17px; color: var(--muted); margin-bottom: 24px; }
 .project .lede { margin-bottom: 28px; }
 .actions { display: flex; flex-wrap: wrap; gap: 12px; }

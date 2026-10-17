@@ -13,7 +13,7 @@ Ted is an AI strength coach for gym beginners. Every morning it reads your sleep
 
 I built Ted as my capstone for Maven's AI Product Management Certification.
 
-## Project: SWAN, agents that run a supply chain
+## Featured project: Project SWAN, autonomous exception management
 
 SWAN is a prototype of an autonomous, governed agent for enterprise supply chains. It watches connected systems around the clock, investigates disruptions, simulates every option before it acts, and brings a person in only when a decision is theirs to make. All data is fictional.
 
