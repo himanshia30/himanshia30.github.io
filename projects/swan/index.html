@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SWAN, autonomous agents for supply chains | Himanshi Arora</title>
+  <meta name="description" content="Project: SWAN, an agentic supply chain prototype that senses disruptions, simulates every option, acts within set limits, and escalates when a decision is a person's to make.">
+  <meta property="og:title" content="SWAN, autonomous agents for supply chains">
+  <meta property="og:description" content="An agentic supply chain prototype with three interactive demos, by Himanshi Arora.">
+  <meta property="og:image" content="https://himanshia30.github.io/projects/swan/img/incident.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css?v=6">
+</head>
+<body>
+  <header class="wrap bar">
+    <a class="home" href="../../">Himanshi Arora</a>
+    <nav aria-label="Main">
+      <a href="../../#work">Work</a>
+      <a href="../../#about">About</a>
+      <a href="../../#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="wrap cs-hero">
+      <h1>SWAN, agents that run a supply chain</h1>
+      <p class="lede">A prototype of an autonomous, governed agent for enterprise supply chains. It watches connected systems around the clock, works out what a disruption means, simulates every option, and acts only within the limits a person has set.</p>
+      <div class="actions">
+        <a class="btn solid" href="incident-response.html">Watch the incident demo</a>
+        <a class="btn" href="exceptions.html">Exception management</a>
+        <a class="btn" href="tower.html">Control tower</a>
+      </div>
+      <p class="note">Each demo plays itself. Use Pause, Next, or Restart in the corner to steer. All data is made up.</p>
+    </section>
+
+    <div class="wrap">
+      <div class="shots">
+        <figure class="shot"><img src="img/incident.webp" alt="Workspace with three recovery options ranked, each simulated and validated" width="1440" height="900" loading="lazy"><figcaption>Incident response: three simulated options, one recommended, nothing executed until a person approves.</figcaption></figure>
+        <figure class="shot"><img src="img/exceptions.webp" alt="Planner briefing listing resolved and staged exceptions and the eight that need a decision" width="1440" height="900" loading="lazy"><figcaption>Exception management: hundreds of alerts become a short, ranked list of decisions.</figcaption></figure>
+        <figure class="shot"><img src="img/tower.webp" alt="Control tower with a fleet of agents and one escalation awaiting a decision" width="1440" height="900" loading="lazy"><figcaption>Control tower: a fleet of agents working overnight, with one escalation for a human.</figcaption></figure>
+      </div>
+    </div>
+
+    <section class="wrap cs">
+      <div class="two">
+        <h2>The problem</h2>
+        <div>
+          <p>Supply chain planners spend their days triaging alerts: late shipments, supplier slips, capacity limits. Most are noise, a few are expensive, and the real cost is the hours it takes to tell which is which and work out a fix.</p>
+          <p>Handing that work to an agent only helps if people can trust it. So the design question was less "can it act?" and more "when should it act on its own, and when should it ask?"</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap cs">
+      <div class="two">
+        <h2>How SWAN works</h2>
+        <ol class="steps">
+          <li><b>It senses.</b> Signals from email, ERP, logistics, and planning systems arrive through a shared gateway. SWAN acts only on signals that corroborate each other.</li>
+          <li><b>It investigates.</b> Specialist agents trace what changed, what is driving it, and what is downstream, and build the worksheets a planner would have built by hand.</li>
+          <li><b>It simulates first.</b> Every candidate fix runs as its own scenario in a planning solver, so options arrive pre-checked against hard constraints.</li>
+          <li><b>It acts within limits.</b> Low-risk changes within the autonomy level are applied and logged. Anything bigger waits for approval.</li>
+          <li><b>It escalates with a briefing.</b> When a decision belongs to a person, SWAN prepares the impact, the options, and a recommendation, and changes nothing until they answer.</li>
+          <li><b>It learns.</b> Outcomes and corrections feed back, so recommendations match how that planner actually works.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="wrap cs">
+      <div class="two">
+        <h2>Governance by design</h2>
+        <div>
+          <ul>
+            <li><b>Autonomy levels.</b> Set per agent and per spend limit.</li>
+            <li><b>A never-do list.</b> Some actions are always held for a person, whatever the confidence.</li>
+            <li><b>Approval gates.</b> Writebacks to other systems are gated, validated, and logged as they happen.</li>
+            <li><b>Audit trail with rollback.</b> Every decision, assumption, and action is recorded, and reversible actions can be undone.</li>
+            <li><b>Task budgets.</b> Usage is metered, and the agent stops and escalates before it overspends.</li>
+            <li><b>Pinned models.</b> The control plane shows which model does which job, and which version.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap cs">
+      <div class="two">
+        <h2>Three demos</h2>
+        <div class="demo-cards">
+          <div class="demo-card">
+            <h3>Incident response</h3>
+            <p>A planner and the agent work one disruption end to end: signals, impact, options, approval, and execution.</p>
+            <a class="btn" href="incident-response.html">Watch it</a>
+          </div>
+          <div class="demo-card">
+            <h3>Exception management</h3>
+            <p>A Monday-morning plan run produces 812 exceptions. By the time the planner sits down, only eight need a call.</p>
+            <a class="btn" href="exceptions.html">Watch it</a>
+          </div>
+          <div class="demo-card">
+            <h3>Control tower</h3>
+            <p>The view one level up: a fleet of agents, what they resolved overnight, and the one escalation for leadership.</p>
+            <a class="btn" href="tower.html">Watch it</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap cta-band">
+      <h2>See it run</h2>
+      <div class="actions">
+        <a class="btn solid" href="incident-response.html">Watch the incident demo</a>
+        <a class="btn" href="../../">Back to all work</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap foot">
+    <p>SWAN is a prototype. Companies, people, and numbers are fictional, and the demos are scripted.</p>
+  </footer>
+</body>
+</html>

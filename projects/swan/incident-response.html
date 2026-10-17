@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SWAN — Agentic Supply Chain</title>
+<link rel="stylesheet" href="css/styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230e8f80'/><text x='50' y='70' font-size='58' font-family='Segoe UI' font-weight='700' fill='white' text-anchor='middle'>S</text></svg>">
+</head>
+<body>
+
+<header class="chrome">
+  <div class="wordmark"><span class="swan">SWAN</span><span class="by">Agentic Supply Chain</span></div>
+  <span class="chip"><span class="dot" id="agent-dot"></span><span id="agent-status-text"><b>Monitoring</b></span></span>
+  <div class="spacer"></div>
+  <span class="chip"><span class="lbl">autonomy</span><b>Supervised</b></span>
+  <span class="chip budget-meter"><span class="lbl">tasks</span><span class="budget-bar"><i id="budget-fill"></i></span><span id="budget-text"></span></span>
+  <span class="chip"><span class="lbl">models</span><b>auto-select</b></span>
+  <span class="clock" id="clock"></span>
+</header>
+
+<main>
+
+  <!-- ============ View 1: Operations Console ============ -->
+  <section class="view active" id="view-console">
+    <aside class="console-side">
+      <div class="side-h">Connections <span class="gw">MCP / A2A Gateway</span></div>
+      <div id="connectors"></div>
+      <div class="side-h" style="margin-top:22px">Recent runs</div>
+      <div id="pastruns"></div>
+    </aside>
+    <div class="console-main">
+      <div class="console-inner">
+        <div class="feed-h">
+          <h1><span class="live-dot"></span>Live signals</h1>
+          <span class="sub" id="feed-sub">monitoring · nothing needs your attention</span>
+        </div>
+        <div class="narrator"><span class="avatar">S</span><span id="narrator-text">Monitoring 6 connected systems — all quiet. I read every signal, but I act only on <b>corroborated</b> ones.</span></div>
+        <div id="correlation"></div>
+        <div id="feed"></div>
+        <div class="agent-note">SWAN watches your connected systems continuously — you don't have to.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ View 2: Agent Workspace ============ -->
+  <section class="view" id="view-workspace">
+    <aside class="ws-left">
+      <div class="side-h">Runs</div>
+      <div id="runslist"></div>
+    </aside>
+    <div class="ws-center">
+      <div class="chat-scroll" id="chat-scroll"><div class="chat-inner" id="chat"></div></div>
+      <div class="chat-inputbar">
+        <div class="chat-inputwrap" id="inputwrap">
+          <div class="chat-input" id="chat-input"></div>
+          <button class="send-btn idle" id="send-btn">↑</button>
+        </div>
+      </div>
+    </div>
+    <aside class="ws-right">
+      <div class="trace-h"><span class="t">Activity trace</span><span class="cost" id="trace-cost"></span></div>
+      <div class="trace-scroll" id="trace-scroll"><div id="trace"></div></div>
+      <div class="trace-foot"><span class="avatar">S</span> every step logged · inspectable · reversible</div>
+    </aside>
+  </section>
+
+</main>
+
+<!-- ============ Overlays ============ -->
+
+<div class="overlay" id="ov-worksheet">
+  <div class="panel">
+    <div class="panel-h"><span class="sysicon sys-M">M</span><div><div class="t">Worksheet — MCU-8347 Recovery</div>
+      <div class="sub">runtime resource · scenario SCN-1847 · live query over the planning model</div></div>
+      <button class="x">✕</button></div>
+    <div class="panel-b"></div>
+  </div>
+</div>
+
+<div class="overlay" id="ov-scorecard">
+  <div class="panel">
+    <div class="panel-h"><span class="sysicon sys-M">M</span><div><div class="t">Scenario comparison — DSR-1847 recovery options</div>
+      <div class="sub">scorecard · each column is a simulation scenario, child of Enterprise baseline</div></div>
+      <button class="x">✕</button></div>
+    <div class="panel-b"></div>
+  </div>
+</div>
+
+<div class="overlay" id="ov-mail">
+  <div class="panel" style="width:min(820px,94vw)">
+    <div class="panel-h"><span class="sysicon sys-O">O</span><div><div class="t">Outlook — draft awaiting sign-off</div>
+      <div class="sub">drafted by SWAN · will not send without your approval</div></div>
+      <button class="x">✕</button></div>
+    <div class="panel-b"></div>
+  </div>
+</div>
+
+<div class="overlay" id="ov-cp">
+  <div class="panel">
+    <div class="panel-h"><span class="sysicon sys-W">◈</span><div><div class="t">Control Plane — run RUN-1847 · DSR-1847</div>
+      <div class="sub">governance · audit · consumption · learning</div></div>
+      <button class="x">✕</button></div>
+    <div class="panel-b"></div>
+  </div>
+</div>
+
+<div id="player" role="group" aria-label="Demo controls"></div>
+
+<script src="js/data.js"></script>
+<script src="js/chat-script.js"></script>
+<script src="js/app.js"></script>
+<script src="js/player.js"></script>
+</body>
+</html>

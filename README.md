@@ -13,6 +13,13 @@ Ted is an AI strength coach for gym beginners. Every morning it reads your sleep
 
 I built Ted as my capstone for Maven's AI Product Management Certification.
 
+## Project: SWAN, agents that run a supply chain
+
+SWAN is a prototype of an autonomous, governed agent for enterprise supply chains. It watches connected systems around the clock, investigates disruptions, simulates every option before it acts, and brings a person in only when a decision is theirs to make. All data is fictional.
+
+- [See the project](https://himanshia30.github.io/projects/swan/)
+- Three demos that play themselves: [incident response](https://himanshia30.github.io/projects/swan/incident-response.html), [exception management](https://himanshia30.github.io/projects/swan/exceptions.html), and [control tower](https://himanshia30.github.io/projects/swan/tower.html)
+
 ## What's in this repository
 
 | Path | What it is |
@@ -21,6 +28,9 @@ I built Ted as my capstone for Maven's AI Product Management Certification.
 | `projects/ted/index.html` | Ted case study |
 | `projects/ted/prototype.html` | Ted's working prototype, a single self-contained page |
 | `projects/ted/img/` | Screens captured from the prototype |
+| `projects/swan/index.html` | SWAN project page |
+| `projects/swan/*.html` | SWAN's three demos, each with its own `css/` and `js/` |
+| `projects/swan/img/` | Screens captured from the demos |
 | `styles.css` | Shared styles for the site |
 
 The site is plain HTML and CSS with no build step, hosted on GitHub Pages. I built it with Claude as my collaborator.

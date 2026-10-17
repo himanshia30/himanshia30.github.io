@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SWAN Control Tower</title>
+<link rel="stylesheet" href="css/styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230d1522'/><text x='50' y='70' font-size='58' font-family='Segoe UI' font-weight='700' fill='white' text-anchor='middle'>S</text></svg>">
+</head>
+<body>
+
+<header class="chrome">
+  <div class="wordmark"><span class="swan">SWAN</span><span class="by">Control Tower</span></div>
+  <span class="chip"><span class="dot" id="agent-dot"></span><span id="agent-status-text"><b>Fleet healthy</b></span></span>
+  <div class="spacer"></div>
+  <span class="chip"><span class="lbl">autonomy</span><b>per-agent policy</b></span>
+  <span class="chip budget-meter"><span class="lbl">tasks</span><span class="budget-bar"><i id="budget-fill"></i></span><span id="budget-text"></span></span>
+  <span class="chip"><span class="lbl">models</span><b>registry · pinned</b></span>
+  <span class="clock" id="clock"></span>
+</header>
+
+<main>
+  <section class="view active" id="view-tower">
+    <aside class="tw-left">
+      <div class="side-h">Connections <span class="gw">MCP / A2A Gateway</span></div>
+      <div id="tw-connectors" style="display:flex;gap:6px;align-items:center;margin-bottom:18px"></div>
+      <div class="side-h">Agent fleet — 24/7</div>
+      <div id="fleet"></div>
+    </aside>
+
+    <div class="console-main">
+      <div class="console-inner" style="max-width:860px">
+        <div class="feed-h">
+          <h1><span class="live-dot"></span>Live operations</h1>
+          <span class="sub" id="feed-sub"></span>
+        </div>
+        <div id="feed"></div>
+        <div class="agent-note">A governed, self-driving supply chain — it senses, resolves, acts, and escalates within the limits you set.</div>
+      </div>
+    </div>
+
+    <aside class="tw-right">
+      <div class="side-h">Today — fleet</div>
+      <div class="twstat"><div class="v" id="st-signals"></div><div class="l">signals processed</div></div>
+      <div class="twstat"><div class="v teal" id="st-auto"></div><div class="l">resolved autonomously</div></div>
+      <div class="twstat"><div class="v" id="st-esc"></div><div class="l">escalated to a human</div></div>
+      <div class="twstat"><div class="v" id="st-tasks"></div><div class="l">tasks vs daily budget</div>
+        <div class="cp-budget-bar" style="margin-top:8px"><i id="st-bar"></i></div>
+        <div class="sub2">policy: stop &amp; escalate at 90%</div></div>
+      <div class="twstat"><div class="v teal" id="st-sla"></div><div class="l">auto-resolution success (30d)</div></div>
+    </aside>
+  </section>
+</main>
+
+<!-- briefing overlay (escalation) -->
+<div class="overlay" id="ov-brief">
+  <div class="panel" style="width:min(920px,94vw)">
+    <div class="panel-h"><span class="sysicon sys-W">◈</span><div><div class="t">Decision briefing — INC-0613 · Rotterdam lane down</div>
+      <div class="sub">prepared by SWAN, unattended · presentation-ready · nothing executed yet</div></div>
+      <button class="x">✕</button></div>
+    <div class="panel-b"></div>
+  </div>
+</div>
+
+<!-- fleet control plane overlay -->
+<div class="overlay" id="ov-cp">
+  <div class="panel">
+    <div class="panel-h"><span class="sysicon sys-W">◈</span><div><div class="t">Control Plane — fleet governance</div>
+      <div class="sub">audit · model registry · task metering · SLAs</div></div>
+      <button class="x">✕</button></div>
+    <div class="panel-b"></div>
+  </div>
+</div>
+
+<div id="player" role="group" aria-label="Demo controls"></div>
+
+<script src="js/tower-data.js"></script>
+<script src="js/tower-app.js"></script>
+<script src="js/player.js"></script>
+</body>
+</html>
