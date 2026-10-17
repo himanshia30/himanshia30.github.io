@@ -43,14 +43,14 @@ p { margin: 0 0 1em; }
 /* homepage intro */
 .intro { padding-top: clamp(32px, 8vw, 96px); padding-bottom: clamp(48px, 9vw, 112px); }
 .intro h1 {
-  font-size: clamp(38px, 5.6vw, 72px);
-  line-height: 1.05;
+  font-size: clamp(32px, 4.4vw, 56px);
+  line-height: 1.08;
   letter-spacing: -0.035em;
   max-width: 15em;
   margin-bottom: 24px;
 }
 .intro .lede { margin-bottom: 32px; color: var(--muted); }
-.intro .name { font-size: 17px; font-weight: 500; color: var(--iris); margin-bottom: 20px; }
+.intro .name { font-size: clamp(20px, 2.2vw, 26px); font-weight: 600; letter-spacing: -0.01em; color: var(--iris); margin-bottom: 16px; }
 
 /* the project spread */
 .project { background: linear-gradient(var(--line), var(--line)) no-repeat center top / calc(100% - 2 * var(--gutter)) 1px; padding-top: clamp(40px, 6vw, 72px); padding-bottom: clamp(56px, 8vw, 104px); }
