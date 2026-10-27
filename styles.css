@@ -159,7 +159,7 @@ p { margin: 0 0 1em; }
 .shot { margin: 0; }
 .shot img { border-radius: 14px; border: 1px solid var(--line); box-shadow: 0 24px 48px -28px rgba(30, 26, 58, 0.45); background: #fff; }
 .shots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px, 2vw, 24px); padding-bottom: 16px; }
-.shots figcaption { font-size: 15px; color: var(--muted); margin-top: 10px; line-height: 1.4; }
+.shots figcaption, .shot figcaption { font-size: 15px; color: var(--muted); margin-top: 10px; line-height: 1.4; }
 .demo-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
 .demo-card { border: 1px solid var(--line); border-radius: 16px; padding: 22px; background: #fff; display: flex; flex-direction: column; gap: 8px; }
 .demo-card h3 { font-size: 20px; line-height: 1.25; }

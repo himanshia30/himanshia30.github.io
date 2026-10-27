@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=6">
+  <link rel="stylesheet" href="styles.css?v=7">
 </head>
 <body>
   <header class="wrap bar">
@@ -78,6 +78,26 @@
       </div>
     </section>
 
+    <section class="wrap project" id="interview-coach" aria-labelledby="coach-title">
+      <div class="project-grid">
+        <div>
+          <h2 id="coach-title" class="long">PM Interview Coach</h2>
+          <p class="kind">Mock interviews out loud, with an AI judge</p>
+          <p class="lede">A voice practice app for product manager interviews. Answer out loud, get probed by an AI interviewer or a whole panel, then get scored by a calibrated judge that quotes your own words back to you.</p>
+          <div class="actions">
+            <a class="btn solid" href="projects/interview-coach/">Read the case study</a>
+            <a class="btn" href="projects/interview-coach/prototype.html">Try the prototype</a>
+          </div>
+        </div>
+        <figure class="shot"><img src="projects/interview-coach/img/report.webp" alt="Judge's report with an overall score of 7.6 out of 10, a Hire verdict, a competency radar, and each panelist's take" width="1440" height="900" loading="lazy"></figure>
+      </div>
+      <div class="facts">
+        <div><h3>Built for</h3><p>PMs preparing for interviews, especially AI PM loops with questions on evals, agents, and guardrails.</p></div>
+        <div><h3>What it does</h3><p>Reads the question aloud, transcribes your answer, asks follow-ups, and scores five PM competencies.</p></div>
+        <div><h3>How it judges</h3><p>Fixed score anchors, a quote as evidence for every score, and delivery metrics measured rather than guessed.</p></div>
+      </div>
+    </section>
+
     <section class="wrap about" id="about">
       <div class="two">
         <div>
@@ -106,7 +126,7 @@
   </main>
 
   <footer class="wrap foot">
-    <p>Designed and built with Claude. The prototypes use sample data only.</p>
+    <p>Designed and built with Claude. The Ted and SWAN prototypes use sample data only.</p>
   </footer>
 </body>
 </html>

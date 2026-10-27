@@ -20,6 +20,13 @@ SWAN is a prototype of a proactive, always-on agent for supply chains. It watche
 - [Read the case study](https://himanshia30.github.io/projects/swan/)
 - Three demos that play themselves: [incident response](https://himanshia30.github.io/projects/swan/incident-response.html), [exception management](https://himanshia30.github.io/projects/swan/exceptions.html), and [control tower](https://himanshia30.github.io/projects/swan/tower.html)
 
+## Featured project: PM Interview Coach
+
+PM Interview Coach is a voice practice app for product manager interviews. You answer out loud, an AI interviewer or a panel of two or three asks follow-ups, and a calibrated AI judge scores your answer across five PM competencies, quoting your own words as evidence. It covers Product Design, AI Product, Strategy, Analytics and Metrics, and Behavioral rounds.
+
+- [Read the case study](https://himanshia30.github.io/projects/interview-coach/)
+- [Try the prototype](https://himanshia30.github.io/projects/interview-coach/prototype.html): works best in Chrome or Edge. Add an AI key in Settings (Groq's free tier works) for follow-ups and scoring; without one you still get transcription and delivery feedback.
+
 ## What's in this repository
 
 | Path | What it is |
@@ -31,6 +38,9 @@ SWAN is a prototype of a proactive, always-on agent for supply chains. It watche
 | `projects/swan/index.html` | SWAN project page |
 | `projects/swan/*.html` | SWAN's three demos, each with its own `css/` and `js/` |
 | `projects/swan/img/` | Screens captured from the demos |
+| `projects/interview-coach/index.html` | PM Interview Coach case study |
+| `projects/interview-coach/prototype.html` | The coach's working prototype, a single self-contained page |
+| `projects/interview-coach/img/` | Screens captured from the prototype |
 | `styles.css` | Shared styles for the site |
 
 The site is plain HTML and CSS with no build step, hosted on GitHub Pages. I built it with Claude as my collaborator.
