@@ -22,10 +22,13 @@ SWAN is a prototype of a proactive, always-on agent for supply chains. It watche
 
 ## Featured project: AI PM Coach
 
-AI PM Coach is an AI coach for product managers. You talk through a product problem out loud, AI personas or a panel of two or three ask follow-ups, and an AI judge scores your answer on five PM competencies and tells you exactly what to fix. It covers Product Design, AI Product, Strategy, Analytics and Metrics, and Behavioral topics.
+AI PM Coach is two AI tools for product managers, built to give feedback on product thinking in minutes.
+
+- **Product thinking practice:** talk through a product problem out loud, AI personas or a panel of two or three ask follow-ups, and an AI judge scores your answer on five PM competencies and tells you exactly what to fix.
+- **Pitch Panel:** pitch a feature to AI personas of your engineering, architecture, security, program, QA, and UX partners. They co-develop it with you or review it like a real panel, a feature canvas fills in as you talk, and you leave with each panelist's stance and a co-developed feature brief.
 
 - [Read the case study](https://himanshia30.github.io/projects/ai-pm-coach/)
-- [Try the prototype](https://himanshia30.github.io/projects/ai-pm-coach/prototype.html): works best in Chrome or Edge. Add an AI key in Settings (Groq's free tier works) for follow-ups and scoring; without one you still get transcription and delivery feedback.
+- [Try product thinking practice](https://himanshia30.github.io/projects/ai-pm-coach/prototype.html) and [Try Pitch Panel](https://himanshia30.github.io/projects/ai-pm-coach/pitch-panel.html): both work best in Chrome or Edge. Add an AI key in Settings (Groq's free tier works) for the AI personas and scoring.
 
 ## What's in this repository
 
@@ -39,8 +42,9 @@ AI PM Coach is an AI coach for product managers. You talk through a product prob
 | `projects/swan/*.html` | SWAN's three demos, each with its own `css/` and `js/` |
 | `projects/swan/img/` | Screens captured from the demos |
 | `projects/ai-pm-coach/index.html` | AI PM Coach case study |
-| `projects/ai-pm-coach/prototype.html` | The coach's working prototype, a single self-contained page |
-| `projects/ai-pm-coach/img/` | Screens captured from the prototype |
+| `projects/ai-pm-coach/pitch-panel.html` | Pitch Panel prototype, a single self-contained page |
+| `projects/ai-pm-coach/prototype.html` | Product thinking practice prototype, a single self-contained page |
+| `projects/ai-pm-coach/img/` | Screens captured from both prototypes |
 | `styles.css` | Shared styles for the site |
 
 The site is plain HTML and CSS with no build step, hosted on GitHub Pages. I built it with Claude as my collaborator.

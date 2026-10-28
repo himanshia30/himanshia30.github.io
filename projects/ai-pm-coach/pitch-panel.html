@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Pitch Panel — Rehearse &amp; co-develop features with AI personas</title>
+<meta name="description" content="Rehearse a feature pitch with a simulated review panel of AI personas and shape it into a feature brief. By Himanshi Arora.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Himanshi Arora">
+<meta property="og:url" content="https://himanshia30.github.io/projects/ai-pm-coach/pitch-panel.html">
+<meta property="og:title" content="Pitch Panel: rehearse a feature pitch with AI personas">
+<meta property="og:description" content="Rehearse a feature pitch with a simulated review panel of AI personas and shape it into a feature brief. By Himanshi Arora.">
+<meta property="og:image" content="https://himanshia30.github.io/projects/ai-pm-coach/img/share.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+<meta property="og:image:alt" content="Pitch Panel: rehearse a feature pitch with AI personas">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+:root{
+  --bg:#f6f7fb; --surface:#ffffff; --surface-2:#f1f3f9; --text:#161a2b; --muted:#5d6480; --border:#e2e5ef;
+  --accent:#4f46e5; --accent-2:#7c3aed; --accent-soft:#eef0ff; --good:#0f9d6b; --warn:#d97706; --bad:#dc2626;
+  --good-soft:#e6f7f0; --warn-soft:#fff5e6; --bad-soft:#fdecec; --shadow:0 1px 2px rgba(20,24,50,.06),0 6px 24px rgba(20,24,50,.06);
+  --radius:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0f1220; --surface:#171b2e; --surface-2:#1f2440; --text:#eceefa; --muted:#a3a9c6; --border:#2b3152;
+    --accent:#8b85ff; --accent-2:#b38bff; --accent-soft:#25295a; --good:#34d399; --warn:#fbbf24; --bad:#f87171;
+    --good-soft:#123a2e; --warn-soft:#3d2f10; --bad-soft:#3d1717; --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 24px rgba(0,0,0,.25);
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+button{font:inherit;cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}
+input,select,textarea{font:inherit;color:var(--text);background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.55rem .7rem}
+textarea{resize:vertical}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:1rem;padding:.75rem 1.5rem;background:var(--surface);border-block-end:1px solid var(--border)}
+.brand{display:flex;align-items:center;gap:.6rem;font-weight:700;font-size:1.05rem}
+.logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:grid;place-items:center;color:#fff;font-size:1.1rem}
+.nav{display:flex;gap:.25rem;margin-inline-start:auto}
+.nav button{background:none;border:0;color:var(--muted);padding:.45rem .8rem;border-radius:8px;font-weight:600}
+.nav button.active,.nav button:hover{background:var(--accent-soft);color:var(--accent)}
+.judge-pill{display:inline-flex;align-items:center;gap:.4rem;font-size:.8rem;padding:.3rem .65rem;border-radius:999px;border:1px solid var(--border);background:var(--surface-2);color:var(--muted)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--warn)}
+.dot.on{background:var(--good)}
+main{max-width:1140px;margin:0 auto;padding:1.5rem}
+h1{font-size:2rem;line-height:1.2;margin:.2rem 0 .6rem}
+h2{font-size:1.3rem;margin:0 0 .8rem}
+h3{font-size:1.05rem;margin:0 0 .4rem}
+.muted{color:var(--muted)}
+.small{font-size:.85rem}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:1.25rem}
+.grid{display:grid;gap:1rem}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:860px){.g2,.g3,.g4{grid-template-columns:1fr}.nav button{padding:.4rem .5rem}}
+.hero{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;border-radius:20px;padding:2rem;display:grid;grid-template-columns:1.4fr 1fr;gap:1.5rem;align-items:center}
+.hero p{opacity:.92;margin:.2rem 0 1rem;max-width:56ch}
+@media (max-width:860px){.hero{grid-template-columns:1fr}}
+.steps{display:flex;gap:.5rem;flex-wrap:wrap}
+.step{display:flex;align-items:center;gap:.45rem;background:rgba(255,255,255,.15);padding:.4rem .75rem;border-radius:999px;font-size:.85rem;font-weight:600}
+.step b{background:#fff;color:var(--accent);width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:.75rem}
+.hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.hero-stat{background:rgba(255,255,255,.14);border-radius:14px;padding:.9rem}
+.hero-stat .v{font-size:1.6rem;font-weight:800}
+.btn{border:1px solid var(--border);background:var(--surface);color:var(--text);padding:.6rem 1rem;border-radius:10px;font-weight:600;display:inline-flex;align-items:center;gap:.45rem}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent}
+.btn.white{background:#fff;color:var(--accent);border-color:#fff}
+.btn.danger{color:var(--bad)}
+.row{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
+.spacer{flex:1}
+.type-card{text-align:start;border:2px solid var(--border);background:var(--surface);border-radius:var(--radius);padding:1.1rem;display:flex;flex-direction:column;gap:.35rem;transition:.15s;color:var(--text)}
+.type-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.type-card.sel{border-color:var(--accent);background:var(--accent-soft)}
+.type-icon{font-size:1.6rem}
+.tag{display:inline-block;font-size:.72rem;font-weight:700;padding:.15rem .5rem;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.tag.good{background:var(--good-soft);color:var(--good)}.tag.warn{background:var(--warn-soft);color:var(--warn)}.tag.bad{background:var(--bad-soft);color:var(--bad)}
+.persona{display:flex;gap:.8rem;align-items:flex-start}
+.avatar{flex:none;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:800}
+.avatar.lg{width:64px;height:64px;font-size:1.3rem}
+.section-title{display:flex;align-items:baseline;gap:.6rem;margin:1.6rem 0 .8rem}
+.q-list{display:flex;flex-direction:column;gap:.4rem;max-height:300px;overflow:auto;padding-inline-end:.3rem}
+.q-item{text-align:start;border:1px solid var(--border);background:var(--surface);border-radius:10px;padding:.6rem .8rem;color:var(--text)}
+.q-item.sel{border-color:var(--accent);background:var(--accent-soft)}
+.seg{display:inline-flex;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.seg button{border:0;background:var(--surface);padding:.45rem .8rem;color:var(--muted);font-weight:600}
+.seg button.on{background:var(--accent);color:#fff}
+/* interview room */
+.room{display:grid;grid-template-columns:1.6fr 1fr;gap:1rem}
+@media (max-width:960px){.room{grid-template-columns:1fr}}
+.question-box{background:var(--accent-soft);border-radius:12px;padding:1rem 1.1rem;font-size:1.08rem;font-weight:600}
+.chat{display:flex;flex-direction:column;gap:.75rem;max-height:46vh;overflow:auto;padding:.25rem}
+.msg{display:flex;gap:.6rem;align-items:flex-start}
+.msg .bubble{background:var(--surface-2);border-radius:12px;padding:.65rem .85rem;max-width:85%}
+.msg.me{flex-direction:row-reverse}
+.msg.me .bubble{background:var(--accent);color:#fff}
+.msg .who{font-size:.75rem;font-weight:700;opacity:.75;margin-block-end:.15rem}
+.msg audio{display:block;margin-block-start:.4rem;max-width:100%;height:32px}
+.mic-wrap{display:flex;flex-direction:column;align-items:center;gap:.6rem;padding:1rem 0 .4rem}
+.mic{width:86px;height:86px;border-radius:50%;border:0;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;font-size:2rem;box-shadow:0 8px 24px rgba(79,70,229,.35);position:relative}
+.mic.rec{background:var(--bad);animation:pulse 1.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(220,38,38,.5)}70%{box-shadow:0 0 0 22px rgba(220,38,38,0)}100%{box-shadow:0 0 0 0 rgba(220,38,38,0)}}
+.wave{display:flex;gap:3px;height:26px;align-items:center}
+.wave span{width:4px;border-radius:3px;background:var(--accent);height:6px;transition:height .1s}
+.answer{width:100%;min-height:130px}
+.meters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem}
+.meter{background:var(--surface-2);border-radius:10px;padding:.6rem .75rem}
+.meter .v{font-size:1.35rem;font-weight:800}
+.meter .l{font-size:.75rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.03em}
+.bar{height:8px;background:var(--surface-2);border-radius:99px;overflow:hidden}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:99px}
+.hint{background:var(--warn-soft);border-radius:12px;padding:.8rem 1rem;font-size:.92rem}
+.hint ul,.list ul{margin:.3rem 0;padding-inline-start:1.2rem}
+.thinking{display:inline-flex;gap:4px}
+.thinking i{width:7px;height:7px;border-radius:50%;background:var(--muted);animation:blink 1.2s infinite}
+.thinking i:nth-child(2){animation-delay:.2s}.thinking i:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:.25}40%{opacity:1}}
+/* report */
+.score-ring{width:140px;height:140px}
+.comp{display:grid;grid-template-columns:1fr auto;gap:.3rem .8rem;align-items:center;padding:.8rem 0;border-block-end:1px solid var(--border)}
+.comp:last-child{border-block-end:0}
+.comp .bar{grid-column:1/-1}
+.sumgrid{grid-template-columns:auto 1fr auto;align-items:center;margin-block-end:1rem}@media (max-width:860px){.sumgrid{grid-template-columns:1fr}}
+.verdict{font-size:1.15rem;font-weight:800}
+.callout{border-inline-start:4px solid var(--accent);background:var(--surface-2);padding:.7rem .9rem;border-radius:8px}
+.callout.good{border-color:var(--good)}.callout.bad{border-color:var(--warn)}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+th,td{text-align:start;padding:.55rem .5rem;border-block-end:1px solid var(--border);vertical-align:top}
+th{color:var(--muted);font-size:.75rem;text-transform:uppercase;letter-spacing:.04em}
+.banner{display:flex;gap:.8rem;align-items:flex-start;background:var(--warn-soft);border:1px solid var(--border);border-radius:12px;padding:.8rem 1rem;margin-block-end:1rem;font-size:.92rem}
+.banner.info{background:var(--accent-soft)}
+dialog{border:0;border-radius:16px;padding:0;max-width:640px;width:calc(100% - 2rem);background:var(--surface);color:var(--text);box-shadow:0 20px 60px rgba(0,0,0,.35)}
+dialog::backdrop{background:rgba(10,12,30,.55)}
+.dlg-h{padding:1.1rem 1.3rem;border-block-end:1px solid var(--border);display:flex;align-items:center}
+.dlg-b{padding:1.1rem 1.3rem;display:grid;gap:.9rem;max-height:70vh;overflow:auto}
+.dlg-f{padding:.9rem 1.3rem;border-block-start:1px solid var(--border);display:flex;gap:.6rem;justify-content:flex-end}
+label.f{display:grid;gap:.3rem;font-size:.85rem;font-weight:600}
+label.f span.muted{font-weight:400}
+.toast{position:fixed;inset-block-end:1.2rem;inset-inline-start:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:.65rem 1rem;border-radius:10px;font-size:.9rem;z-index:99;opacity:0;transition:.25s;pointer-events:none;max-width:90vw}
+.toast.show{opacity:1}
+.empty{text-align:center;padding:2.5rem 1rem;color:var(--muted)}
+.kbd{font-family:ui-monospace,Consolas,monospace;font-size:.8rem;background:var(--surface-2);border:1px solid var(--border);border-radius:5px;padding:.05rem .35rem}
+.caret{display:inline-block;width:8px;height:1em;background:var(--accent);vertical-align:-2px;margin-inline-start:2px;animation:blink 1s infinite}
+.jbody p{margin:.2rem 0}.jbody ul{margin:.2rem 0;padding-inline-start:1.2rem}
+.itext.typing::after{content:"";display:inline-block;width:7px;height:1em;background:currentColor;opacity:.5;vertical-align:-2px;margin-inline-start:2px;animation:blink 1s infinite}
+.chip-row{display:flex;gap:.4rem;flex-wrap:wrap;margin-block-end:.6rem}
+#jMic.rec{background:var(--bad);color:#fff;border-color:var(--bad)}
+@media print{.topbar,.no-print{display:none!important}body{background:#fff}}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:.8rem}
+.pcard{text-align:start;border:2px solid var(--border);background:var(--surface);border-radius:var(--radius);padding:.9rem;display:flex;flex-direction:column;gap:.35rem;color:var(--text);position:relative}
+.pcard.sel{border-color:var(--accent);background:var(--accent-soft)}
+.pcard .chk{position:absolute;inset-block-start:.6rem;inset-inline-end:.7rem;font-weight:800;color:var(--accent)}
+.pcard .lens{font-size:.82rem;color:var(--muted)}
+.seat-row{display:flex;gap:.6rem;flex-wrap:wrap}
+.seat{display:flex;flex-direction:column;align-items:center;gap:.25rem;border:2px solid transparent;background:var(--surface-2);border-radius:12px;padding:.5rem .6rem;min-width:84px;color:var(--text)}
+.seat.talk{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.seat.next{border-style:dashed;border-color:var(--warn)}
+.seat .nm{font-weight:700;font-size:.85rem}.seat .rl{font-size:.7rem;color:var(--muted);text-align:center;max-width:96px;line-height:1.2}
+.kind{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-inline-start:.35rem;opacity:.8}
+.canvas h4{margin:.7rem 0 .25rem;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.canvas ul{margin:0;padding-inline-start:1.1rem;font-size:.88rem}
+.canvas li{margin:.15rem 0}
+.owner{font-size:.7rem;font-weight:700;color:var(--accent)}
+.stance{font-weight:800;font-size:.8rem;padding:.15rem .55rem;border-radius:999px}
+.stance.yes{background:var(--good-soft);color:var(--good)}.stance.cond{background:var(--warn-soft);color:var(--warn)}.stance.no{background:var(--bad-soft);color:var(--bad)}
+.brief h3{margin-block-start:1rem}
+.brief ul{margin:.2rem 0;padding-inline-start:1.2rem}
+.disclaimer{font-size:.8rem;color:var(--muted);border:1px dashed var(--border);border-radius:10px;padding:.55rem .8rem}
+.tlist li{margin:.15rem 0}
+.topicbar{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;background:var(--accent-soft);border-radius:10px;padding:.55rem .8rem;margin-bottom:.7rem;font-size:.92rem}
+.topic-div{align-self:center;font-size:.8rem;color:var(--good);background:var(--good-soft);border-radius:999px;padding:.25rem .8rem;margin:.1rem 0 .3rem;text-align:center;max-width:95%}
+.cdel{border:0;background:none;color:var(--muted);font-size:.95rem;line-height:1;padding:0 .2rem;cursor:pointer}
+.cdel:hover{color:var(--bad)}
+.canvas h4 .muted{font-weight:600}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><div class="logo" aria-hidden="true">🗣</div><span>Pitch Panel</span></div>
+  <nav class="nav" aria-label="Main">
+    <button type="button" data-nav="home">Pitch</button>
+    <button type="button" data-nav="team">Panel personas</button>
+    <button type="button" data-nav="history">Past sessions</button>
+    <button type="button" data-action="open-settings">Settings</button>
+  </nav>
+  <span class="judge-pill"><span class="dot" id="judgeDot"></span><span id="judgeLabel">Panel AI not connected</span></span>
+</header>
+<main id="app" aria-live="polite"></main>
+<dialog id="settingsDlg" aria-labelledby="setTitle">
+  <div class="dlg-h"><h2 id="setTitle" style="margin:0">Settings</h2><span class="spacer"></span><button type="button" class="btn ghost" data-action="close-settings" aria-label="Close">✕</button></div>
+  <div class="dlg-b">
+    <div class="banner info"><span>🧑‍⚖️</span><div><b>Panel AI.</b> Connect a model so the personas can discuss your pitch in character, fill the feature canvas and give their verdict. Use Azure OpenAI, OpenAI, or an open-source model running on your own computer or a hosted service. Your key stays in this browser tab and goes only to the endpoint you enter.</div></div>
+    <label class="f">Provider
+      <select id="sProvider">
+        <option value="none">Not connected (delivery analysis only)</option>
+        <option value="azure">Azure OpenAI</option>
+        <option value="open">Open-source model (local or hosted)</option>
+        <option value="openai">OpenAI or other OpenAI-compatible</option>
+      </select>
+    </label>
+    <div id="azureFields" class="grid">
+      <label class="f">Endpoint <span class="muted">e.g. https://your-resource.openai.azure.com</span><input id="sEndpoint" type="url" autocomplete="off"></label>
+      <div class="grid g2">
+        <label class="f">Deployment name<input id="sDeployment" type="text" autocomplete="off" placeholder="gpt-4o"></label>
+        <label class="f">API version<input id="sApiVersion" type="text" autocomplete="off" value="2024-10-21"></label>
+      </div>
+    </div>
+    <div id="openFields" class="grid">
+      <label class="f">Where the model runs
+        <select id="sPreset">
+                    <option value="lmstudio">LM Studio on this computer (free, private)</option>
+          <option value="groq">Groq — free key, no credit card, nothing to install (recommended)</option>
+          <option value="ollama">Ollama on this computer (free, private)</option>
+          <option value="openrouter">OpenRouter (hosted, many models)</option>
+          <option value="together">Together AI (hosted)</option>
+          <option value="hf">Hugging Face Inference (hosted)</option>
+          <option value="custom">Custom server (vLLM, llama.cpp, Azure AI Foundry…)</option>
+        </select>
+      </label>
+      <div class="hint small" id="presetHint"></div>
+    </div>
+    <div id="openaiFields" class="grid">
+      <label class="f">Base URL <span class="muted" id="baseUrlNote">leave as-is for OpenAI</span><input id="sBaseUrl" type="url" autocomplete="off" value="https://api.openai.com/v1"></label>
+      <label class="f">Model<input id="sModel" type="text" autocomplete="off" value="gpt-4o"></label>
+    </div>
+    <label class="f" id="keyField"><span>API key <span class="muted" id="keyNote"></span></span><input id="sKey" type="password" autocomplete="off"></label>
+    <div class="row" id="testRow"><button type="button" class="btn" data-action="test-connection">Test connection</button><span id="testResult" class="small muted"></span></div>
+    <hr style="border:0;border-block-start:1px solid var(--border);width:100%">
+    <h3>You</h3>
+    <div class="grid g3"><label class="f">Your name<input id="sName" autocomplete="off" placeholder="e.g. Alex"></label><label class="f">Company<input id="sOrg" autocomplete="off" placeholder="e.g. Contoso"></label><label class="f">Your product area<input id="sProduct" autocomplete="off" placeholder="e.g. AI agents"></label></div>
+    <hr style="border:0;border-block-start:1px solid var(--border);width:100%">
+    <h3>Voice</h3>
+    <div class="grid g2">
+      <label class="f">Speech language<select id="sLang"><option value="en-US">English (US)</option><option value="en-GB">English (UK)</option><option value="en-IN">English (India)</option><option value="en-CA">English (Canada)</option><option value="en-AU">English (Australia)</option></select></label>
+      <label class="f">Voice for all panelists<select id="sVoice"><option value="">Persona default</option></select></label>
+    </div>
+    <div class="grid g2">
+      <label class="f">Panel speaking speed <input id="sRate" type="range" min="0.7" max="1.3" step="0.05" value="1"></label>
+      <label class="f">Panelists speak aloud<select id="sAutoSpeak"><option value="1">Yes</option><option value="0">No</option></select></label>
+    </div>
+    <label class="f">Hands-free: seconds of silence before your turn is sent<input id="sSilence" type="number" min="2" max="10" value="4" style="width:90px"></label>
+    <label class="f">Target speaking pace (words per minute)
+      <div class="row"><input id="sWpmLo" type="number" min="80" max="200" value="120" style="width:90px"> to <input id="sWpmHi" type="number" min="100" max="240" value="165" style="width:90px"></div>
+    </label>
+  </div>
+  <div class="dlg-f"><button type="button" class="btn" data-action="close-settings">Cancel</button><button type="button" class="btn primary" data-action="save-settings">Save</button></div>
+</dialog>
+<div class="toast" id="toast" role="status"></div>
+<dialog id="personaDlg" aria-labelledby="peTitle"><div class="dlg-h"><h2 id="peTitle" style="margin:0">Persona</h2><span class="spacer"></span><button type="button" class="btn ghost" data-action="pe-close" aria-label="Close">✕</button></div><div class="dlg-b" id="peBody"></div><div class="dlg-f"><button type="button" class="btn" data-action="pe-close">Cancel</button><button type="button" class="btn primary" data-action="pe-save">Save persona</button></div></dialog>
+<input type="file" id="importFile" accept="application/json" hidden>
+<input type="file" id="packFile" accept="application/json" hidden>
+<script>
+(function(){
+"use strict";
+/* ---------------- Persona pack (swap via Panel personas → Import, or rebuild with the skill) ---------------- */
+const PACK={"storageKey": "pitchpanel", "owner": {"name": "", "org": "", "product": ""}, "source": "sample role-based personas — edit them, import a pack, or build your own team's pack", "defaultPanel": ["eng-director", "architect", "security", "program", "qa", "ux"], "personas": [{"id": "eng-director", "name": "Morgan", "fullName": "Morgan (sample)", "role": "Engineering Director", "voice": "f", "lens": "Can my teams ship this safely in the committed release, and what drops if we take it on?", "priorities": ["Protecting committed release scope", "Team capacity and sequencing", "Controlled rollout behind a feature flag", "Clear ownership across teams", "Not taking on hidden operational load"], "pushbacks": ["We're already committed for this release — what comes out?", "This sounds like two features, not one.", "Who owns this after it ships?", "I don't want a big-bang release; how do we stage it?", "What's the smallest thing that proves the value?"], "signatureQuestions": ["Priority-wise, where does this sit against what's already committed?", "What's the smallest slice we could ship and learn from?", "How do we control the rollout — flag, licence, early adopters?", "Which teams are on the hook, and have they seen this yet?", "What happens to support load once this is live?", "What's the decision you need from me today?", "If we only get half the capacity you want, what do you cut?", "How will we know in a month whether this was worth it?"], "speechStyle": "Calm, pragmatic and big-picture. Thinks in releases and capacity; summarises before deciding. Friendly but will say no plainly.", "phrases": ["Priority-wise, where does this land?", "What drops?", "Let's not boil the ocean.", "Who owns it after it ships?", "What's the ask?"], "decisionStyle": "Convinced by a tight scope, a clear owner and a staged rollout; says no to anything that silently grows commitments.", "knownContext": ["Release planning", "Team capacity", "Feature flags and staged rollout"]}, {"id": "architect", "name": "Theo", "fullName": "Theo (sample)", "role": "Lead Architect", "voice": "m", "lens": "Does the design hold up, can it be debugged, and does it avoid work that causes more work later?", "priorities": ["Simple, observable architecture", "Reusing existing platform services", "Failure modes and recoverability", "Clean APIs and contracts", "Avoiding one-off code paths"], "pushbacks": ["Why are we building this rather than extending what we have?", "How will we know when it breaks?", "This couples two things that should stay separate.", "That's a lot of new surface area for an MVP.", "What's the data contract here?"], "signatureQuestions": ["Just for my own clarity — why are we doing this?", "Once one part of this fails, how are we going to know?", "What existing service could we extend instead of building new?", "Where does the state live, and who owns it?", "What's the latency and cost at ten times today's usage?", "What's the contract between these components?", "What would we regret about this design in a year?", "Can we spike the riskiest part first?"], "speechStyle": "Thoughtful and precise; asks clarifying questions before opinions. Short sentences, often sketches the flow out loud.", "phrases": ["Just for my own clarity…", "How would we debug that?", "That's work that causes more work.", "Let's spike it."], "decisionStyle": "Convinced by a clear flow diagram, observable failure modes and reuse; pushes back on bespoke paths.", "knownContext": ["Platform services", "Observability", "APIs and integration"]}, {"id": "eng-manager", "name": "Riley", "fullName": "Riley (sample)", "role": "Engineering Manager", "voice": "m", "lens": "Has it been spiked, are the acceptance criteria clear, and can the team realistically hit the date?", "priorities": ["Clear acceptance criteria", "Spikes before commitments", "Realistic estimates", "Test effort included in scope", "Dependencies called out early"], "pushbacks": ["We haven't spiked this yet.", "The acceptance criteria are too vague to estimate.", "That's a stretch goal, not an MVP must-have.", "Who are we waiting on?", "What's the baseline we're improving?"], "signatureQuestions": ["Have we done a spike on this, and which approach are we taking?", "Is this an MVP must-have or a stretch goal?", "What are the acceptance criteria, concretely?", "What's the baseline, and how do we measure better?", "Which dependencies could block us?", "How much regression testing does this add?", "What's the definition of done for the first release?", "What would you drop to hit the date?"], "speechStyle": "Practical and direct; thinks in stories, sprints and dependencies. Asks for specifics and repeats them back.", "phrases": ["Have we spiked it?", "Must-have or stretch?", "What's the baseline?", "Let's write that down as an AC."], "decisionStyle": "Convinced by crisp acceptance criteria and a spike result; says no to commitments without estimates.", "knownContext": ["Sprint planning", "Acceptance criteria", "Dependencies"]}, {"id": "security", "name": "Sam", "fullName": "Sam (sample)", "role": "Security Architect", "voice": "m", "lens": "What's the attack surface and trust boundary, and can we ship without knowingly exposing customers?", "priorities": ["Technical controls over policy", "Least privilege and tenant isolation", "Data handling and retention", "Threat model before build", "Pentest and sign-off timing"], "pushbacks": ["Is that a technical control or just a policy?", "Where does customer data go, and is it stored?", "Who can call this, and with what permissions?", "That's a new trust boundary — has it been threat-modelled?", "We'll need a pentest before GA."], "signatureQuestions": ["Help me understand the data flow end to end.", "Is there a technical control around that, or is it a policy?", "Does the data ever hit disk, or is it in memory only?", "How do we guarantee tenant isolation?", "What happens if a customer misconfigures this?", "What's the blast radius if a credential leaks?", "How do we handle prompt injection or untrusted input?", "When is the pentest, and is it before GA?"], "speechStyle": "Calm, measured and plain-spoken; asks 'help me understand' questions, then states a clear position. Firm on non-negotiables.", "phrases": ["Help me understand.", "Is that a technical control?", "The devil's in the details.", "What happens if a customer…?"], "decisionStyle": "Convinced by a threat model with concrete controls; says no to policy-only mitigations for real risks.", "knownContext": ["Threat modelling", "Pentests", "Data protection"]}, {"id": "program", "name": "Dana", "fullName": "Dana (sample)", "role": "Program Manager", "voice": "f", "lens": "Is it launch-ready end to end — timeline, dependencies, licensing, docs, training and customer comms?", "priorities": ["Working back from the release date", "Cross-team commitments", "Licensing and packaging", "Docs, training and enablement", "Risk and issue tracking"], "pushbacks": ["Which release are we targeting, and what's the date?", "Has the other team actually committed?", "Who's writing the docs?", "Is this a separate SKU or a licence key?", "Any risks, issues, observations?"], "signatureQuestions": ["Which release are we targeting?", "Let's work backwards from that date — what has to be true when?", "Which teams have to commit, and have they?", "Is this a separate SKU, a licence key, or on by default?", "Who owns docs, training and release notes?", "How will customers and field teams find out?", "What are the risks, issues or dependencies?", "What does early access look like before GA?"], "speechStyle": "Energetic, conversational and process-minded; thinks out loud and keeps the meeting moving with check-in questions.", "phrases": ["Work backwards from that date.", "I'm just thinking out loud.", "Any risks, issues, observations?", "Anything else?"], "decisionStyle": "Convinced by a dated plan with committed owners; worried by anything without a release target.", "knownContext": ["Release calendar", "Launch readiness", "Licensing"]}, {"id": "qa", "name": "Jordan", "fullName": "Jordan (sample)", "role": "QA / Product Verification Lead", "voice": "", "lens": "Can we test it end to end in the environments customers actually use, and what does it add to every regression cycle?", "priorities": ["Clear scope of what's supported", "Realistic test environments", "Automation over manual checks", "Edge cases and state handling", "Quality gates for GA"], "pushbacks": ["Is that in scope for testing or anything a customer could plug in?", "We can't call it GA with an unsupported environment.", "Are we testing against the real service or mocks?", "That adds a lot to regression.", "What's the expected behaviour when it fails?"], "signatureQuestions": ["What exactly are we supporting in the first release?", "Which environments do we need to test in?", "Is component testing against the real service or mocks?", "What happens if the user closes and reopens it — is the state kept?", "What's the expected behaviour on error?", "How do we evaluate output quality — is there a golden set?", "What's automated versus manual?", "What's the quality bar for limited availability versus GA?"], "speechStyle": "Precise and scenario-driven; walks through concrete user steps and edge cases. Polite but persistent.", "phrases": ["Just to confirm the scope…", "What's the expected behaviour?", "Real service or mocks?", "Is that GA or limited availability?"], "decisionStyle": "Convinced by a clear supported scope and a test plan; pushes back on undefined environments.", "knownContext": ["Test automation", "Release quality gates", "Evaluation sets"]}, {"id": "ux", "name": "Avery", "fullName": "Avery (sample)", "role": "Senior UX Designer", "voice": "f", "lens": "Is it clear, consistent and simple for the user, and is v1 limited to what we're actually shipping?", "priorities": ["Clarity of system status", "Consistency with the design system", "Simple first version", "User research and testing", "Accessibility"], "pushbacks": ["Will the user understand what's happening here?", "That's not consistent with our existing patterns.", "We're going down a rabbit hole — what's in v1?", "Have we tested this with users?", "This adds a lot of cognitive load."], "signatureQuestions": ["So just to be clear — what does the user see first?", "Will they understand what the system did, or assume it's fixed?", "Is this consistent with the existing design system?", "What's the single most important moment in the flow?", "What happens on errors or empty states?", "How would we test this with users before building?", "What would you remove to make v1 simpler?", "How does it work with a keyboard or screen reader?"], "speechStyle": "Warm, friendly and informal with light humour; grounds points in a concrete user scenario and steers back to scope.", "phrases": ["So just to be clear…", "I feel like we're going down a rabbit hole.", "It's more clear to the user.", "Let's stick to the design system."], "decisionStyle": "Convinced by a clear user story and a simple flow; resists scope that confuses the user.", "knownContext": ["Design system", "Usability testing", "Accessibility"]}, {"id": "vp-product", "name": "Casey", "fullName": "Casey (sample)", "role": "VP Product / Business Owner", "voice": "m", "lens": "Does this move a business outcome customers will pay for, and is it the best use of the team right now?", "priorities": ["Customer and revenue impact", "Strategic fit", "Differentiation", "Measurable outcomes", "Opportunity cost"], "pushbacks": ["Which customer is asking for this?", "How does this show up in revenue or retention?", "Why now rather than next half?", "What's the competitive angle?", "What are we not doing instead?"], "signatureQuestions": ["Who is the customer, and how do we know they want this?", "What outcome moves, and by how much?", "Why now?", "How does this differentiate us?", "What's the opportunity cost?", "How will sales and customer success talk about it?", "What's the one metric you'd report in 90 days?", "What would make you stop this?"], "speechStyle": "Brisk, outcome-focused and executive; asks short, pointed questions and expects a crisp answer.", "phrases": ["Who's asking for it?", "So what for the customer?", "Why now?", "What's the metric?"], "decisionStyle": "Convinced by customer evidence and a clear metric; says no to features without a business case.", "knownContext": ["Roadmap strategy", "Customer outcomes", "Go-to-market"]}]};
+const SPFX=PACK.storageKey||"pitchpanel";
+const PALETTE=["#7c3aed","#0891b2","#2563eb","#db2777","#b91c1c","#d97706","#0f9d6b","#059669","#c026d3","#4f46e5","#ea580c","#0d9488"];
+const COMPS=[
+ {id:"problem",name:"Problem & customer value",short:"Value"},
+ {id:"solution",name:"Solution clarity & scope",short:"Scope"},
+ {id:"feasibility",name:"Feasibility & architecture",short:"Feasibility"},
+ {id:"risk",name:"Security, risk & compliance",short:"Risk"},
+ {id:"delivery",name:"Delivery plan, quality & UX",short:"Delivery"},
+ {id:"communication",name:"Communication & influence",short:"Comms"}
+];
+const STAGES=["Early idea","Discovery / validating the problem","Ready for refinement","Asking for commitment (next PI / release)"];
+const MODES=[
+ {id:"codev",name:"Co-develop",icon:"🛠",desc:"The panel builds the feature with you: suggests options, scope cuts, designs and test ideas from their lens, and the feature canvas fills in live."},
+ {id:"review",name:"Pitch review",icon:"🎯",desc:"A tougher readiness review: the panel challenges your pitch the way they would in a real review and gives a go / not-yet stance."}
+];
+const FILLER_RE=/\b(um+|uh+|uhm|erm|hmm+|you know|basically|literally|sort of|kind of|i mean|so yeah)\b/gi;
+const HEDGE_RE=/\b(i think|i guess|maybe|probably|perhaps|i'm not sure|not sure|i feel like|might be)\b/gi;
+
+/* ---------------- State ---------------- */
+const store={get(k,d){try{const v=window.localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{window.localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}};
+const S={
+ screen:"home",mode:"codev",panel:store.get(SPFX+".panel",PACK.defaultPanel||[]),profile:Object.assign({name:"",org:"",product:""},PACK.owner||{},store.get(SPFX+".profile",{})),maxTurns:8,
+ pitch:Object.assign({title:"",problem:"",user:"",notes:"",stage:STAGES[1]},store.get(SPFX+".pitch",{})),
+ turns:[],asked:0,phase:"idle",forceNext:null,topics:[],cur:-1,maxTopics:store.get(SPFX+".topics",5),forceClose:false,allDone:false,canvasStatus:"",scribeP:null,canvas:null,report:null,judging:false,busy:false,
+ history:store.get(SPFX+".history",[]),notes:store.get(SPFX+".notes",{}),voiceMap:store.get(SPFX+".voices",{}),
+ handsFree:store.get(SPFX+".handsfree",false),silenceSec:store.get(SPFX+".silence",4),
+ settings:Object.assign({provider:"none",endpoint:"",deployment:"",apiVersion:"2024-10-21",preset:"groq",baseUrl:"https://api.openai.com/v1",model:"gpt-4o",key:"",lang:"en-US",voice:"",rate:1,autoSpeak:true,wpmLo:120,wpmHi:165},store.get(SPFX+".settings",{}))
+};
+S.settings.key="";
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let PERSONAS=[];
+const decorate=(p,i)=>Object.assign({},p,{name:p.name||p.fullName||"Panelist",color:p.color||PALETTE[i%PALETTE.length],g:p.voice||p.g||"",pitch:+p.pitch||[1,0.9,1.05,1.1,0.95,1.15][i%6],rate:+p.rate||1});
+function loadPersonas(){const custom=store.get(SPFX+".personas",null);PERSONAS=(Array.isArray(custom)&&custom.length?custom:(PACK.personas||[])).map(decorate);S.panel=S.panel.filter(id=>PERSONAS.some(p=>p.id===id));if(S.panel.length<2)S.panel=PERSONAS.slice(0,Math.min(5,PERSONAS.length)).map(p=>p.id)}
+function savePersonas(){store.set(SPFX+".personas",PERSONAS.map(({color,g,pitch,rate,...rest})=>Object.assign(rest,{color,voice:g,pitch,rate})));}
+const who=()=>S.profile.name||"the PM";const org=()=>S.profile.org||"the company";
+loadPersonas();
+const personaOf=id=>PERSONAS.find(p=>p.id===id)||PERSONAS[0];
+const initials=p=>p.name.slice(0,1).toUpperCase();
+const arr=x=>Array.isArray(x)?x:(x?[x]:[]);
+function toast(msg,ms){const t=$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove("show"),ms||3200)}
+const saveHistory=()=>store.set(SPFX+".history",S.history);
+const emptyCanvas=()=>({requirements:[],decisions:[],risks:[],openQuestions:[],ideas:[]});
+const PRESETS={
+ ollama:{url:"http://localhost:11434/v1",model:"gpt-oss:20b",local:true,hint:"<b>Setup:</b> install Ollama from ollama.com, run <span class=\"kbd\">ollama pull gpt-oss:20b</span> (or <span class=\"kbd\">qwen3:30b</span>, <span class=\"kbd\">gemma3:27b</span>). Allow this page to connect by starting Ollama with <span class=\"kbd\">OLLAMA_ORIGINS=*</span> set. No key needed. Needs roughly 16 GB+ of memory for a 20–30B model."},
+ lmstudio:{url:"http://localhost:1234/v1",model:"openai/gpt-oss-20b",local:true,hint:"<b>Setup:</b> install LM Studio, download a model (gpt-oss 20B, Qwen3 30B or Gemma 3 27B work well), open the Developer tab, start the server and turn on <b>Enable CORS</b>. Use the model ID LM Studio shows. No key needed."},
+ groq:{url:"https://api.groq.com/openai/v1",model:"openai/gpt-oss-120b",hint:"<b>Easiest free option.</b> Sign up at <a href=\"https://console.groq.com/keys\" target=\"_blank\" rel=\"noopener\">console.groq.com/keys</a> (free, no credit card), create a key and paste it below. The free tier has daily limits that are plenty for practice. Good picks: <span class=\"kbd\">openai/gpt-oss-120b</span>, <span class=\"kbd\">qwen/qwen3-32b</span>."},
+ openrouter:{url:"https://openrouter.ai/api/v1",model:"openai/gpt-oss-120b",hint:"One key, hundreds of models. Create a key at openrouter.ai. Try <span class=\"kbd\">openai/gpt-oss-120b</span>, <span class=\"kbd\">qwen/qwen3-235b-a22b</span> or a DeepSeek model — copy the exact model ID from their catalog."},
+ together:{url:"https://api.together.xyz/v1",model:"openai/gpt-oss-120b",hint:"Hosted open models. Create a key at together.ai and copy the model ID from their model list."},
+ hf:{url:"https://router.huggingface.co/v1",model:"openai/gpt-oss-120b",hint:"Uses your Hugging Face access token. Copy the model ID from the model's page on huggingface.co."},
+ custom:{url:"",model:"",hint:"Any server that speaks the OpenAI chat-completions format: vLLM, llama.cpp server, TGI, or an open model deployed in Azure AI Foundry. Enter its /v1 base URL and model name."}
+};
+const isLocalUrl=u=>/^https?:\/\/(localhost|127\.0\.0\.1|\[::1\]|0\.0\.0\.0)(:|\/|$)/i.test(u||"");
+const aiOn=()=>{const s=S.settings;if(s.provider==="none")return false;if(s.provider==="open"&&isLocalUrl(s.baseUrl))return !!s.baseUrl&&!!s.model;return !!s.key};
+async function llm(messages,opts){
+ const s=S.settings;opts=opts||{};let url,headers={"Content-Type":"application/json"},body={messages,temperature:opts.temperature==null?0.4:opts.temperature,response_format:{type:"json_object"}};
+ if(s.provider==="azure"){if(!s.endpoint||!s.deployment)throw new Error("Add your Azure OpenAI endpoint and deployment in Settings.");url=s.endpoint.replace(/\/+$/,"")+"/openai/deployments/"+encodeURIComponent(s.deployment)+"/chat/completions?api-version="+encodeURIComponent(s.apiVersion||"2024-10-21");headers["api-key"]=s.key}
+ else{url=(s.baseUrl||"https://api.openai.com/v1").replace(/\/+$/,"")+"/chat/completions";if(s.key)headers["Authorization"]="Bearer "+s.key;body.model=s.model||"gpt-4o";if(s.provider==="open")body.messages=messages.map((m,i)=>i===0?{role:m.role,content:m.content+"\nRespond with a single JSON object only, no other text."}:m)}
+ const local=s.provider==="open"&&isLocalUrl(s.baseUrl);const timeout=(opts.timeout||90000)*(s.provider==="open"?(local?4:2):1);
+ async function send(b){const ctl=new AbortController();const to=setTimeout(()=>ctl.abort(),timeout);try{return await fetch(url,{method:"POST",headers,body:JSON.stringify(b),signal:ctl.signal})}catch(e){throw new Error(e.name==="AbortError"?"The model took too long to respond"+(local?" — a smaller model may help.":"."):local?"Couldn't reach the local model. Make sure it's running and allows browser connections (Ollama: set OLLAMA_ORIGINS=*; LM Studio: turn on Enable CORS).":"Couldn't reach the model endpoint (network or CORS).")}finally{clearTimeout(to)}}
+ let r=await send(body);
+ if(!r.ok&&(r.status===400||r.status===422)){const b2=Object.assign({},body);delete b2.response_format;r=await send(b2)}
+ if(!r.ok){let m="";try{const j=await r.json();m=(j.error&&(j.error.message||j.error))||j.message||""}catch(e){}throw new Error("Model returned "+r.status+(m?": "+String(m).slice(0,200):""))}
+ const j=await r.json();let txt=j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content||"{}";
+ txt=txt.replace(/<think>[\s\S]*?<\/think>/gi,"").replace(/^[\s\S]*?<\/think>/i,"").replace(/```(?:json)?/gi,"").trim();
+ try{return JSON.parse(txt)}catch(e){const a=txt.indexOf("{"),z=txt.lastIndexOf("}");if(a>=0&&z>a){try{return JSON.parse(txt.slice(a,z+1))}catch(e2){}}throw new Error("The model's reply wasn't valid JSON — try a larger or instruction-tuned model.")}
+}
+const JUDGE={name:"Judge",pitch:1,rate:1};
+async function llmStream(messages,onDelta,ctl){
+ const s=S.settings;let url,headers={"Content-Type":"application/json"},body={messages,temperature:0.5,stream:true};
+ if(s.provider==="azure"){if(!s.endpoint||!s.deployment)throw new Error("Add your Azure OpenAI endpoint and deployment in Settings.");url=s.endpoint.replace(/\/+$/,"")+"/openai/deployments/"+encodeURIComponent(s.deployment)+"/chat/completions?api-version="+encodeURIComponent(s.apiVersion||"2024-10-21");headers["api-key"]=s.key}
+ else{url=(s.baseUrl||"https://api.openai.com/v1").replace(/\/+$/,"")+"/chat/completions";if(s.key)headers["Authorization"]="Bearer "+s.key;body.model=s.model||"gpt-4o"}
+ const local=s.provider==="open"&&isLocalUrl(s.baseUrl);let r;
+ try{r=await fetch(url,{method:"POST",headers,body:JSON.stringify(body),signal:ctl.signal})}catch(e){if(e.name==="AbortError")return "";throw new Error(local?"Couldn't reach the local model. Make sure it's running and allows browser connections.":"Couldn't reach the model endpoint (network or CORS).")}
+ if(!r.ok){let m="";try{const j=await r.json();m=(j.error&&(j.error.message||j.error))||j.message||""}catch(e){}throw new Error("Model returned "+r.status+(m?": "+String(m).slice(0,200):""))}
+ const ct=(r.headers&&r.headers.get&&r.headers.get("content-type"))||"";
+ if(/application\/json/i.test(ct)||!r.body||!r.body.getReader){const j=await r.json();const t=(j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content)||"";if(t)onDelta(t);return t}
+ const rd=r.body.getReader();const dec=new TextDecoder();let buf="",full="";
+ for(;;){let x;try{x=await rd.read()}catch(e){if(ctl.signal.aborted)break;throw e}if(x.done)break;buf+=dec.decode(x.value,{stream:true});let i;
+  while((i=buf.indexOf("\n"))>=0){const line=buf.slice(0,i).trim();buf=buf.slice(i+1);if(!line.startsWith("data:"))continue;const d=line.slice(5).trim();if(!d||d==="[DONE]")continue;
+   try{const j=JSON.parse(d);const c=j.choices&&j.choices[0]&&j.choices[0].delta&&j.choices[0].delta.content;if(c){full+=c;onDelta(c)}}catch(e){}}}
+ return full;
+}
+
+/* ---------------- Voice out ---------------- */
+let voices=[];
+const FEM=/aria|jenny|zira|sonia|libby|natasha|clara|emma|ava|michelle|samantha|susan|hazel|heera|neerja|catherine|karen|moira|tessa|serena|victoria|nancy|sara|jane|ana\b|elizabeth|female|amber|ashley|cora|monica|aria|maisie|olivia|isabella|swara/i;
+const MAL=/guy|davis|david|mark|ryan|thomas|william|christopher|eric|brian|andrew|roger|steffan|tony|jason|prabhat|daniel|alex|fred|george|james|liam|connor|male|aaron|adam|brandon|kai|tim|ravi|oliver/i;
+function loadVoices(){if(!("speechSynthesis" in window))return;voices=speechSynthesis.getVoices().filter(v=>/^en/i.test(v.lang));const sel=$("#sVoice");if(sel){const cur=S.settings.voice;sel.innerHTML='<option value="">Automatic (distinct voice per panelist)</option>'+voices.map(v=>`<option value="${esc(v.voiceURI)}">${esc(v.name)} (${esc(v.lang)})</option>`).join("");sel.value=cur||""}if(S.screen==="team")render()}
+if("speechSynthesis" in window){loadVoices();speechSynthesis.addEventListener&&speechSynthesis.addEventListener("voiceschanged",loadVoices)}
+function pickVoice(p){if(!voices.length)return null;if(p&&S.voiceMap[p.id]){const v=voices.find(x=>x.voiceURI===S.voiceMap[p.id]);if(v)return v}if(S.settings.voice){const v=voices.find(x=>x.voiceURI===S.settings.voice);if(v)return v}if(!p)return voices[0];
+ const nat=voices.filter(v=>/natural|online|neural/i.test(v.name));const base=nat.length>=3?nat:voices;
+ let pool=p.g==="f"?base.filter(v=>FEM.test(v.name)):p.g==="m"?base.filter(v=>MAL.test(v.name)&&!FEM.test(v.name)):base;if(!pool.length)pool=base;
+ const same=PERSONAS.filter(x=>x.g===p.g);const idx=Math.max(0,same.indexOf(p));return pool[idx%pool.length]}
+let SPK=0;
+function speak(text,p){return new Promise(res=>{if(!("speechSynthesis" in window)||!S.settings.autoSpeak||!text){res();return}try{const u=new SpeechSynthesisUtterance(text);const v=pickVoice(p);if(v)u.voice=v;u.lang=S.settings.lang;u.rate=(p?p.rate:1)*S.settings.rate;u.pitch=p?p.pitch:1;let fin=false;const est=Math.min(90000,4000+text.split(/\s+/).length*520/((p?p.rate:1)*(S.settings.rate||1)));const ka=setInterval(()=>{try{if(speechSynthesis.speaking&&!speechSynthesis.paused){speechSynthesis.pause();speechSynthesis.resume()}}catch(e){}},9000);const guard=setTimeout(()=>done(),est);const done=()=>{if(fin)return;fin=true;clearInterval(ka);clearTimeout(guard);S.speaking=null;renderSeats();res()};u.addEventListener("end",done);u.addEventListener("error",done);S.speaking=p?p.id:"x";renderSeats();speechSynthesis.speak(u)}catch(e){res()}})}
+async function speakSeq(list){const tok=++SPK;for(const [t,p] of list){if(tok!==SPK)break;await speak(t,p)}return tok===SPK}
+function stopSpeaking(){SPK++;try{speechSynthesis.cancel()}catch(e){}S.speaking=null;renderSeats()}
+
+/* ---------------- Voice in ---------------- */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+const R={active:false,target:"answer",base:"",startIdx:0,startAt:0,speakMs:0,lastAt:0,heard:false,tick:null,raf:null,onSilence:null};
+/* One microphone session per visit: the mic permission is requested once, recognition keeps running in the
+   background, and only what you say while it's your turn is captured (panelist voices are ignored). */
+const M={rec:null,keep:false,running:false,stream:null,ctx:null,analyser:null,len:0,blocked:false,starting:null,lastKick:0,lastEvent:0,restarts:0};
+const AUTO_RESTART=location.protocol!=="file:";
+const withTimeout=(p,ms,v)=>Promise.race([p,new Promise(r=>setTimeout(()=>r(v),ms))]);
+function makeRec(){
+ if(M.rec){const old=M.rec;old.onend=null;old.onresult=null;old.onerror=null;try{old.abort()}catch(e){}}
+ const rec=new SR();rec.continuous=true;rec.interimResults=true;rec.lang=S.settings.lang;M.len=0;M.running=false;R.startIdx=0;if(R.active&&!R.pending){const a=$("#"+R.target);if(a)R.base=a.value.trim()}
+ rec.onstart=()=>{M.running=true;M.startPending=false;M.lastErr="";M.kickFails=0;M.lastEvent=Date.now();renderMic()};
+ rec.onaudiostart=()=>{M.lastEvent=Date.now()};rec.onspeechstart=()=>{M.hearing=true};rec.onspeechend=()=>{M.hearing=false};rec.onsoundend=()=>{M.hearing=false};
+ rec.onresult=e=>{M.lastEvent=Date.now();M.len=e.results.length;if(!R.active||R.pending)return;R.lastAt=Date.now();let txt="";for(let i=Math.min(R.startIdx,e.results.length);i<e.results.length;i++)txt+=e.results[i][0].transcript+(e.results[i].isFinal?" ":"");txt=txt.replace(/\s+/g," ").trim();if(txt){R.heard=true;R.gotAny=true}const a=$("#"+R.target);if(a){a.value=(R.base?R.base+" ":"")+txt;if(R.target==="answer")S.draft=a.value;if(a.scrollHeight)a.scrollTop=a.scrollHeight}};
+ rec.onerror=e=>{M.lastErr=e.error;M.startPending=false;if(/not-allowed|service-not-allowed/.test(e.error)){M.blocked=true;M.keep=false;if(R.active)stopMic();micBlockedMsg()}else if(e.error==="audio-capture"){toast("No microphone was found. Check your input device, or type.",5000)}};
+ rec.onend=()=>{M.running=false;M.startPending=false;M.len=0;if(R.active){const a=$("#"+R.target);if(a)R.base=a.value.trim()}R.startIdx=0;if(M.keep&&R.active){if(AUTO_RESTART&&!/not-allowed|service-not-allowed/.test(M.lastErr||""))setTimeout(()=>{if(M.keep&&R.active&&!M.running)kickRec()},250);else{const a=$("#"+R.target);const had=a&&a.value.trim();stopMic();M.pausedMsg=had?"The browser paused the mic. Press Send, or press the mic to keep talking.":"The browser stopped the mic"+(M.lastErr?" ("+M.lastErr+")":"")+". Press the mic to try again, or type."}}renderMic()};
+ M.rec=rec;return rec;
+}
+function kickRec(){if(!M.rec)makeRec();if(M.startPending&&Date.now()-M.lastKick<15000)return;M.lastKick=Date.now();M.startPending=true;try{M.rec.start();M.kickFails=0}catch(e){M.kickFails=(M.kickFails||0)+1;if(!(e&&e.name==="InvalidStateError")||M.kickFails>=2){M.kickFails=0;makeRec();try{M.rec.start()}catch(e2){}}}}
+async function ensureMic(){
+ if(M.blocked){micBlockedMsg();return false}
+ M.keep=true;if(!M.rec)makeRec();if(!M.running)kickRec();
+ return true;
+}
+function endMicSession(){if(R.active)stopMic();M.keep=false;if(M.rec){M.rec.onend=null;try{M.rec.abort()}catch(e){}}M.rec=null;M.running=false;if(M.stream){M.stream.getTracks().forEach(t=>t.stop());M.stream=null}if(M.ctx){try{M.ctx.close()}catch(e){}M.ctx=null;M.analyser=null}}
+function micBlockedMsg(){toast("The microphone is blocked. Click the camera/mic icon in the address bar → Allow, then try again — or type.",7000)}
+async function startMic(target){
+ M.pausedMsg="";
+ target=target||"answer";if(target==="answer"&&S.phase!=="answer")return;if(R.active)return;stopSpeaking();
+ if(!SR){toast("Live voice transcription needs Microsoft Edge or Google Chrome. You can still type.",5000);return}
+ R.active=true;R.pending=true;R.target=target;R.gotAny=false;renderMic();      // instant feedback on click
+ const ok=await withTimeout(ensureMic(),9000,false);
+ if(!ok||!R.active){R.active=false;R.pending=false;renderMic();if(!ok&&!M.blocked)toast("Couldn't start the microphone. Reload the page, or type your answer.",6000);return}
+ const a=$("#"+target);R.base=(a?a.value:"").trim();R.startIdx=M.len;R.lastAt=Date.now();R.heard=false;R.startAt=Date.now();R.pending=false;
+ clearInterval(R.tick);
+ R.tick=setInterval(()=>{if(!R.active)return;if(R.target==="answer")liveMeters();const now=Date.now();const quiet=now-R.lastAt;
+  // self-heal: recognizer stopped and didn't come back, or went silent → restart it
+  if(AUTO_RESTART&&!M.running&&!M.startPending&&now-M.lastKick>1500){M.restarts++;kickRec()}
+  else if(AUTO_RESTART&&M.running&&!R.gotAny&&now-R.startAt>8000&&now-M.lastEvent>8000&&now-M.lastKick>8000){M.restarts++;makeRec();kickRec()}
+  renderMicHint();
+  if(R.target==="answer"&&S.handsFree&&R.heard&&quiet>S.silenceSec*1000*(S.asked===0?1.6:1)){stopMic();submitAnswer()}
+  else if(R.target==="askInput"&&R.heard&&quiet>2500){stopMic();const i=$("#askInput");askPanel(i?i.value:"")}},400);
+ renderMic();drawWave();
+}
+function renderMicHint(){const h=$("#micHint");if(!h||!(R.active&&R.target==="answer"))return;const now=Date.now();
+ h.textContent=R.pending?"Starting the mic…":(!M.running&&M.startPending)?"Waiting for you to click Allow in the browser…":!M.running?"Reconnecting the mic…":(!R.gotAny&&now-R.startAt>5000)?"I'm not hearing anything yet — check your mic is unmuted, or type below.":S.handsFree?`Listening… pause ${S.silenceSec}s to send.`:"Listening… press ■ when done, then Send."}
+function drawWave(){const bars=document.querySelectorAll("#wave span");if(!R.active){bars.forEach(b=>b.style.height="6px");return}const t=Date.now()/120;bars.forEach((b,i)=>{const v=M.hearing?(0.35+0.65*Math.abs(Math.sin(t+i*0.7))):(M.running?0.12:0);b.style.height=(6+v*22)+"px"});cancelAnimationFrame(R.raf);R.raf=requestAnimationFrame(drawWave)}
+function stopMic(){if(!R.active){renderMic();return}R.pending=false;R.speakMs+=R.target==="answer"?Date.now()-R.startAt:0;R.active=false;clearInterval(R.tick);cancelAnimationFrame(R.raf);renderMic();drawWave()}
+function renderMic(){const ab=$("#askMic");if(ab)ab.textContent=R.active&&R.target==="askInput"?"■":"🎙";const b=$("#micBtn");if(!b)return;b.disabled=!(S.phase==="answer"||S.phase==="intro");const on=R.active&&R.target==="answer";b.classList.toggle("rec",on);b.textContent=on?"■":"🎙";const h=$("#micHint");if(h){if(on)renderMicHint();else h.textContent=S.phase==="answer"?(M.pausedMsg||"Press the mic (or Space) and talk — or type below."):S.phase==="intro"?"Press the mic any time to skip the intros and start your pitch.":"Panel is responding…"};drawWave()}
+function words(t){return (String(t).trim().match(/[A-Za-z0-9'%$.-]+/g)||[]).length}
+function liveMeters(){const a=$("#answer");if(!a)return;const sec=(R.speakMs+(R.active?Date.now()-R.startAt:0))/1000;const w=words(a.value);const set=(id,v)=>{const el=$(id);if(el)el.textContent=v};set("#mTime",fmtTime(sec));set("#mWords",w);set("#mWpm",sec>8?Math.round(w/(sec/60)):"—");FILLER_RE.lastIndex=0;set("#mFill",(a.value.match(FILLER_RE)||[]).length)}
+function fmtTime(s){s=Math.max(0,Math.round(s));return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}
+function sessionMetrics(){const mine=S.turns.filter(t=>t.role==="me");const text=mine.map(t=>t.text).join(" ");const w=words(text);const sec=mine.reduce((a,t)=>a+(t.sec||0),0);FILLER_RE.lastIndex=0;HEDGE_RE.lastIndex=0;const f=(text.match(FILLER_RE)||[]).length,h=(text.match(HEDGE_RE)||[]).length;return {words:w,spokenSec:Math.round(sec),wpm:sec>15?Math.round(w/(sec/60)):null,fillers:f,fillerRate:w?+(f/w*100).toFixed(1):0,hedges:h,pitchWords:mine[0]?words(mine[0].text):0}}
+
+/* ---------------- Prompts ---------------- */
+function personaBrief(p){const n=S.notes[p.id];return `### ${p.name} (${p.fullName}) — ${p.role}
+Lens: ${p.lens}
+Priorities: ${arr(p.priorities).join("; ")}
+Typical pushbacks: ${arr(p.pushbacks).join("; ")}
+Questions they tend to ask: ${arr(p.signatureQuestions).join(" | ")}
+Speech style: ${p.speechStyle}
+Characteristic phrases: ${arr(p.phrases).join(" | ")}
+Decision style: ${p.decisionStyle}
+Recent context they know: ${arr(p.knownContext).join("; ")}${n?`\nExtra notes from the PM: ${n}`:""}`}
+function pitchBlock(){const p=S.pitch;return `FEATURE: ${p.title||"(untitled)"}\nSTAGE: ${p.stage}\nPROBLEM: ${p.problem||"(not stated)"}\nTARGET USER: ${p.user||"(not stated)"}\nPM NOTES: ${p.notes||"(none)"}`}
+function transcript(){return S.turns.map(t=>t.role==="me"?who().toUpperCase()+" (PM): "+t.text:`${personaOf(t.pid).name.toUpperCase()} (${personaOf(t.pid).role}): ${t.text}`).join("\n\n")}
+function panelSystem(){const ids=S.panel;const coop=S.mode==="codev";return `You simulate an internal feature review panel at ${org()} so a Product Manager (${who()}${S.profile.product?", who works on "+S.profile.product:""}) can rehearse a pitch and co-develop a feature. Panelists are AI personas modelled on the speaking style and points of view described in their profiles${PACK.source?" ("+PACK.source+")":""}. Stay in character, but never invent confidential facts, customer names, numbers, commitments or decisions on their behalf; speak about the feature in front of you.
+
+PANEL:
+${ids.map(i=>personaBrief(personaOf(i))).join("\n\n")}
+
+SESSION MODE: ${coop?"CO-DEVELOP — the panel is collaborative. Each turn a panelist builds on what was said: proposes a concrete option, a scope cut, an architecture/design/test idea, a risk mitigation, or asks one sharp question from their lens. Roughly half of turns should contribute ideas, half should probe.":"PITCH REVIEW — the panel is a realistic, demanding review. Each turn a panelist asks ONE sharp question or raises ONE concern from their lens, targeting the weakest or vaguest part of the PM's pitch so far. Do not accept hand-waving."}
+
+HOW THE CONVERSATION FLOWS (this matters most — it must feel like a real meeting):
+- The panel works through ONE TOPIC AT A TIME. A topic is one issue (e.g. "identity & auth", "v1 tool scope", "release target"). While a topic is open, every turn stays on it.
+- RESPONSIVENESS: if the PM addresses a panelist by name (ADDRESSED below), THAT panelist speaks and directly answers what the PM asked or said to them, on the current topic. Never let someone else jump in with a different issue.
+- If the PM asks a question without naming anyone, the panelist who spoke last answers it (or whoever is clearly best placed, on the same topic).
+- Within an open topic a turn may: react to the PM's answer and ask ONE follow-up; push back if the answer was vague; offer a concrete suggestion; or another panelist may briefly build on the SAME topic ("To add to Theo's point…"). Do NOT raise new issues while a topic is open.
+- CLOSE the topic when the PM's answer resolves it, agrees a next step, or the PM asks to move on (PM_REQUESTED_CLOSE), or when the topic has had about 3-4 exchanges (MUST_CLOSE). Closing = the panelist who owns the topic (or the current speaker) wraps it in 1-2 sentences: what was agreed, what remains open and who owns it — e.g. "Okay, so read-only for v1 and you'll come back with the threat model. I'm good with that for now."
+- When you close a topic and topics remain, ALSO return "next": a different panelist (prefer one who hasn't raised a topic yet) opens the next topic with a natural transition and ONE question. When no topics remain, don't open new ones — "next" is the chair inviting the PM to add anything else before wrapping up.
+- If no topic is open (start of discussion), open one: action "open".
+- If the PM themselves changes the subject, respond to it as a new topic with action "open" (the previous one is parked).
+- Each spoken turn is 1-4 sentences, spoken style (read aloud), in that person's own voice and vocabulary. No stage directions, no markdown. Reference what the PM actually said.
+- Also update the shared feature canvas with NEW items only (short phrases, max 2 per list per turn, skip duplicates).
+Return JSON: {"speaker":"<panelist id>","kind":"answer|followup|idea|concern|agree|close","text":"...","topic":{"action":"continue|close|open","title":"3-6 word topic name (for open)","resolution":"for close: what was agreed / what is still open","actionItem":{"text":"follow-up action, if any","owner":"<panelist id or pm>"}},"next":{"speaker":"<panelist id>","title":"3-6 word topic name","text":"..."},"canvas":{"requirements":[],"decisions":[],"risks":[],"openQuestions":[{"q":"...","owner":"<panelist id or pm>"}],"ideas":[]}}
+"next" only when action is "close". Panelist ids: ${ids.join(", ")}`}
+function nameRe(p){const ns=[p.name,(p.fullName||"").split(/[\s(]/)[0]].filter(x=>x&&x.length>1);return new RegExp("(^|[^a-z])@?("+ns.map(x=>x.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).join("|")+")(?![a-z])","i")}
+function detectAddressed(text,ids){let best=null,pos=1e9;(ids||S.panel).forEach(i=>{const m=String(text||"").match(nameRe(personaOf(i)));if(m&&m.index<pos){pos=m.index;best=i}});return best}
+const MOVE_ON=/\b(move on|next topic|let'?s park|park (this|that|it)|close (this|the|that) topic|moving on)\b/i;
+const curTopic=()=>S.cur>=0?S.topics[S.cur]:null;
+function topicContext(addressed){const t=curTopic();const lastP=[...S.turns].reverse().find(x=>x.pid);const raised=new Set(S.topics.map(x=>x.owner));const left=Math.max(0,S.maxTopics-S.topics.length);
+ return `CURRENT TOPIC: ${t?`"${t.title}" (raised by ${personaOf(t.owner).name}, ${t.exchanges} exchange(s) so far)`:"none open — open a new topic"}
+CLOSED TOPICS: ${S.topics.filter(x=>x.status!=="open").map(x=>`"${x.title}" → ${x.resolution||x.status}`).join("; ")||"none"}
+ADDRESSED: ${addressed?`${personaOf(addressed).name} (id ${addressed}) — must be the speaker and must respond directly to the PM`:"nobody by name"}
+LAST PANEL SPEAKER: ${lastP?personaOf(lastP.pid).name+" (id "+lastP.pid+")":"none"}
+PM_REQUESTED_CLOSE: ${S.forceClose?"YES — close the current topic now":"no"}
+MUST_CLOSE: ${t&&t.exchanges>=4?"YES — wrap this topic up now":"no"}
+NEW TOPICS STILL AVAILABLE AFTER THE CURRENT ONE: ${left}${left===0?" (do not open new topics)":""}
+Panelists who haven't raised a topic yet: ${S.panel.filter(i=>!raised.has(i)).map(i=>personaOf(i).name+" ("+i+")").join(", ")||"everyone has"}`}
+function resolveId(x,fallback){if(S.panel.includes(x))return x;const nm=String(x||"").toLowerCase();return S.panel.find(i=>nm&&nm.includes(personaOf(i).name.toLowerCase()))||fallback}
+async function aiPanelTurn(addressed){
+ const user=`${pitchBlock()}\n\nCANVAS SO FAR: ${JSON.stringify(S.canvas)}\n\nCONVERSATION:\n${transcript()}\n\n${topicContext(addressed)}`;
+ return await llm([{role:"system",content:panelSystem()},{role:"user",content:user}],{temperature:0.6});
+}
+function scriptedTurn(addressed){
+ const counts={};S.topics.forEach(t=>counts[t.owner]=(counts[t.owner]||0)+1);const t=curTopic();
+ const pick=addressed||S.panel.slice().sort((a,b)=>(counts[a]||0)-(counts[b]||0)).find(i=>!t||i!==t.owner)||S.panel[0];
+ const p=personaOf(pick);const used=new Set(S.turns.map(x=>x.text));const qs=arr(p.signatureQuestions).filter(q=>!used.has(q));const q=qs[0]||"What's the one thing you'd want us to decide today?";
+ if(t)return {speaker:t.owner===pick?pick:t.owner,kind:"close",text:"Okay, thanks — that helps. Let's note that and move on.",topic:{action:"close",resolution:"Discussed"},next:S.topics.length<S.maxTopics?{speaker:pick,title:"Question from "+p.name,text:q}:null};
+ return {speaker:pick,kind:"followup",text:q,topic:{action:"open",title:"Question from "+p.name}};
+}
+function openTopic(title,owner){if(S.cur>=0&&S.topics[S.cur].status==="open"){S.topics[S.cur].status="parked";S.topics[S.cur].resolution=S.topics[S.cur].resolution||"Parked"}S.topics.push({title:String(title||"Topic "+(S.topics.length+1)).slice(0,60),owner,status:"open",exchanges:0,resolution:""});S.cur=S.topics.length-1}
+function applyPanel(r,addressed){
+ const out=[];const t0=curTopic();const fallback=addressed||(t0&&t0.owner)||S.panel[S.asked%S.panel.length];
+ const id=addressed||resolveId(r.speaker,fallback);const tp=r.topic||{};let action=tp.action||(t0?"continue":"open");
+ if(!t0&&action!=="open")action="open";
+ if(S.forceClose&&t0&&action==="continue")action="close";
+ if(action==="open")openTopic(tp.title||r.title,id);else if(t0)t0.exchanges++;
+ const turn={role:"panel",pid:id,text:String(r.text||"").trim()||"Can you say more about that?",kind:action==="close"?"close":(r.kind||"followup"),topic:S.cur};out.push(turn);
+ if(action==="close"&&curTopic()){const t=curTopic();t.status="closed";t.resolution=String(tp.resolution||"").trim()||"Closed";turn.closes=S.cur;
+  if(tp.resolution)mergeCanvas({decisions:[t.title+": "+tp.resolution]});const ai=tp.actionItem;if(ai&&ai.text)mergeCanvas({openQuestions:[{q:ai.text,owner:ai.owner||"pm"}]});
+  S.cur=-1;const left=S.maxTopics-S.topics.length;const nx=r.next;
+  if(left>0&&nx&&nx.text){const nid=resolveId(nx.speaker,S.panel.find(i=>i!==id)||id);openTopic(nx.title,nid);out.push({role:"panel",pid:nid,text:String(nx.text).trim(),kind:"followup",topic:S.cur})}
+  else if(left<=0){S.allDone=true;const chair=personaOf(S.panel[0]);out.push({role:"panel",pid:chair.id,kind:"wrap",text:(nx&&nx.text)||`I think that covers what we wanted to get through. Anything else you want to raise${S.profile.name?", "+S.profile.name:""}? Otherwise, hit wrap up and we'll give you our take.`})}
+ }
+ S.forceClose=false;mergeCanvas(r.canvas);return out;
+}
+/* ---------------- Note-taker: keeps the feature canvas current after every exchange ---------------- */
+let SCRIBE=0;
+function scribe(){
+ if(!aiOn()){S.canvasStatus="off";renderCanvas();return Promise.resolve()}
+ const tok=++SCRIBE;S.canvasStatus="updating";renderCanvas();
+ const recent=S.turns.slice(-8).map(t=>t.role==="me"?who().toUpperCase()+" (PM): "+t.text:personaOf(t.pid).name+" ("+personaOf(t.pid).role+"): "+t.text).join("\n");
+ const sys=`You are the note-taker in a product feature review meeting. Maintain a shared FEATURE CANVAS from what is actually said. From the RECENT EXCHANGE, extract only NEW items not already on the canvas (no rephrased duplicates):
+- requirements: concrete things the feature must do or support (user stories, scope, non-functional needs such as security/performance/testing), stated or agreed
+- ideas: suggestions or options a panelist or the PM proposed that are not yet agreed
+- decisions: things explicitly agreed or settled
+- risks: risks, concerns, blockers or dependencies raised
+- openQuestions: unresolved questions or follow-up actions, each with an owner (panelist id, or "pm")
+Short phrases (max ~14 words each), max 3 items per list. If nothing new, return empty lists. Panelist ids: ${S.panel.map(i=>i+"="+personaOf(i).name).join(", ")}.
+Return JSON {"requirements":[],"ideas":[],"decisions":[],"risks":[],"openQuestions":[{"q":"","owner":""}]}`;
+ const user=`${pitchBlock()}\n\nCURRENT CANVAS: ${JSON.stringify(S.canvas)}\n\nTOPICS: ${JSON.stringify(S.topics.map(t=>({title:t.title,status:t.status,resolution:t.resolution})))}\n\nRECENT EXCHANGE:\n${recent}`;
+ const pr=llm([{role:"system",content:sys},{role:"user",content:user}],{temperature:0.2,timeout:60000}).then(r=>{if(tok!==SCRIBE)return;const before=JSON.stringify(S.canvas);mergeCanvas(r);S.canvasStatus=JSON.stringify(S.canvas)===before?"ok-nochange":"ok";S.canvasFlash=Date.now();renderCanvas()}).catch(e=>{if(tok!==SCRIBE)return;S.canvasStatus="error:"+e.message;renderCanvas()});
+ S.scribeP=pr;return pr;
+}
+const CK={requirements:"Requirement",ideas:"Idea",decisions:"Decision",risks:"Risk",openQuestions:"Open question"};
+function canvasPanel(){const st=S.canvasStatus;const msg=!aiOn()?`<div class="banner" style="margin:.4rem 0"><span>⚙️</span><div class="small">Auto-notes need a model. <button type="button" class="btn small" data-action="open-settings">Connect one</button> — or add notes yourself below.</div></div>`:st==="updating"?`<div class="small muted">✍️ Taking notes…</div>`:/^error:/.test(st)?`<div class="small" style="color:var(--bad)">Couldn't update notes: ${esc(st.slice(6))} <button type="button" class="btn ghost small" data-action="canvas-retry">Retry</button></div>`:st==="ok"?`<div class="small" style="color:var(--good)">✓ Updated from the last exchange</div>`:st==="ok-nochange"?`<div class="small muted">No new items from the last exchange</div>`:`<div class="small muted">Updates after every exchange.</div>`;
+ return `<h3>🧩 Feature canvas</h3>${msg}${canvasHtml(S.canvas,true)}<div class="row" style="margin-top:.7rem;gap:.35rem"><select id="cKind" style="padding:.35rem">${Object.keys(CK).map(k=>`<option value="${k}">${CK[k]}</option>`).join("")}</select><input id="cText" style="flex:1;min-width:120px;padding:.35rem" placeholder="Add a note…"><button type="button" class="btn small" data-action="canvas-add">Add</button></div>`}
+function renderCanvas(){const el=$("#canvasBox");if(el)el.innerHTML=canvasPanel()}
+function mergeCanvas(c){if(!c)return;["requirements","decisions","risks","ideas"].forEach(k=>{arr(c[k]).forEach(x=>{const s=typeof x==="string"?x:(x&&(x.text||x.q))||"";if(s&&!S.canvas[k].some(y=>y.toLowerCase()===s.toLowerCase()))S.canvas[k].push(s)})});arr(c.openQuestions).forEach(x=>{const q=typeof x==="string"?{q:x,owner:"pm"}:x;if(q&&q.q&&!S.canvas.openQuestions.some(y=>y.q.toLowerCase()===q.q.toLowerCase()))S.canvas.openQuestions.push({q:q.q,owner:q.owner||"pm"})})}
+function judgeSystem(){return `You are the facilitator of a simulated feature review panel at ${org()}. Panelists are AI personas modelled on the points of view in their profiles — treat their stances as rehearsal signals, not real decisions. You evaluate ONLY the PM's pitch and responses (this is the PM's own practice). Be calibrated and honest: 3 = solid, 5 = exceptional and rare. Quote short phrases from the PM as evidence; never fabricate quotes.
+
+PANEL:
+${S.panel.map(i=>personaBrief(personaOf(i))).join("\n\n")}
+
+Score six competencies 1-5: problem (Problem & customer value), solution (Solution clarity & scope), feasibility (Feasibility & architecture), risk (Security, risk & compliance), delivery (Delivery plan, quality & UX), communication (Communication & influence).
+Overall readiness 0-10 (one decimal). Verdict: "Ready to commit" (>=8), "Ready with conditions" (6.5-7.9), "Needs another iteration" (4.5-6.4), "Not ready" (<4.5).
+For each panelist give a stance in their voice: "Support" | "Support with conditions" | "Not yet", a 1-2 sentence take, their top concern, and what would change their mind.
+Also synthesise the CO-DEVELOPED FEATURE BRIEF from the whole conversation (use what was said; mark gaps as "TBD"): problem statement, target users, goals & success metrics, MVP scope, out of scope, functional requirements (as user stories with acceptance criteria where possible), non-functional requirements (security, performance, reliability, accessibility), architecture notes, UX notes, test & quality strategy, delivery plan / milestones, dependencies, risks with mitigations, open questions with owner (panelist name or PM).
+Return JSON: {"overall":n,"verdict":"...","headline":"one sentence","competencies":{"problem":{"score":n,"evidence":"...","tip":"..."},...},"panel":[{"id":"...","stance":"...","take":"...","topConcern":"...","changeMind":"..."}],"strengths":[],"improvements":[],"missed":[],"strongerOpening":"2-3 sentence rewrite of the PM's opening","nextSteps":["..."],"brief":{"problem":"","users":"","goals":[],"mvp":[],"outOfScope":[],"requirements":[],"nfr":[],"architecture":[],"ux":[],"testing":[],"milestones":[],"dependencies":[],"risks":[],"openQuestions":[]}}`}
+
+/* ---------------- Flow ---------------- */
+function startSession(){
+ const t=$("#pTitle");if(t)readPitchForm();
+ if(!S.pitch.title.trim()){toast("Give your feature a working title first.");const el=$("#pTitle");if(el)el.focus();return}
+ if(S.panel.length<2){toast("Pick at least 2 panelists.");return}
+ store.set(SPFX+".pitch",S.pitch);store.set(SPFX+".panel",S.panel);
+ S.turns=[];S.asked=0;S.topics=[];S.cur=-1;S.forceClose=false;S.allDone=false;S.canvas=emptyCanvas();S.report=null;S.forceNext=null;R.speakMs=0;S.started=Date.now();S.phase="intro";setScreen("room");
+ const chair=personaOf(S.panel[0]);
+ const intros=S.panel.map(i=>{const p=personaOf(i);return [`${p.name}, ${p.role}.`,p]});
+ const open=S.mode==="codev"?`Thanks for bringing ${S.pitch.title} to us${S.profile.name?", "+S.profile.name:""}. Walk us through the problem and what you're thinking, and we'll build it out together.`:`Okay${S.profile.name?" "+S.profile.name:""}, the floor is yours. Pitch us ${S.pitch.title}: the problem, who it's for, and what you're asking from us.`;
+ S.turns.push({role:"panel",pid:chair.id,text:open,kind:"intro"});render();
+ speakSeq(intros.concat([[open,chair]])).then(ok=>{if(S.screen==="room"&&S.phase==="intro"){S.phase="answer";render();if(ok&&S.handsFree)startMic("answer")}});
+}
+async function submitAnswer(){
+ if(S.phase!=="answer"&&S.phase!=="intro")return;if(R.active)stopMic();stopSpeaking();
+ const a=$("#answer");const text=(a?a.value:"").trim();if(!text){if(S.forceClose)return panelStep(null);toast(R.gotAny===false&&M.rec?"I didn't catch anything — press the mic and try again, or type your answer.":"Say or type something first.",5000);return}
+ const sec=R.speakMs/1000;R.speakMs=0;S.turns.push({role:"me",text,sec,topic:S.cur});if(a)a.value="";S.draft="";
+ if(MOVE_ON.test(text))S.forceClose=true;
+ const addressed=S.forceNext||detectAddressed(text);S.forceNext=null;
+ return panelStep(addressed);
+}
+async function panelStep(addressed){
+ S.phase="thinking";render();
+ let r;try{r=aiOn()?await aiPanelTurn(addressed):scriptedTurn(addressed)}catch(e){toast(e.message,6000);r=scriptedTurn(addressed)}
+ if(S.screen!=="room")return;
+ const turns=applyPanel(r,addressed);S.asked+=turns.length;turns.forEach(t=>S.turns.push(t));S.phase="answer";render();scribe();
+ const tok=++SPK;for(let i=0;i<turns.length;i++){if(tok!==SPK)break;if(i===turns.length-1)liveCaption(turns[i].text);await speak(turns[i].text,personaOf(turns[i].pid))}
+ if(tok===SPK&&S.screen==="room"&&S.phase==="answer"&&S.handsFree)startMic("answer");
+}
+function skipIntro(){if(S.phase==="intro"){stopSpeaking();S.phase="answer";render()}}
+function closeTopicNow(){if(S.phase!=="answer")return;if(!curTopic()){toast("No topic is open right now.");return}S.forceClose=true;submitAnswer()}
+async function finish(){
+ if(S.scribeP){try{await Promise.race([S.scribeP,new Promise(r=>setTimeout(r,20000))])}catch(e){}}
+ if(R.active)stopMic();stopSpeaking();
+ const a=$("#answer");if(a&&a.value.trim()){S.turns.push({role:"me",text:a.value.trim(),sec:R.speakMs/1000});R.speakMs=0}
+ if(!S.turns.some(t=>t.role==="me")){toast("Give your pitch first.");return}
+ const rp={id:Date.now()+"-"+Math.random().toString(36).slice(2,6),date:new Date().toISOString(),pitch:Object.assign({},S.pitch),mode:S.mode,panel:S.panel.slice(),turns:S.turns.slice(),topics:S.topics.slice(),canvas:S.canvas,metrics:sessionMetrics(),ai:null};
+ S.report=rp;S.phase="done";S.history.push(rp);saveHistory();setScreen("report");
+ if(aiOn())await runJudge(rp);
+}
+async function runJudge(rp){
+ S.judging=true;render();
+ try{const user=`${pitchBlock()}\nMODE: ${rp.mode}\n\nTOPICS DISCUSSED: ${JSON.stringify(arr(rp.topics).map(t=>({title:t.title,raisedBy:personaOf(t.owner).name,status:t.status,resolution:t.resolution})))}\n\nFEATURE CANVAS: ${JSON.stringify(rp.canvas)}\n\nTRANSCRIPT:\n${rp.turns.map(t=>t.role==="me"?who().toUpperCase()+" (PM): "+t.text:`${personaOf(t.pid).name.toUpperCase()}: ${t.text}`).join("\n\n")}\n\nDELIVERY: ${JSON.stringify(rp.metrics)}`;
+  rp.ai=await llm([{role:"system",content:judgeSystem()},{role:"user",content:user}],{temperature:0.3,timeout:150000});
+  const i=S.history.findIndex(h=>h.id===rp.id);if(i>=0)S.history[i]=rp;saveHistory();
+ }catch(e){toast("Couldn't get the panel's verdict: "+e.message,7000)}
+ S.judging=false;if(S.screen==="report")render();
+ if(rp.ai&&S.settings.autoSpeak){const a=rp.ai;const list=[[`Overall readiness ${a.overall} out of 10. ${a.verdict}. ${a.headline||""}`,null]];arr(a.panel).forEach(x=>{if(S.panel.includes(x.id)||PERSONAS.some(p=>p.id===x.id))list.push([`${x.stance}. ${x.take}`,personaOf(x.id)])});speakSeq(list)}
+}
+function liveCaption(text){const els=document.querySelectorAll("#chat .itext");const el=els.length?els[els.length-1]:null;if(!el)return;const w=text.split(/(\s+)/);let i=0;const per=S.settings.autoSpeak&&("speechSynthesis" in window)?Math.max(110,1000/(2.6*(S.settings.rate||1))):25;clearInterval(liveCaption.t);el.textContent="";el.classList.add("typing");liveCaption.t=setInterval(()=>{i+=2;el.textContent=w.slice(0,i).join("");if(i>=w.length){clearInterval(liveCaption.t);el.classList.remove("typing")}},per)}
+
+/* ---------------- Ask the panel (post-session) ---------------- */
+let ASKBUSY=false;
+async function askPanel(q){
+ q=(q||"").trim();const rp=S.report;if(!q||!rp||ASKBUSY)return;if(!aiOn()){openSettings();toast("Connect a model in Settings to chat with the panel.");return}
+ rp.chat=rp.chat||[];rp.chat.push({role:"me",text:q});ASKBUSY=true;render();
+ try{const sys=`You are the simulated panel from a feature rehearsal at ${org()} (AI personas; not anyone's real decisions).\n\nPANEL:\n${rp.panel.map(i=>personaBrief(personaOf(i))).join("\n\n")}\n\nThe session is over. Answer the PM's follow-up question. 1-3 panelists reply — whoever is most relevant (or whoever is addressed by name) — each 1-4 spoken-style sentences, in their own voice, concrete and helpful (coaching, suggestions, what they'd need to see). If a verdict was given, stay consistent with it. Return JSON {"replies":[{"id":"<panelist id>","text":"..."}]}`;
+  const ctx=`${pitchBlock()}\nVERDICT: ${rp.ai?JSON.stringify({overall:rp.ai.overall,verdict:rp.ai.verdict,panel:rp.ai.panel}):"(not scored)"}\nTRANSCRIPT:\n${rp.turns.map(t=>t.role==="me"?"PM: "+t.text:personaOf(t.pid).name+": "+t.text).join("\n")}\n\nEARLIER Q&A:\n${rp.chat.slice(0,-1).map(m=>m.role==="me"?"PM: "+m.text:personaOf(m.pid).name+": "+m.text).join("\n")}\n\nPM ASKS: ${q}${detectAddressed(q,rp.panel)?`\nADDRESSED: ${personaOf(detectAddressed(q,rp.panel)).name} (id ${detectAddressed(q,rp.panel)}) must reply first and directly; others only add if they have something on the same point.`:""}`;
+  const r=await llm([{role:"system",content:sys},{role:"user",content:ctx}],{temperature:0.6});
+  const reps=arr(r.replies).filter(x=>x&&x.text).map(x=>({role:"panel",pid:rp.panel.includes(x.id)?x.id:rp.panel[0],text:String(x.text)}));
+  rp.chat.push(...reps);saveHistory();ASKBUSY=false;render();const c=$("#askChat");if(c)c.scrollTop=c.scrollHeight;speakSeq(reps.map(x=>[x.text,personaOf(x.pid)]));
+ }catch(e){ASKBUSY=false;rp.chat.pop();render();toast(e.message,6000)}
+}
+
+/* ---------------- Views ---------------- */
+function setScreen(s){S.screen=s;document.querySelectorAll(".nav [data-nav]").forEach(b=>b.classList.toggle("active",b.dataset.nav===(s==="room"||s==="report"?"home":s)));render();window.scrollTo(0,0)}
+function render(){const a=$("#app");const v={home:homeView,room:roomView,report:reportView,history:historyView,team:teamView}[S.screen]||homeView;a.innerHTML=v();if(S.screen==="room"){renderMic();const c=$("#chat");if(c)c.scrollTop=c.scrollHeight;const an=$("#answer");if(an&&S.draft)an.value=S.draft}updatePill()}
+function updatePill(){$("#judgeDot").classList.toggle("on",aiOn());$("#judgeLabel").textContent=aiOn()?"Panel AI connected":"Panel AI not connected"}
+function av(p,cls){return `<div class="avatar ${cls||""}" style="background:${p.color}" aria-hidden="true">${esc(initials(p))}</div>`}
+function homeView(){
+ const p=S.pitch;
+ return `<section class="hero"><div><h1>${esc(PACK.heroTitle||"Rehearse your pitch with your review panel")}</h1><p>${esc(PACK.heroText||"Pitch a feature out loud to AI personas of your engineering, architecture, security, program, QA and UX partners, and co-develop it into a feature brief.")}</p>${S.profile.name?"":`<p><button type="button" class="btn white" data-action="open-settings">Set your name &amp; company</button></p>`}<div class="steps"><span class="step"><b>1</b>Frame the feature</span><span class="step"><b>2</b>Pick the room</span><span class="step"><b>3</b>Pitch by voice</span><span class="step"><b>4</b>Get stances + brief</span></div></div>
+ <div class="hero-stats"><div class="hero-stat"><div class="v">${PERSONAS.length}</div><div class="small">panel personas</div></div><div class="hero-stat"><div class="v">${S.history.length}</div><div class="small">sessions so far</div></div><div class="hero-stat"><div class="v">${(()=>{const s=S.history.filter(h=>h.ai);return s.length?s[s.length-1].ai.overall:"—"})()}</div><div class="small">last readiness /10</div></div><div class="hero-stat"><div class="v">${aiOn()?"On":"Off"}</div><div class="small">panel AI</div></div></div></section>
+ ${aiOn()?"":`<div class="banner" style="margin-top:1rem"><span>⚙️</span><div><b>Connect a model for live, in-character panel discussion and the verdict + feature brief.</b> Without one, panelists ask their signature questions only. <button type="button" class="btn small" data-action="open-settings">Open Settings</button></div></div>`}
+ <div class="section-title"><h2>1 · Frame the feature</h2></div>
+ <div class="card grid g2">
+  <label class="f">Working title<input id="pTitle" value="${esc(p.title)}" placeholder="${esc(PACK.examples&&PACK.examples.title||"e.g. Approval step for AI agent actions")}"></label>
+  <label class="f">Stage<select id="pStage">${STAGES.map(s=>`<option ${s===p.stage?"selected":""}>${esc(s)}</option>`).join("")}</select></label>
+  <label class="f">Problem (one or two lines)<textarea id="pProblem" rows="2" placeholder="What's broken for whom, and why now?">${esc(p.problem)}</textarea></label>
+  <label class="f">Target user<textarea id="pUser" rows="2" placeholder="${esc(PACK.examples&&PACK.examples.user||"e.g. Planners who review agent recommendations")}">${esc(p.user)}</textarea></label>
+  <label class="f" style="grid-column:1/-1">Context for the panel <span class="muted">(optional: links you'd mention, constraints, what you want from them)</span><textarea id="pNotes" rows="2">${esc(p.notes)}</textarea></label>
+ </div>
+ <div class="section-title"><h2>2 · Pick the room</h2><span class="muted small">${S.panel.length} selected · first pick chairs the session</span></div>
+ <div class="grid g2" style="margin-bottom:1rem">${MODES.map(m=>`<button type="button" class="type-card ${S.mode===m.id?"sel":""}" data-mode="${m.id}"><span class="type-icon">${m.icon}</span><b>${m.name}</b><span class="small muted">${m.desc}</span></button>`).join("")}</div>
+ <div class="pgrid">${PERSONAS.map(pp=>{const i=S.panel.indexOf(pp.id);return `<button type="button" class="pcard ${i>=0?"sel":""}" data-persona="${pp.id}" aria-pressed="${i>=0}">${i>=0?`<span class="chk">${i===0?"Chair":"✓"}</span>`:""}<div class="persona">${av(pp)}<div><b>${esc(pp.name)}</b><div class="small muted">${esc(pp.role)}</div></div></div><span class="lens">${esc(pp.lens)}</span></button>`}).join("")}</div>
+ <div class="section-title"><h2>3 · Go</h2></div>
+ <div class="card row"><span class="small muted">Topics to cover</span><span class="seg">${[3,4,5,6,8].map(n=>`<button type="button" class="${S.maxTopics===n?"on":""}" data-turns="${n}">${n}</button>`).join("")}</span>
+  <label class="row small"><input type="checkbox" id="handsFree" ${S.handsFree?"checked":""}> Hands-free (mic opens after each panelist; ${S.silenceSec}s pause sends)</label><span class="spacer"></span>
+  <button type="button" class="btn primary" data-action="start">▶ Start session</button></div>
+ <p class="disclaimer" style="margin-top:1rem">${esc(PACK.disclaimer||"These panelists are AI simulations — useful for rehearsal, not a prediction of anyone's actual view or decision. Use them to prepare, not to replace the real conversation.")}</p>`;
+}
+function roomView(){
+ const last=[...S.turns].reverse().find(t=>t.pid);
+ return `<div class="row" style="margin-bottom:.8rem"><div><span class="tag">${S.mode==="codev"?"🛠 Co-develop":"🎯 Pitch review"}</span> <b style="margin-inline-start:.4rem">${esc(S.pitch.title)}</b></div><span class="spacer"></span><span class="small muted">Topics: ${S.topics.filter(t=>t.status!=="open").length} closed · ${S.maxTopics} planned</span><button type="button" class="btn" data-action="end">Wrap up &amp; get verdict</button><button type="button" class="btn ghost" data-action="quit">Exit</button></div>
+ <div class="card" style="margin-bottom:1rem"><div class="seat-row" id="seats">${seatsHtml()}</div><div class="small muted" style="margin-top:.4rem">Talk to someone by name ("Theo, what would you…") or click their seat — they will answer you. Say "let's move on" or use <b>Close topic</b> to wrap the current topic.</div></div>
+ <div class="room"><div class="card">${topicBar()}<div class="chat" id="chat">${S.turns.map(msgHtml).join("")}${S.phase==="thinking"?`<div class="msg"><div class="avatar" style="background:var(--muted)">…</div><div class="bubble"><span class="thinking"><i></i><i></i><i></i></span></div></div>`:""}</div>
+  ${location.protocol==="file:"?`<div class="small muted" style="text-align:center;margin-top:.5rem">Opened as a local file: click <b>Allow</b> when the browser asks for the mic. To stop being asked, open the app with the launcher in the same folder.</div>`:""}<div class="mic-wrap"><button type="button" class="mic" id="micBtn" data-action="mic" aria-label="Microphone" ${S.phase==="thinking"?"disabled":""}>🎙</button><div class="wave" id="wave">${"<span></span>".repeat(14)}</div><div class="small muted" id="micHint"></div></div>
+  <textarea class="answer" id="answer" placeholder="${S.asked===0?"Your pitch — speak or type…":"Your response — or ask the panel a question…"}" ${S.phase==="thinking"?"disabled":""}></textarea>
+  <div class="row" style="margin-top:.6rem"><label class="row small"><input type="checkbox" id="handsFree" ${S.handsFree?"checked":""}> Hands-free</label><span class="spacer"></span><button type="button" class="btn ghost" data-action="stop-speaking">🔇 Stop voice</button><button type="button" class="btn primary" data-action="submit" ${S.phase==="thinking"?"disabled":""}>Send ➤</button></div>
+  <div class="meters" style="grid-template-columns:repeat(4,minmax(0,1fr));margin-top:.8rem"><div class="meter"><div class="v" id="mTime">0:00</div><div class="l">Talk time</div></div><div class="meter"><div class="v" id="mWords">0</div><div class="l">Words</div></div><div class="meter"><div class="v" id="mWpm">—</div><div class="l">WPM</div></div><div class="meter"><div class="v" id="mFill">0</div><div class="l">Fillers</div></div></div>
+ </div>
+ <div class="card canvas" id="canvasBox">${canvasPanel()}</div></div>`;
+}
+function topicBar(){const t=curTopic();const n=S.topics.length;return `<div class="topicbar">${t?`<span>🗂 <b>Topic ${n} of ${S.maxTopics}:</b> ${esc(t.title)} <span class="muted small">· raised by ${esc(personaOf(t.owner).name)} · ${t.exchanges} follow-up${t.exchanges===1?"":"s"}</span></span><span class="spacer"></span><button type="button" class="btn small" data-action="close-topic" ${S.phase!=="answer"?"disabled":""}>✓ Close topic &amp; move on</button>`:S.allDone?`<span>✅ <b>All ${S.maxTopics} topics covered.</b> Add anything else, or wrap up for the verdict.</span><span class="spacer"></span><button type="button" class="btn small primary" data-action="end">Wrap up</button>`:S.asked===0?`<span>🎤 <b>Your pitch.</b> The panel will pick it up topic by topic.</span>`:`<span>🗂 Next topic coming up…</span>`}</div>`}
+function seatsHtml(){const last=[...S.turns].reverse().find(t=>t.pid);return S.panel.map(i=>{const p=personaOf(i);return `<button type="button" class="seat ${S.speaking===i?"talk":""} ${S.forceNext===i?"next":""}" data-invite="${i}" title="Invite ${esc(p.name)} to respond next">${av(p)}<span class="nm">${esc(p.name)}</span><span class="rl">${esc(p.role)}</span>${S.speaking===i?'<span class="tag">speaking</span>':S.forceNext===i?'<span class="tag warn">up next</span>':""}</button>`}).join("")}
+function renderSeats(){const el=$("#seats");if(el)el.innerHTML=seatsHtml()}
+function msgHtml(t,i,all){const div=t.closes!=null&&S.topics&&(S.screen==="room"?S.topics:(S.report&&S.report.topics)||[])[t.closes];const tail=div?`<div class="topic-div">✓ Closed: <b>${esc(div.title)}</b>${div.resolution&&div.resolution!=="Closed"?" — "+esc(div.resolution):""}</div>`:"";return msgCore(t,i,all)+tail}
+function msgCore(t,i,all){if(t.role==="me")return `<div class="msg me"><div class="avatar" style="background:#334">You</div><div class="bubble"><div class="who">You</div>${esc(t.text)}</div></div>`;const p=personaOf(t.pid);const isLast=all&&i===all.length-1;return `<div class="msg"><div class="avatar" style="background:${p.color}">${esc(initials(p))}</div><div class="bubble"><div class="who">${esc(p.name)} · ${esc(p.role)}${t.kind&&t.kind!=="intro"?`<span class="kind">${esc(t.kind)}</span>`:""} <button type="button" class="btn ghost small" data-action="replay" data-pid="${p.id}" data-text="${esc(t.text)}" aria-label="Replay">🔊</button></div><div class="${isLast?"itext":""}">${esc(t.text)}</div></div></div>`}
+function canvasHtml(c,edit){c=c||emptyCanvas();let K="";const del=(k,i)=>edit?` <button type="button" class="cdel" data-cdel="${k}:${i}" aria-label="Remove">×</button>`:"";const sec=(t,l,fn,k)=>{K=k;return `<h4>${t} <span class="muted">${l.length||""}</span></h4>${l.length?`<ul>${l.map((x,i)=>fn(x,i,k)).join("")}</ul>`:'<div class="small muted">—</div>'}`};const s=(x,i,k)=>`<li>${esc(x)}${del(k,i)}</li>`;
+ const tl=S.screen==="room"?S.topics:((S.report&&S.report.topics)||[]);return (tl.length?`<h4>Topics</h4><ul>${tl.map(t=>`<li>${t.status==="open"?"●":t.status==="parked"?"⏸":"✓"} <b>${esc(t.title)}</b> <span class="owner">${esc(personaOf(t.owner).name)}</span>${t.resolution&&t.status!=="open"?`<div class="small muted">${esc(t.resolution)}</div>`:""}</li>`).join("")}</ul>`:"")+sec("Requirements",c.requirements,s,"requirements")+sec("Ideas",c.ideas,s,"ideas")+sec("Decisions",c.decisions,s,"decisions")+sec("Risks",c.risks,s,"risks")+sec("Open questions",c.openQuestions,(q,i,k)=>`<li>${esc(q.q)} <span class="owner">→ ${esc(q.owner==="pm"||!PERSONAS.some(p=>p.id===q.owner)?(q.owner==="pm"?"You":q.owner):personaOf(q.owner).name)}</span>${del(k,i)}</li>`,"openQuestions")}
+function ring(score,max){const pct=Math.max(0,Math.min(1,score/max));const r=60,c=2*Math.PI*r;const col=pct>=.7?"var(--good)":pct>=.5?"var(--warn)":"var(--bad)";return `<svg class="score-ring" viewBox="0 0 140 140" role="img" aria-label="Score ${score} of ${max}"><circle cx="70" cy="70" r="${r}" fill="none" stroke="var(--surface-2)" stroke-width="12"/><circle cx="70" cy="70" r="${r}" fill="none" stroke="${col}" stroke-width="12" stroke-linecap="round" stroke-dasharray="${c*pct} ${c}" transform="rotate(-90 70 70)"/><text x="70" y="68" text-anchor="middle" font-size="30" font-weight="800" fill="var(--text)">${score}</text><text x="70" y="90" text-anchor="middle" font-size="12" fill="var(--muted)">out of ${max}</text></svg>`}
+const stanceCls=s=>/not/i.test(s||"")?"no":/condition/i.test(s||"")?"cond":"yes";
+const itemText=x=>typeof x==="string"?x:(x&&typeof x==="object")?Object.values(x).filter(v=>typeof v==="string"||typeof v==="number").join(" — "):String(x);
+const ul=l=>arr(l).length?`<ul>${arr(l).map(x=>`<li>${esc(itemText(x))}</li>`).join("")}</ul>`:'<p class="small muted">TBD</p>';
+function reportView(){
+ const rp=S.report;if(!rp)return homeView();const a=rp.ai;const m=rp.metrics;
+ const head=`<div class="row" style="margin-bottom:1rem"><h1 style="margin:0">${esc(rp.pitch.title)}</h1><span class="spacer"></span><button type="button" class="btn" data-action="download-brief">⬇ Feature brief (.md)</button><button type="button" class="btn" data-action="print">🖨 Print</button><button type="button" class="btn primary" data-action="again">↻ Pitch again</button></div>`;
+ if(S.judging)return head+`<div class="card empty"><span class="thinking"><i></i><i></i><i></i></span><p>The panel is conferring and drafting your feature brief…</p></div>`;
+ const delivery=`<div class="card"><h3>🎙 Delivery</h3><div class="meters" style="grid-template-columns:repeat(3,minmax(0,1fr))"><div class="meter"><div class="v">${m.words}</div><div class="l">Words spoken</div></div><div class="meter"><div class="v">${m.wpm==null?"—":m.wpm}</div><div class="l">WPM (target ${S.settings.wpmLo}–${S.settings.wpmHi})</div></div><div class="meter"><div class="v">${m.fillerRate}</div><div class="l">Fillers / 100 words</div></div><div class="meter"><div class="v">${m.hedges}</div><div class="l">Hedges</div></div><div class="meter"><div class="v">${m.pitchWords}</div><div class="l">Opening pitch words</div></div><div class="meter"><div class="v">${fmtTime(m.spokenSec)}</div><div class="l">Talk time</div></div></div></div>`;
+ if(!a)return head+`<div class="banner"><span>⚙️</span><div>No AI verdict for this session. ${aiOn()?`<button type="button" class="btn small" data-action="rejudge">Get the panel's verdict</button>`:`<button type="button" class="btn small" data-action="open-settings">Connect a model</button> to get stances, scores and a feature brief.`}</div></div><div class="grid g2">${delivery}<div class="card canvas"><h3>🧩 Feature canvas</h3>${canvasHtml(rp.canvas)}</div></div>`+transcriptHtml(rp);
+ const comps=a.competencies||{};const b=a.brief||{};
+ return head+`<div class="card grid sumgrid">${ring(a.overall,10)}<div><div class="verdict">${esc(a.verdict)}</div><p>${esc(a.headline||"")}</p><span class="small muted">${new Date(rp.date).toLocaleString()} · ${rp.mode==="codev"?"Co-develop":"Pitch review"} · ${rp.panel.map(i=>personaOf(i).name).join(", ")}</span></div><button type="button" class="btn" data-action="read-verdict">🔊 Hear it</button></div>
+ <div class="section-title"><h2>Where the panel landed</h2></div>
+ <div class="grid g3">${arr(a.panel).map(x=>{const p=personaOf(x.id);return `<div class="card"><div class="persona">${av(p)}<div><b>${esc(p.name)}</b> <span class="stance ${stanceCls(x.stance)}">${esc(x.stance)}</span><div class="small muted">${esc(p.role)}</div></div></div><p>“${esc(x.take)}”</p><p class="small"><b>Top concern:</b> ${esc(x.topConcern)}</p><p class="small"><b>Would change my mind:</b> ${esc(x.changeMind)}</p></div>`}).join("")}</div>
+ <div class="section-title"><h2>Pitch scorecard</h2></div>
+ <div class="card">${COMPS.map(c=>{const x=comps[c.id]||{};const sc=+x.score||0;return `<div class="comp"><b>${c.name}</b><span class="tag ${sc>=4?"good":sc>=3?"":"warn"}">${sc}/5</span><div class="bar"><i style="width:${sc*20}%"></i></div><div class="small" style="grid-column:1/-1"><span class="muted">Evidence:</span> ${esc(x.evidence||"")}<br><span class="muted">Tip:</span> ${esc(x.tip||"")}</div></div>`}).join("")}</div>
+ <div class="grid g3" style="margin-top:1rem"><div class="card callout good"><h3>Strengths</h3>${ul(a.strengths)}</div><div class="card callout bad"><h3>Improve next time</h3>${ul(a.improvements)}</div><div class="card callout"><h3>Missed openings</h3>${ul(a.missed)}</div></div>
+ <div class="grid g2" style="margin-top:1rem"><div class="card"><h3>💬 Stronger opening</h3><p>${esc(a.strongerOpening||"")}</p><h3>➡ Next steps before the real review</h3>${ul(a.nextSteps)}</div>${delivery}</div>
+ <div class="section-title"><h2>Co-developed feature brief</h2></div>
+ <div class="card brief"><h3>Problem</h3><p>${esc(b.problem||"TBD")}</p><h3>Target users</h3><p>${esc(b.users||"TBD")}</p><h3>Goals &amp; success metrics</h3>${ul(b.goals)}<div class="grid g2"><div><h3>MVP scope</h3>${ul(b.mvp)}</div><div><h3>Out of scope</h3>${ul(b.outOfScope)}</div></div><h3>Functional requirements</h3>${ul(b.requirements)}<h3>Non-functional (security, performance, reliability, accessibility)</h3>${ul(b.nfr)}<div class="grid g2"><div><h3>Architecture notes</h3>${ul(b.architecture)}</div><div><h3>UX notes</h3>${ul(b.ux)}</div></div><div class="grid g2"><div><h3>Test &amp; quality strategy</h3>${ul(b.testing)}</div><div><h3>Milestones</h3>${ul(b.milestones)}</div></div><div class="grid g2"><div><h3>Dependencies</h3>${ul(b.dependencies)}</div><div><h3>Risks &amp; mitigations</h3>${ul(b.risks)}</div></div><h3>Open questions</h3>${ul(b.openQuestions)}</div>
+ <div class="section-title" id="askSec"><h2>Ask the panel</h2><span class="small muted">e.g. "Morgan, what would get you to a yes?" · "What should I cut to ship this release?"</span></div>
+ <div class="card"><div class="chat" id="askChat">${arr(rp.chat).map(msgHtml).join("")||'<p class="small muted">No questions yet.</p>'}${ASKBUSY?'<div class="msg"><div class="avatar" style="background:var(--muted)">…</div><div class="bubble"><span class="thinking"><i></i><i></i><i></i></span></div></div>':""}</div><div class="row" style="margin-top:.6rem"><input id="askInput" style="flex:1" placeholder="Ask a follow-up…" ${ASKBUSY?"disabled":""}><button type="button" class="btn" data-action="ask-mic" id="askMic">🎙</button><button type="button" class="btn primary" data-action="ask" ${ASKBUSY?"disabled":""}>Ask</button></div></div>`+transcriptHtml(rp);
+}
+function transcriptHtml(rp){return `<details class="card" style="margin-top:1rem"><summary><b>Full transcript</b></summary><div class="chat" style="max-height:none">${rp.turns.map(t=>msgHtml(t)).join("")}</div></details>`}
+function historyView(){
+ const h=S.history.slice().reverse();
+ return `<div class="row"><h1 style="margin:0">Past sessions</h1><span class="spacer"></span><button type="button" class="btn" data-action="export">Export</button><button type="button" class="btn" data-action="import">Import</button>${h.length?'<button type="button" class="btn danger" data-action="clear-history">Clear</button>':""}</div>
+ ${h.length?`<div class="card" style="margin-top:1rem"><table><thead><tr><th>Date</th><th>Feature</th><th>Mode</th><th>Panel</th><th>Readiness</th><th></th></tr></thead><tbody>${h.map(x=>`<tr><td>${new Date(x.date).toLocaleDateString()}</td><td>${esc(x.pitch.title)}</td><td>${x.mode==="codev"?"Co-develop":"Review"}</td><td>${x.panel.map(i=>personaOf(i).name).join(", ")}</td><td>${x.ai?`<b>${x.ai.overall}</b> · ${esc(x.ai.verdict)}`:"—"}</td><td><button type="button" class="btn small" data-open="${x.id}">Open</button></td></tr>`).join("")}</tbody></table></div>
+ ${trendHtml()}`:`<div class="card empty" style="margin-top:1rem">No sessions yet. Pitch something!</div>`}`;
+}
+function trendHtml(){const s=S.history.filter(h=>h.ai);if(s.length<2)return "";const avg=c=>{const v=s.map(h=>+((h.ai.competencies||{})[c]||{}).score).filter(Boolean);return v.length?(v.reduce((a,b)=>a+b,0)/v.length):0};return `<div class="card" style="margin-top:1rem"><h3>Average by competency (${s.length} scored sessions)</h3>${COMPS.map(c=>{const v=avg(c.id);return `<div class="comp"><b>${c.name}</b><span class="tag">${v.toFixed(1)}/5</span><div class="bar"><i style="width:${v*20}%"></i></div></div>`}).join("")}</div>`}
+function teamView(){
+ return `<div class="row"><h1 style="margin:0">Panel personas</h1><span class="spacer"></span><button type="button" class="btn primary" data-action="new-persona">＋ New persona</button><button type="button" class="btn" data-action="export-pack">⬇ Export pack</button><button type="button" class="btn" data-action="import-pack">⬆ Import pack</button>${store.get(SPFX+".personas",null)?'<button type="button" class="btn danger" data-action="reset-pack">Reset to built-in</button>':""}</div>
+ <p class="muted">${esc(PACK.source?"Built-in pack: "+PACK.source+". ":"")}Add your own notes to steer a persona and pick a voice for each. Share a persona pack (JSON) with a teammate so they can import it into their copy of this app.</p>
+ <div class="grid g2">${PERSONAS.map(p=>`<div class="card"><div class="persona">${av(p,"lg")}<div><h3 style="margin:0">${esc(p.fullName||p.name)}</h3><div class="small muted">${esc(p.role)}</div><div class="small" style="margin-top:.2rem">${esc(p.lens)}</div></div></div>
+ <details style="margin-top:.6rem"><summary class="small"><b>How they think &amp; talk</b></summary><p class="small"><b>Cares about:</b></p><ul class="small tlist">${arr(p.priorities).map(x=>`<li>${esc(x)}</li>`).join("")}</ul><p class="small"><b>Typical pushback:</b></p><ul class="small tlist">${arr(p.pushbacks).map(x=>`<li>${esc(x)}</li>`).join("")}</ul><p class="small"><b>Style:</b> ${esc(p.speechStyle)}</p><p class="small"><b>Sounds like:</b> ${arr(p.phrases).map(x=>"“"+esc(x)+"”").join(" · ")}</p><p class="small"><b>Convinced by:</b> ${esc(p.decisionStyle)}</p><p class="small muted">${esc(p.evidence||"")}</p></details>
+ <label class="f small" style="margin-top:.6rem">Voice<select data-voice="${p.id}"><option value="">Automatic</option>${voices.map(v=>`<option value="${esc(v.voiceURI)}" ${S.voiceMap[p.id]===v.voiceURI?"selected":""}>${esc(v.name)}</option>`).join("")}</select></label>
+ <div class="row" style="margin-top:.4rem"><button type="button" class="btn small" data-test-voice="${p.id}">🔊 Test voice</button><button type="button" class="btn small" data-edit-persona="${p.id}">✎ Edit</button><button type="button" class="btn small danger" data-del-persona="${p.id}">Delete</button></div>
+ <label class="f small" style="margin-top:.6rem">Your notes for this persona<textarea rows="2" data-note="${p.id}" placeholder="Optional extra guidance">${esc(S.notes[p.id]||"")}</textarea></label></div>`).join("")}</div>`;
+}
+function briefMarkdown(rp){const a=rp.ai||{};const b=a.brief||{};const L=x=>arr(x).length?arr(x).map(i=>"- "+itemText(i)).join("\n"):"- TBD";const c=rp.canvas||emptyCanvas();
+ return `# ${rp.pitch.title} — feature brief\n\n_Co-developed in a rehearsal with simulated panel personas (${rp.panel.map(i=>personaOf(i).name+" – "+personaOf(i).role).join(", ")}) on ${new Date(rp.date).toLocaleDateString()}. Persona views are AI simulations, not colleagues' actual positions._\n\n**Stage:** ${rp.pitch.stage}${a.overall!=null?`  \n**Rehearsal readiness:** ${a.overall}/10 — ${a.verdict}`:""}\n\n## Problem\n${b.problem||rp.pitch.problem||"TBD"}\n\n## Target users\n${b.users||rp.pitch.user||"TBD"}\n\n## Goals & success metrics\n${L(b.goals)}\n\n## MVP scope\n${L(b.mvp)}\n\n## Out of scope\n${L(b.outOfScope)}\n\n## Functional requirements\n${L(b.requirements&&b.requirements.length?b.requirements:c.requirements)}\n\n## Non-functional requirements\n${L(b.nfr)}\n\n## Architecture notes\n${L(b.architecture)}\n\n## UX notes\n${L(b.ux)}\n\n## Test & quality strategy\n${L(b.testing)}\n\n## Milestones\n${L(b.milestones)}\n\n## Dependencies\n${L(b.dependencies)}\n\n## Risks & mitigations\n${L(b.risks&&b.risks.length?b.risks:c.risks)}\n\n## Open questions\n${L(b.openQuestions&&b.openQuestions.length?b.openQuestions:c.openQuestions.map(q=>q.q+" (owner: "+(q.owner==="pm"?"PM":personaOf(q.owner).name)+")"))}\n${a.panel?`\n## Panel stances (simulated)\n${a.panel.map(x=>`- **${personaOf(x.id).name}** (${personaOf(x.id).role}): ${x.stance} — ${x.topConcern}`).join("\n")}\n`:""}${a.nextSteps?`\n## Next steps\n${L(a.nextSteps)}\n`:""}`}
+function download(name,text,type){const u=URL.createObjectURL(new Blob([text],{type}));const l=document.createElement("a");l.href=u;l.download=name;document.body.appendChild(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(u),2000)}
+function readPitchForm(){const g=id=>{const e=$(id);return e?e.value:""};S.pitch={title:g("#pTitle"),stage:g("#pStage")||STAGES[1],problem:g("#pProblem"),user:g("#pUser"),notes:g("#pNotes")};store.set(SPFX+".pitch",S.pitch)}
+
+/* ---------------- Settings ---------------- */
+function openSettings(){const s=S.settings;$("#sName").value=S.profile.name||"";$("#sOrg").value=S.profile.org||"";$("#sProduct").value=S.profile.product||"";$("#sProvider").value=s.provider;$("#sEndpoint").value=s.endpoint;$("#sDeployment").value=s.deployment;$("#sApiVersion").value=s.apiVersion;$("#sPreset").value=s.preset||"groq";$("#sBaseUrl").value=s.baseUrl;$("#sModel").value=s.model;$("#sKey").value=s.key;$("#sLang").value=s.lang;loadVoices();$("#sVoice").value=s.voice||"";$("#sRate").value=s.rate;$("#sAutoSpeak").value=s.autoSpeak?"1":"0";$("#sWpmLo").value=s.wpmLo;$("#sWpmHi").value=s.wpmHi;$("#sSilence").value=S.silenceSec;$("#testResult").textContent="";syncProviderFields();$("#settingsDlg").showModal()}
+function readSettings(){return {provider:$("#sProvider").value,endpoint:$("#sEndpoint").value.trim(),deployment:$("#sDeployment").value.trim(),apiVersion:$("#sApiVersion").value.trim()||"2024-10-21",preset:$("#sPreset").value,baseUrl:$("#sBaseUrl").value.trim()||"https://api.openai.com/v1",model:$("#sModel").value.trim()||"gpt-4o",key:$("#sKey").value.trim(),lang:$("#sLang").value,voice:$("#sVoice").value,rate:+$("#sRate").value||1,autoSpeak:$("#sAutoSpeak").value==="1",wpmLo:+$("#sWpmLo").value||120,wpmHi:+$("#sWpmHi").value||165}}
+function syncProviderFields(){const p=$("#sProvider").value;$("#azureFields").hidden=p!=="azure";$("#openFields").hidden=p!=="open";$("#openaiFields").hidden=!(p==="openai"||p==="open");$("#keyField").hidden=p==="none";$("#testRow").hidden=p==="none";const pr=PRESETS[$("#sPreset").value]||PRESETS.custom;$("#presetHint").innerHTML=pr.hint;$("#baseUrlNote").textContent=p==="open"?"filled in for you — change only if needed":"leave as-is for OpenAI";$("#keyNote").textContent=p==="open"&&pr.local?"(not needed for a local model)":""}
+function applyPreset(){const pr=PRESETS[$("#sPreset").value];if(pr&&$("#sPreset").value!=="custom"){$("#sBaseUrl").value=pr.url;$("#sModel").value=pr.model}syncProviderFields()}
+function saveSettings(){S.settings=readSettings();S.profile={name:$("#sName").value.trim(),org:$("#sOrg").value.trim(),product:$("#sProduct").value.trim()};store.set(SPFX+".profile",S.profile);S.silenceSec=Math.max(2,Math.min(10,+$("#sSilence").value||4));store.set(SPFX+".silence",S.silenceSec);const persist=Object.assign({},S.settings);delete persist.key;store.set(SPFX+".settings",persist);$("#settingsDlg").close();render();toast(aiOn()?"Panel AI connected.":"Settings saved.")}
+async function testConnection(){const prev=S.settings;S.settings=readSettings();const out=$("#testResult");out.textContent="Testing…";try{const r=await llm([{role:"system",content:'Reply with JSON {"ok":true}'},{role:"user",content:"ping"}],{timeout:30000});out.textContent=r&&r.ok?"✅ Connected":"✅ Reachable"}catch(e){out.textContent="❌ "+e.message}S.settings=prev}
+
+/* ---------------- Events ---------------- */
+document.addEventListener("click",async e=>{
+ const nav=e.target.closest("[data-nav]");if(nav){if(S.screen==="home")readPitchForm();endMicSession();stopSpeaking();setScreen(nav.dataset.nav);return}
+ const md=e.target.closest("[data-mode]");if(md){readPitchForm();S.mode=md.dataset.mode;render();return}
+ const tu=e.target.closest("[data-turns]");if(tu){readPitchForm();S.maxTopics=+tu.dataset.turns;store.set(SPFX+".topics",S.maxTopics);render();return}
+ const pe=e.target.closest("[data-persona]");if(pe){readPitchForm();const id=pe.dataset.persona;const i=S.panel.indexOf(id);if(i>=0)S.panel.splice(i,1);else{if(S.panel.length>=7){toast("Up to 7 panelists keeps the room manageable.");return}S.panel.push(id);const p=personaOf(id);stopSpeaking();speak(`Hi, ${p.name} here.`,p)}store.set(SPFX+".panel",S.panel);render();return}
+ const iv=e.target.closest("[data-invite]");if(iv){S.forceNext=S.forceNext===iv.dataset.invite?null:iv.dataset.invite;renderSeats();if(S.forceNext)toast(`${personaOf(S.forceNext).name} will respond to you next.`);return}
+ const op=e.target.closest("[data-open]");if(op){S.report=S.history.find(h=>h.id===op.dataset.open);setScreen("report");return}
+ const tv=e.target.closest("[data-test-voice]");if(tv){stopSpeaking();const p=personaOf(tv.dataset.testVoice);speak(`Hi${S.profile.name?" "+S.profile.name:""}, ${p.name} here. ${arr(p.signatureQuestions)[0]||""}`,p);return}
+ const ed=e.target.closest("[data-edit-persona]");if(ed){openPersonaEditor(ed.dataset.editPersona);return}
+ const dl=e.target.closest("[data-del-persona]");if(dl){const p=personaOf(dl.dataset.delPersona);if(PERSONAS.length<=2){toast("Keep at least 2 personas.");return}if(window.confirm(`Delete ${p.name}?`)){PERSONAS=PERSONAS.filter(x=>x.id!==p.id);S.panel=S.panel.filter(x=>x!==p.id);savePersonas();render()}return}
+ const cd=e.target.closest("[data-cdel]");if(cd){const [k,i]=cd.dataset.cdel.split(":");if(S.canvas&&S.canvas[k]){S.canvas[k].splice(+i,1);renderCanvas()}return}
+ const ac=e.target.closest("[data-action]");if(!ac)return;
+ switch(ac.dataset.action){
+  case "start":startSession();break;
+  case "mic":if(R.active)stopMic();else{skipIntro();startMic("answer")}break;
+  case "submit":submitAnswer();break;
+  case "end":finish();break;
+  case "close-topic":closeTopicNow();break;
+  case "canvas-retry":scribe();break;
+  case "canvas-add":{const k=($("#cKind")||{}).value||"requirements";const v=(($("#cText")||{}).value||"").trim();if(!v){toast("Type a note first.");break}if(k==="openQuestions")mergeCanvas({openQuestions:[{q:v,owner:"pm"}]});else mergeCanvas({[k]:[v]});renderCanvas();break}
+  case "quit":endMicSession();stopSpeaking();S.phase="idle";setScreen("home");break;
+  case "replay":stopSpeaking();speak(ac.dataset.text||"",personaOf(ac.dataset.pid));break;
+  case "stop-speaking":stopSpeaking();break;
+  case "again":endMicSession();S.pitch=Object.assign({},S.report.pitch);S.panel=S.report.panel.slice();S.mode=S.report.mode;setScreen("home");break;
+  case "rejudge":await runJudge(S.report);break;
+  case "read-verdict":{const a=S.report.ai;if(!a)break;stopSpeaking();speakSeq([[`Overall readiness ${a.overall} out of 10. ${a.verdict}. ${a.headline||""}`,null]].concat(arr(a.panel).map(x=>[`${x.stance}. ${x.take}`,personaOf(x.id)])));break}
+  case "download-brief":download((S.report.pitch.title||"feature").replace(/[^\w-]+/g,"-").toLowerCase()+"-brief.md",briefMarkdown(S.report),"text/markdown");break;
+  case "print":window.print();break;
+  case "ask":{const i=$("#askInput");askPanel(i?i.value:"");break}
+  case "ask-mic":if(R.active&&R.target==="askInput")stopMic();else{if(R.active)stopMic();startMic("askInput")}break;
+  case "new-persona":openPersonaEditor(null);break;
+  case "export-pack":download((org()+"-panel-personas").replace(/[^\w-]+/g,"-").toLowerCase()+".json",JSON.stringify(packExport(),null,2),"application/json");break;
+  case "import-pack":$("#packFile").click();break;
+  case "reset-pack":if(window.confirm("Discard your persona edits and restore the built-in pack?")){localStorage.removeItem(SPFX+".personas");loadPersonas();render()}break;
+  case "pe-save":savePersonaEditor();break;
+  case "pe-close":$("#personaDlg").close();break;
+  case "pe-generate":generatePersona();break;
+  case "export":download("pitch-panel-sessions.json",JSON.stringify({app:"pitch-panel",version:1,history:S.history,notes:S.notes},null,2),"application/json");break;
+  case "import":$("#importFile").click();break;
+  case "clear-history":if(window.confirm("Clear all saved sessions?")){S.history=[];saveHistory();render()}break;
+  case "open-settings":if(S.screen==="home")readPitchForm();openSettings();break;
+  case "close-settings":$("#settingsDlg").close();break;
+  case "save-settings":saveSettings();break;
+  case "test-connection":testConnection();break;
+ }
+});
+document.addEventListener("change",e=>{const t=e.target;if(!t)return;if(t.id==="handsFree"){S.handsFree=t.checked;store.set(SPFX+".handsfree",S.handsFree);renderMic()}if(t.dataset&&t.dataset.voice){S.voiceMap[t.dataset.voice]=t.value;store.set(SPFX+".voices",S.voiceMap)}});
+document.addEventListener("input",e=>{const t=e.target;if(!t)return;if(t.id==="answer"){S.draft=t.value;if(!R.active)liveMeters()}if(t.dataset&&t.dataset.note){S.notes[t.dataset.note]=t.value;store.set(SPFX+".notes",S.notes)}});
+document.addEventListener("keydown",e=>{if(e.target&&e.target.id==="cText"&&e.key==="Enter"){e.preventDefault();const b=document.querySelector('[data-action="canvas-add"]');if(b)b.click();return}if(e.target&&e.target.id==="askInput"&&e.key==="Enter"){e.preventDefault();askPanel(e.target.value);return}if(e.target&&e.target.id==="answer"&&e.key==="Enter"&&(e.ctrlKey||e.metaKey)){e.preventDefault();submitAnswer();return}if(S.screen!=="room")return;if(e.target&&/^(TEXTAREA|INPUT|BUTTON|SELECT)$/.test(e.target.tagName))return;if(e.code==="Space"){e.preventDefault();if(R.active)stopMic();else{skipIntro();startMic("answer")}}});
+$("#sProvider").addEventListener("change",()=>{if($("#sProvider").value==="open"&&!/localhost|groq|openrouter|together|huggingface/.test($("#sBaseUrl").value))applyPreset();else syncProviderFields()});
+$("#sPreset").addEventListener("change",applyPreset);
+$("#importFile").addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.addEventListener("load",()=>{try{const j=JSON.parse(rd.result);if(!Array.isArray(j.history))throw 0;const ids=new Set(S.history.map(h=>h.id));j.history.forEach(h=>{if(!ids.has(h.id)&&h.pitch)S.history.push(h)});if(j.notes)Object.assign(S.notes,j.notes);store.set(SPFX+".notes",S.notes);saveHistory();toast("Sessions imported.");render()}catch(err){toast("That file isn't a valid export.")}});rd.readAsText(f);e.target.value=""});
+
+/* ---------------- Persona editor & packs ---------------- */
+const LISTF=[["priorities","Cares about"],["pushbacks","Typical pushback"],["signatureQuestions","Questions they ask"],["phrases","Phrases they use"],["knownContext","Topics they know"]];
+const TEXTF=[["fullName","Full name"],["name","Short name (shown and spoken)"],["role","Role"],["lens","Lens: what they judge a pitch on"],["speechStyle","Speaking style"],["decisionStyle","What convinces them / makes them say no"]];
+let EDIT=null;
+function openPersonaEditor(id){EDIT=id;const p=id?personaOf(id):{};$("#peTitle").textContent=id?`Edit ${p.name}`:"New persona";
+ $("#peBody").innerHTML=`<div class="banner info"><span>✨</span><div><b>Generate with AI (optional).</b> Paste notes about how this person thinks and talks — meeting excerpts, their typical questions, their role. The panel AI drafts the profile; review it before saving.<textarea id="peSource" rows="4" style="width:100%;margin-top:.4rem" placeholder="e.g. Security architect. Always asks whether controls are technical or policy, worries about tenant isolation, says 'help me understand'…"></textarea><div class="row" style="margin-top:.4rem"><button type="button" class="btn small" data-action="pe-generate">Draft profile</button><span class="small muted" id="peGenMsg"></span></div></div></div>`+
+ TEXTF.map(([k,l])=>`<label class="f">${l}${k==="lens"||k==="speechStyle"||k==="decisionStyle"?`<textarea id="pe_${k}" rows="2">${esc(p[k]||"")}</textarea>`:`<input id="pe_${k}" value="${esc(p[k]||"")}">`}</label>`).join("")+
+ LISTF.map(([k,l])=>`<label class="f">${l} <span class="muted">(one per line)</span><textarea id="pe_${k}" rows="3">${esc(arr(p[k]).join("\n"))}</textarea></label>`).join("")+
+ `<label class="f">Voice type<select id="pe_voice"><option value="">Any</option><option value="f" ${p.g==="f"?"selected":""}>Higher / female-sounding</option><option value="m" ${p.g==="m"?"selected":""}>Lower / male-sounding</option></select></label><label class="f">Colour<input id="pe_color" type="color" value="${esc(p.color||PALETTE[PERSONAS.length%PALETTE.length])}"></label>`;
+ $("#personaDlg").showModal()}
+function readEditor(){const o={};TEXTF.forEach(([k])=>o[k]=$("#pe_"+k).value.trim());LISTF.forEach(([k])=>o[k]=$("#pe_"+k).value.split("\n").map(x=>x.trim()).filter(Boolean));o.voice=$("#pe_voice").value;o.color=$("#pe_color").value;return o}
+function savePersonaEditor(){const o=readEditor();if(!o.name&&!o.fullName){toast("Give the persona a name.");return}if(!o.name)o.name=o.fullName.split(" ")[0];if(!o.role){toast("Add a role.");return}
+ if(EDIT){const i=PERSONAS.findIndex(p=>p.id===EDIT);PERSONAS[i]=decorate(Object.assign({},PERSONAS[i],o,{id:EDIT,g:o.voice}),i)}else{let id=o.name.toLowerCase().replace(/[^a-z0-9]+/g,"")||"p";while(PERSONAS.some(p=>p.id===id))id+="2";PERSONAS.push(decorate(Object.assign(o,{id,evidence:"Added by you"}),PERSONAS.length))}
+ savePersonas();$("#personaDlg").close();render();toast("Persona saved.")}
+async function generatePersona(){const src=$("#peSource").value.trim();const msg=$("#peGenMsg");if(!src){toast("Paste some notes first.");return}if(!aiOn()){openSettings();toast("Connect a model in Settings first.");return}msg.textContent="Drafting…";
+ try{const r=await llm([{role:"system",content:`From the notes, draft a rehearsal persona of a colleague who sits on a product feature review panel. Ground everything in the notes; where the notes are silent, infer conservatively from the role. Professional and respectful; no personal or sensitive details. Return JSON {"fullName":"","name":"","role":"","lens":"","priorities":[5-7],"pushbacks":[5-7],"signatureQuestions":[8-10 in their voice, generalised to any feature],"speechStyle":"2-3 sentences","phrases":[5-8 short],"decisionStyle":"","knownContext":[3-5]}`},{role:"user",content:src.slice(0,30000)}],{temperature:0.4});
+  TEXTF.forEach(([k])=>{if(r[k]&&!$("#pe_"+k).value.trim())$("#pe_"+k).value=r[k]});LISTF.forEach(([k])=>{if(arr(r[k]).length)$("#pe_"+k).value=arr(r[k]).join("\n")});TEXTF.forEach(([k])=>{if(r[k]&&["lens","speechStyle","decisionStyle"].includes(k))$("#pe_"+k).value=r[k]});msg.textContent="Draft ready — review, then Save.";
+ }catch(e){msg.textContent="";toast(e.message,6000)}}
+function packExport(){return {app:"pitch-panel-personas",version:1,exported:new Date().toISOString(),source:PACK.source||"",personas:PERSONAS.map(({g,...rest})=>Object.assign(rest,{voice:g})),notes:S.notes}}
+$("#packFile").addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.addEventListener("load",()=>{try{const j=JSON.parse(rd.result);const list=Array.isArray(j)?j:j.personas;if(!Array.isArray(list)||!list.length||!list.every(p=>p&&(p.name||p.fullName)&&p.role))throw 0;
+ const replace=window.confirm(`Import ${list.length} personas.\n\nOK = replace your current panel personas\nCancel = add them alongside the current ones`);
+ const base=replace?[]:PERSONAS.slice();list.forEach(p=>{let id=(p.id||p.name||p.fullName).toLowerCase().replace(/[^a-z0-9]+/g,"");while(base.some(x=>x.id===id))id+="2";base.push(decorate(Object.assign({},p,{id}),base.length))});PERSONAS=base;if(j.notes&&replace)S.notes=j.notes;store.set(SPFX+".notes",S.notes);savePersonas();S.panel=S.panel.filter(id=>PERSONAS.some(p=>p.id===id));if(S.panel.length<2)S.panel=PERSONAS.slice(0,5).map(p=>p.id);store.set(SPFX+".panel",S.panel);render();toast("Persona pack imported.")}catch(err){toast("That file isn't a valid persona pack.")}});rd.readAsText(f);e.target.value=""});
+window.addEventListener("pagehide",endMicSession);
+setScreen("home");
+
+})();
+</script>
+</body>
+</html>

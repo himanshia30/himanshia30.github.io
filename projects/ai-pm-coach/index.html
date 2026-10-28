@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AI PM Coach, practice product thinking out loud | Himanshi Arora</title>
-  <meta name="description" content="Case study: AI PM Coach, an AI coach for product managers where AI personas ask follow-ups and a calibrated AI judge scores your spoken answer across five PM competencies.">
+  <meta name="description" content="Case study: AI PM Coach, two AI tools for product managers: product thinking practice with an AI judge, and Pitch Panel, a simulated feature review that co-develops a feature brief.">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Himanshi Arora">
   <meta property="og:url" content="https://himanshia30.github.io/projects/ai-pm-coach/">
@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../styles.css?v=7">
+  <link rel="stylesheet" href="../../styles.css?v=8">
 </head>
 <body>
   <header class="wrap bar">
@@ -34,11 +34,12 @@
   <main>
     <section class="wrap cs-hero">
       <h1>AI PM Coach</h1>
-      <p class="lede">Feedback on your product thinking in minutes. Talk through a product problem out loud, get pushed by AI personas or a whole panel, and get scored on five PM competencies with specific feedback on what to fix.</p>
+      <p class="lede">Feedback on your product thinking in minutes. Two tools in one: practise product thinking out loud with AI personas and an AI judge, or rehearse a feature pitch with a simulated review panel that helps you shape it into a feature brief.</p>
       <div class="actions">
-        <a class="btn solid" href="prototype.html">Try the prototype</a>
+        <a class="btn solid" href="prototype.html">Try product thinking practice</a>
+        <a class="btn" href="pitch-panel.html">Try Pitch Panel</a>
       </div>
-      <p class="note">Works best in Chrome or Edge, where you can answer by voice. Without an AI key you still get live transcription and delivery feedback. Add a key in Settings, Groq's free tier works, to unlock follow-ups and scoring.</p>
+      <p class="note">Both work best in Chrome or Edge, where you can speak your answers. Without an AI key you still get transcription and delivery feedback. Add a key in Settings, Groq's free tier works, to unlock the AI personas and scoring.</p>
     </section>
 
     <div class="wrap">
@@ -71,7 +72,25 @@
 
     <section class="wrap cs">
       <div class="two">
-        <h2>How it works</h2>
+        <h2>Two tools</h2>
+        <div class="demo-cards two-up">
+          <div class="demo-card">
+            <h3>Product thinking practice</h3>
+            <p>Answer a product question out loud. AI personas probe the weakest part of your answer, and an AI judge scores five PM competencies with evidence and a tip for each.</p>
+            <a class="btn" href="prototype.html">Try it</a>
+          </div>
+          <div class="demo-card">
+            <h3>Pitch Panel</h3>
+            <p>Pitch a feature to AI personas of your engineering, architecture, security, program, QA, and UX partners. They build it out with you, or review it the way a real panel would.</p>
+            <a class="btn" href="pitch-panel.html">Try it</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap cs">
+      <div class="two">
+        <h2>How product thinking practice works</h2>
         <ol class="steps">
           <li><b>Pick the topic.</b> Product Design, AI Product, Strategy, Analytics and Metrics, or Behavioral. Choose a question or let it surprise you, and choose a realistic session or practice with hints.</li>
           <li><b>Pick a persona, or a panel.</b> Six personas, from a friendly senior PM to an exacting product leader, a staff engineer, and a principal designer, each with their own voice and focus.</li>
@@ -86,18 +105,45 @@
 
     <section class="wrap cs">
       <div class="two">
+        <h2>How Pitch Panel works</h2>
+        <ol class="steps">
+          <li><b>Frame the feature.</b> A working title, its stage, the problem, the target user, and any context you'd give the room.</li>
+          <li><b>Pick the room.</b> Co-develop, where the panel builds the feature with you, or Pitch review, a tougher readiness review. Choose your panelists from eight personas; the first one chairs.</li>
+          <li><b>Pitch out loud.</b> The panel introduces itself and the chair hands you the floor.</li>
+          <li><b>Work through one topic at a time.</b> A panelist raises an issue from their lens, follow-ups stay on it, and it closes with what was agreed and who owns the next step. Address anyone by name and they answer you.</li>
+          <li><b>Watch the feature canvas fill in.</b> A note-taker captures requirements, ideas, decisions, risks, and open questions with owners as you talk.</li>
+          <li><b>Get stances and a brief.</b> A readiness score, each panelist's stance with their top concern and what would change their mind, scores on six competencies, and a co-developed feature brief you can download.</li>
+          <li><b>Ask the panel.</b> "Morgan, what would get you to a yes?" Follow up after the session, by voice or by typing.</li>
+        </ol>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <div class="shots">
+        <figure class="shot"><img src="img/pitch-room.webp" alt="Pitch Panel session: a security architect closes a topic, the UX designer opens the next, and the feature canvas lists requirements, ideas, and decisions" width="1440" height="900" loading="lazy"><figcaption>One topic at a time, with the feature canvas filling in as you talk.</figcaption></figure>
+        <figure class="shot"><img src="img/pitch-report.webp" alt="Readiness score of 7.2 out of 10, Ready with conditions, and each panelist's stance with their top concern" width="1440" height="900" loading="lazy"><figcaption>Where the panel landed, and what would change each mind.</figcaption></figure>
+        <figure class="shot"><img src="img/pitch-brief.webp" alt="Co-developed feature brief with problem, target users, goals, MVP scope, out of scope, and requirements" width="1440" height="900" loading="lazy"><figcaption>A feature brief, co-developed with the panel and ready to download.</figcaption></figure>
+      </div>
+    </div>
+
+    <section class="wrap cs">
+      <div class="two">
         <h2>Design choices</h2>
         <div>
           <div class="numbers">
             <div><b>55</b><span>practice questions across five topics</span></div>
-            <div><b>6</b><span>personas, one-on-one or as a panel of two or three</span></div>
-            <div><b>5</b><span>competencies scored, each backed by a quote from your answer</span></div>
+            <div><b>14</b><span>AI personas across both tools, each with their own lens</span></div>
+            <div><b>1</b><span>feature brief, co-developed live with the panel</span></div>
           </div>
           <ul>
             <li><b>A judge that doesn't flatter.</b> Every score uses fixed anchors, where 3 means "meets the bar" and 5 is rare, and every score has to quote the transcript. A coach that inflates scores is worse than none.</li>
             <li><b>Delivery is measured, not guessed.</b> Pace, filler words, hedges, signposting, and long pauses are counted in the browser from your transcript and timing. The judge receives the numbers rather than estimating them.</li>
             <li><b>Personas with a point of view.</b> The engineer asks about latency, data, and build cost. The designer asks about flows, edge cases, and accessibility. On a panel, the AI picks who speaks next and spreads the questions around, like a real review.</li>
-            <li><b>Useful with no AI at all.</b> Without a key you still get transcription, playback of your recording, delivery analysis, scripted follow-ups, and reference outlines. The AI adds probing and scoring on top.</li>
+            <li><b>A panel that builds, not just grills.</b> In Co-develop mode, about half the panel's turns offer options, scope cuts, designs, or test ideas. Pitch review is the tougher version and ends in a go or not-yet stance from each panelist.</li>
+            <li><b>Meetings that feel like meetings.</b> Pitch Panel works through one topic at a time, and each topic closes with what was agreed and who owns the next step. Say "let's move on" and the panel wraps up the topic.</li>
+            <li><b>Bring your own panel.</b> Edit any persona's role, priorities, usual pushbacks, and signature questions, import a persona pack, or draft a new persona from your own notes.</li>
+            <li><b>Honest about what it is.</b> The panelists are labeled as simulations: useful for rehearsal, not a prediction of anyone's real view. They're instructed never to invent confidential facts, numbers, or commitments.</li>
+            <li><b>Useful with no AI at all.</b> Without a key, product thinking practice still gives you transcription, playback of your recording, delivery analysis, scripted follow-ups, and reference outlines, and Pitch Panel's personas still ask their signature questions.</li>
             <li><b>Your model, your data.</b> Bring OpenAI, Azure OpenAI, Groq, OpenRouter, Together, Hugging Face, or a local model through Ollama or LM Studio. The key lives only in memory and is never saved, and your progress stays in your browser unless you export it.</li>
           </ul>
         </div>
@@ -112,8 +158,8 @@
       <div class="two">
         <h2>My role</h2>
         <div>
-          <p>I designed and built AI PM Coach as a personal project: the topics and question bank, the personas, the scoring rubric and its calibration rules, the delivery metrics, and the prototype itself. I built it with Claude as my collaborator.</p>
-          <p class="quiet">The same personas and rubric also run as a Claude skill, for practice sessions in chat and for judging a pasted transcript of a spoken answer.</p>
+          <p>I designed and built both tools as a personal project: the topics and question bank, the personas and their review lenses, the scoring rubrics and their calibration rules, the meeting flow and feature canvas, the delivery metrics, and the prototypes themselves. I built them with Claude as my collaborator.</p>
+          <p class="quiet">The same personas and rubrics also run as Claude skills, for practice sessions in chat and for judging a pasted transcript of a spoken answer.</p>
         </div>
       </div>
     </section>
@@ -121,7 +167,8 @@
     <section class="wrap cta-band">
       <h2>Try a session</h2>
       <div class="actions">
-        <a class="btn solid" href="prototype.html">Try the prototype</a>
+        <a class="btn solid" href="prototype.html">Try product thinking practice</a>
+        <a class="btn" href="pitch-panel.html">Try Pitch Panel</a>
         <a class="btn" href="../../">Back to all work</a>
       </div>
     </section>
