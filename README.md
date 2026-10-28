@@ -22,7 +22,7 @@ SWAN is a prototype of a proactive, always-on agent for supply chains. It watche
 
 ## Featured project: AI PM Coach
 
-AI PM Coach is an AI coach for product managers. You talk through a product problem out loud, an AI interviewer or a panel of two or three asks follow-ups, and an AI judge scores your answer on five PM competencies and tells you exactly what to fix. It covers Product Design, AI Product, Strategy, Analytics and Metrics, and Behavioral rounds.
+AI PM Coach is an AI coach for product managers. You talk through a product problem out loud, AI personas or a panel of two or three ask follow-ups, and an AI judge scores your answer on five PM competencies and tells you exactly what to fix. It covers Product Design, AI Product, Strategy, Analytics and Metrics, and Behavioral topics.
 
 - [Read the case study](https://himanshia30.github.io/projects/ai-pm-coach/)
 - [Try the prototype](https://himanshia30.github.io/projects/ai-pm-coach/prototype.html): works best in Chrome or Edge. Add an AI key in Settings (Groq's free tier works) for follow-ups and scoring; without one you still get transcription and delivery feedback.
