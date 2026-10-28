@@ -964,8 +964,18 @@ h1, h2, h3, .product, .greet h2, .screen-title, .w-title, .p-name, .finish-title
 </style>
 <style>
 /* Web copy: real AI runs in the course version, so the helper's key bar, the AI button and file downloads are hidden here. */
-[data-pfai-bar], [data-pfai-room], #use-ai, #download { display: none !important; }
+#download { display: none !important; }
 html, body { background: var(--bg); }
+.me-field { margin-top: var(--sp-4); }
+.me-field .input { text-transform: none; letter-spacing: 0; font-weight: 400; }
+.me-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.me-chip { padding: 7px 12px; border-radius: 999px; border: var(--border-w) solid var(--line); background: var(--bg-raise); color: var(--ink); font: inherit; font-size: var(--fs-1); font-weight: 600; letter-spacing: 0; text-transform: none; cursor: pointer; }
+.me-chip:hover { border-color: var(--accent); }
+.me-chip.on { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 16%, var(--bg-raise)); }
+.me-hint { display: block; font-size: var(--fs-0); font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--ink-3); }
+.me-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.me-fitbit { display: grid; gap: 6px; margin-top: var(--sp-3); }
+.story-cta.me-cta { background: var(--grad-dawn); }
 </style>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF6A3D"/><stop offset="1" stop-color="#FFC845"/></linearGradient></defs></svg>
 <header class="topbar">
@@ -977,11 +987,16 @@ html, body { background: var(--bg); }
     <button type="button" class="tab is-active" data-view="console" aria-pressed="true">Demo</button>
     <button type="button" class="tab" data-view="evals" aria-pressed="false">Evals</button>
   </nav>
-  <span class="meta">A prototype. Every person, reading and calendar here is made up.</span>
+  <span class="meta">A prototype. The sample people are made up; your own data stays in your browser.</span>
 </header>
 
 <main class="layout" id="view-console">
   <section class="scenes" aria-label="Demo scenes">
+    <div class="story-cta me-cta">
+      <b>Use Ted yourself</b>
+      <p>Set up in a minute, then check in each morning with numbers from your Fitbit app. Ted plans your real day. Everything stays in this browser.</p>
+      <button type="button" class="btn big" id="me-start">Start with your own data</button>
+    </div>
     <div class="story-cta">
       <b>Maya's six weeks</b>
       <p>The demo, scene by scene: from the first 7:15 AM notification to the six-week milestone.</p>
@@ -1677,10 +1692,10 @@ var PF_CORE = (function () {
   ];
 
   var LIMITS = [
-    'Not connected to a real watch or calendar. Health and calendar data are made up inside the page, in the shape of the Google Health and Google Calendar APIs. There is no polling: mornings are simulated by the scenes and "See tomorrow morning".',
+    'The sample profiles use made-up health and calendar data. "Use Ted yourself" runs on your own morning check-in, or on your Fitbit data through the Google Health API for invited testers. There is no background polling or calendar connection: Ted plans when you open him and tell him when you\'re free.',
     'Nothing leaves the page. The lock-screen notification, calendar hold and protein nudge are previews.',
-    'Memory lasts for this visit only. There are no accounts, and one made-up person is loaded at a time.',
-    'No onboarding. Goals, experience and schedule come from preset made-up profiles; she can\'t set her own yet.',
+    'Sample profiles last for one visit. Your own profile is saved in this browser only: no accounts, and nothing syncs across devices.',
+    'Onboarding is a short setup (goal, experience, days, session length, usual times). Equipment defaults to a gym with dumbbells and machines unless you map your own gym.',
     'How a plan is made: the page\'s rules first prepare the facts and a draft plan. With a key connected, exactly one live Claude API call (claude-opus-5-5, through the course\'s AI helper) makes the decision and writes the message as structured JSON, and the page then checks it. Without a key, no AI call happens: a prepared sample or a rule-built reply is shown, labelled "sample, not AI". Story mode never calls the AI.',
     'Typing to Ted and mapping her own gym photos need a key (each is one live AI call). The agent\'s tools run as rules in the page; the AI does not call them itself.',
     'Ted\'s voice covers about 200 recorded built-in lines. Messages the AI writes live stay text only. The page is close to the 10 MB limit, so more recordings need a trade-off.',
@@ -2202,8 +2217,8 @@ var PF_CORE = (function () {
     var records = [];
     var add = function (id, title, text) { records.push({ id: id, title: title, text: text }); };
     if (scen.event.text) add('message', 'Your message', '"' + scen.event.text + '" (' + ampm(scen.event.at) + ')');
-    add('sleep:' + date, 'Last night\'s sleep', health.sleep ? 'Sleep session ' + health.sleep.start + ' to ' + health.sleep.end + ', ' + duration(health.sleep.min) + ' (deep ' + health.sleep.stages.deep + ', REM ' + health.sleep.stages.rem + ', light ' + health.sleep.stages.light + ' min).' + (world.sleepUpdate && world.sleepUpdate.date === date ? ' Stages updated by the 7:20 AM sync.' : '') : 'MISSING: no sleep session synced by the 8:30 AM cutoff.');
-    add('recovery:' + date, 'Heart this morning', 'Resting heart rate ' + (health.rhr !== null ? health.rhr + ' bpm' : 'MISSING') + '. HRV ' + (health.hrv !== null ? health.hrv + ' ms' : 'MISSING') + '. Steps yesterday ' + health.steps.toLocaleString('en-US') + '.');
+    add('sleep:' + date, 'Last night\'s sleep', health.sleep ? (health.sleep.start ? 'Sleep session ' + health.sleep.start + ' to ' + health.sleep.end + ', ' : 'Time asleep: ') + duration(health.sleep.min) + (health.sleep.stages ? ' (deep ' + health.sleep.stages.deep + ', REM ' + health.sleep.stages.rem + ', light ' + health.sleep.stages.light + ' min).' : '.') + (world.sleepUpdate && world.sleepUpdate.date === date ? ' Stages updated by the 7:20 AM sync.' : '') : 'MISSING: no sleep session synced by the 8:30 AM cutoff.');
+    add('recovery:' + date, 'Heart this morning', 'Resting heart rate ' + (health.rhr !== null ? health.rhr + ' bpm' : 'MISSING') + '. HRV ' + (health.hrv !== null ? health.hrv + ' ms' : 'MISSING') + (health.steps ? '. Steps yesterday ' + health.steps.toLocaleString('en-US') : '') + '.');
     add('baseline:90d', 'Your 90-day normal', 'Sleep ' + duration(health.base.sleep) + ', resting heart rate ' + Math.round(health.base.rhr) + ' bpm, HRV ' + Math.round(health.base.hrv) + ' ms (HRV missing on ' + health.base.hrvMissing + ' of 90 days, ignored). ' + (health.declining ? 'Trend: HRV declining, 7-day average ' + health.avg7 + ' ms.' : 'Trend: steady.'));
     add('check_freshness', 'Freshness', fresh.text);
     add('assess_recovery', 'Readiness', 'Readiness: ' + LEVEL_WORDS[level] + '. ' + (rec.flags.length ? 'Flags: ' + rec.flags.join(', ') + '.' : 'No flags: sleep, HRV and resting heart rate are at or better than your normal.') + (rec.missing ? ' Missing data: kept at moderate at most.' : '') + (capped ? ' Rest cap: ' + weekSoFar + ' strength days already this week, so today is active recovery unless you choose to lift.' : level !== rec.level ? ' You said you were sore yesterday, so it stays moderate.' : ''));
@@ -2234,7 +2249,7 @@ var PF_CORE = (function () {
 
   function buildPrompt(ctx) {
     var scen = ctx.scen; var lines = [];
-    lines.push('EVENT: ' + niceDate(ctx.date) + ' 2026, ' + ampm(scen.event.at) + '. ' + (scen.event.kind === 'morning' ? 'Morning check: fresh data synced for ' + ctx.profile.name + '.' : ctx.profile.name + ' sent a message.'));
+    lines.push('EVENT: ' + niceDate(ctx.date) + ' ' + ctx.date.slice(0, 4) + ', ' + ampm(scen.event.at) + '. ' + (scen.event.kind === 'morning' ? 'Morning check: fresh data synced for ' + ctx.profile.name + '.' : ctx.profile.name + ' sent a message.'));
     if (scen.event.text) lines.push('HER MESSAGE: "' + scen.event.text + '"');
     if (scen.insist) lines.push('CONTEXT OF THE MESSAGE: you recommended active recovery earlier this morning, with the reason. She has now insisted on lifting.');
     lines.push(scen.event.kind === 'morning'
@@ -2557,11 +2572,14 @@ var PF_CORE = (function () {
     else if (yesterday) opener = 'Morning! Yesterday: done, logged, counted. Look at you.';
     var body;
     if (scen.insist) body = 'Your call, and I respect it. I\'ve kept it moderate with no weight increases. If anything feels off, stop there and we\'ll pick it up tomorrow.';
+    else if (ctx.rec.missing && h.source !== undefined) body = 'I don\'t have your ' + h.missing.join(' or ') + ' for today, so I\'m flying a little blind. We\'re still on, just moderate: same weights, one less set on the big moves.';
     else if (ctx.rec.missing) body = 'Your watch kept last night\'s ' + h.missing.join(' and ') + ' to itself, so I\'m flying a little blind. We\'re still on, just moderate: same weights, one less set on the big moves.';
     else if (ctx.world.carry && ctx.world.carry.reason === 'sore') body = 'You said you were sore, so today is the gentler version: same moves, a little less volume.';
     else if (ctx.week >= 5 && ctx.level === 'active_recovery') body = 'You\'ve lifted ' + ctx.week + ' days this week. That\'s a lot of showing up, and a sixth isn\'t something I\'ll plan on my own.';
-    else if (ctx.level === 'push') body = 'Quick report from your body: ' + hoursWord(h.sleep.min) + ' of sleep, heart\'s calm, HRV right where it likes to be. Translation: you\'re ready.';
+    else if (ctx.level === 'push') body = 'Quick report from your body: ' + hoursWord(h.sleep.min) + ' of sleep, heart\'s calm' + (h.hrv !== null ? ', HRV right where it likes to be' : '') + '. Translation: you\'re ready.';
     else if (ctx.afterTough) body = 'Quick report from your body: ' + hoursWord(h.sleep.min) + ' of sleep, heart\'s calm. So today is the gentler version: same weights, one less set on the big moves.';
+    else if (ctx.level === 'moderate' && (h.energy === 'low' || h.energy === 'sore')) body = (h.energy === 'sore' ? 'You said you\'re sore' : 'You said your energy is low') + ', so today is the gentler version: same moves, one less set on the big ones. Showing up is the win.';
+    else if (ctx.level === 'moderate' && h.learning && !(h.sleep && h.sleep.min < 420)) body = 'I\'m still learning what normal looks like for you (' + h.dataDays + ' of 14 mornings so far), so we start moderate: one less set on the big moves, and no weight jumps yet.';
     else if (ctx.level === 'moderate') body = h.sleep && h.sleep.min < 420 ? 'Sleep came in a little short (' + duration(h.sleep.min) + '), so we keep it moderate today: same weights, one less set on the big moves, zero guilt.' : 'Your heart\'s still catching up from the week, so we keep it moderate: same weights, one less set, zero guilt.';
     else body = 'Your HRV and resting heart rate both say your body wants a lighter day, and I\'m inclined to listen.';
     var flagged = draft.rows.filter(function (r) { return r.needs_ok; });
@@ -2570,13 +2588,13 @@ var PF_CORE = (function () {
     var swapLine = Object.keys(ctx.world.swaps).length ? ' ' + libName(ctx.world.swaps[Object.keys(ctx.world.swaps)[0]]) + ' stays in, since you picked it.' : '';
     var closer = { lower: 'Nothing fancy.', upper: 'Arms\' turn. Your legs have earned the day off.', full: 'A little of everything.', recovery: '' }[draft.group] || '';
     var whys = {}; draft.rows.forEach(function (r, i) { whys[r.exercise_id] = r.why + (i === 1 && isStrength(draft.group) ? ' ' + ctx.due.text.split('. ')[0] + '.' : ''); });
-    var base = { missing_data: ctx.rec.missing ? 'No ' + h.missing.join(' or ') + ' synced by your 8:30 AM cutoff.' : '', exercises: rowsFrom(draft, whys), protein_nudge: isStrength(draft.group) ? NUDGE : '', citations: cites };
+    var base = { missing_data: ctx.rec.missing ? 'No ' + h.missing.join(' or ') + (h.source !== undefined ? ' in today\'s check-in.' : ' synced by your 8:30 AM cutoff.') : '', exercises: rowsFrom(draft, whys), protein_nudge: isStrength(draft.group) ? NUDGE : '', citations: cites };
     if (ctx.cal.status !== 'ok') {
       return reply(Object.assign(base, { decision: 'ASK_TIME', headline: groupLabel(ctx.due.group) + ' is on. You pick the time.', reason_line: 'I couldn\'t see your calendar, so I\'m not guessing a time.', missing_data: (base.missing_data ? base.missing_data + ' ' : '') + 'Your calendar could not be read this morning.', question: 'When works for you?',
         message: 'Your body\'s ready for ' + word + '. I couldn\'t see your calendar this morning, so when works for you?', session: sessionFrom(draft, null, null, ctx.level === 'push' ? 'normal' : 'moderate'), why: 'Session type and intensity come from your health data. The calendar is unavailable, so no time is assumed.', citations: cites.concat(['calendar:' + ctx.date]) }));
     }
     if (s.status !== 'ok') {
-      if (!ctx.shortDraft) return reply({ decision: 'REST', headline: 'No time today. ' + groupLabel(ctx.due.group) + ' moves to tomorrow.', reason_line: 'Nothing in your calendar fits even a short session.', message: 'Your calendar has won today, and that\'s fine. ' + groupLabel(ctx.due.group) + ' moves to tomorrow, same weights. Meetings win the battle, not the war.', why: ctx.slot.text, citations: ['calendar:' + ctx.date, 'find_slot'] });
+      if (!ctx.shortDraft) return reply({ decision: 'REST', headline: 'No time today. ' + groupLabel(ctx.due.group) + ' moves to tomorrow.', reason_line: 'Nothing in your calendar fits even a short session.', message: 'Your calendar has won today, and that\'s fine. ' + groupLabel(ctx.due.group) + ' moves to tomorrow, same weights.' + (ctx.health.source !== undefined ? ' Tomorrow\'s a fresh start.' : ' Meetings win the battle, not the war.'), why: ctx.slot.text, citations: ['calendar:' + ctx.date, 'find_slot'] });
       return reply(Object.assign(base, { decision: 'OFFER_OPTIONS', headline: 'Packed day: 15 minutes at ' + ampm(s.short.start) + ', or tomorrow', reason_line: 'Only one 15-minute gap today.', question: 'Which one?', options: ['15 minutes at ' + ampm(s.short.start), 'Move it to tomorrow'],
         message: 'Meetings: undefeated at filling your day, winless at stopping you. Two options: a quick 15 minutes at ' + shortTime(s.short.start) + ', or ' + word + ' moves to tomorrow at the same weights. Your call, coach.', session: sessionFrom(ctx.shortDraft, s.short.start, s.short.end, 'normal'), exercises: rowsFrom(ctx.shortDraft), why: ctx.slot.text + ' The short option is the 20-minute template trimmed to fit.', citations: cites.concat(['build_plan:short', 'calendar:' + ctx.date]) }));
     }
@@ -2587,7 +2605,7 @@ var PF_CORE = (function () {
     }
     var moderate = ctx.level !== 'push';
     return reply(Object.assign(base, { decision: moderate ? 'TRAIN_MODERATE' : 'TRAIN', headline: 'Today: ' + groupLabel(draft.group) + ', ' + span(s.start, s.end),
-      reason_line: (ctx.due.carry ? 'Carried over from yesterday, same weights. ' : '') + (moderate ? (ctx.rec.missing ? 'Data is missing, so moderate.' : 'Recovery is a little down, so moderate.') : groupLabel(draft.group) + ' is due, you\'re recovered, and ' + shortTime(s.start) + ' fits.'),
+      reason_line: (ctx.due.carry ? 'Carried over from yesterday, same weights. ' : '') + (moderate ? (ctx.rec.missing ? 'Data is missing, so moderate.' : ctx.health.energy === 'low' || ctx.health.energy === 'sore' ? 'You said you\'re ' + (ctx.health.energy === 'sore' ? 'sore' : 'low on energy') + ', so moderate.' : ctx.health.learning && !(ctx.health.sleep && ctx.health.sleep.min < 420) ? 'Still learning your normal, so moderate.' : 'Recovery is a little down, so moderate.') : groupLabel(draft.group) + ' is due, you\'re recovered, and ' + shortTime(s.start) + ' fits.'),
       message: opener + ' ' + body + ' So: ' + groupLabel(draft.group).toLowerCase() + ', ' + shortTime(s.start) + ', ' + draft.minutes + ' minutes. ' + closer + flagLine + upLine + swapLine,
       session: sessionFrom(draft, s.start, s.end, moderate ? 'moderate' : 'normal'),
       why: 'Readiness: ' + LEVEL_WORDS[ctx.level] + (ctx.rec.flags.length ? ' (' + ctx.rec.flags.join(', ') + ')' : '') + '. ' + ctx.due.text + ' Slot: ' + s.text }));
@@ -3038,10 +3056,11 @@ var PF_CORE = (function () {
     }
     box.appendChild(strip);
     var ticks = el('div', 'd-ticks'); [[420, '7a'], [600, '10a'], [780, '1p'], [960, '4p'], [1140, '7p']].forEach(function (t) { var x = el('span', '', t[1]); x.style.left = pos(t[0]) + '%'; ticks.appendChild(x); }); box.appendChild(ticks);
-    var line = cal.status !== 'ok' ? 'I couldn\'t see your calendar, so you pick the time.'
+    var mineCal = Boolean(run && run.world && PROFILES[run.world.profileId] && PROFILES[run.world.profileId].real);
+    var line = cal.status !== 'ok' ? (mineCal ? 'You\'ll pick the time today.' : 'I couldn\'t see your calendar, so you pick the time.')
       : start === null ? 'Nothing fits today, so you choose.'
       : plan.minutes <= 15 ? 'Booked solid. The only gap is ' + plan.minutes + ' minutes at ' + ampm(start) + '.'
-      : 'I found you ' + plan.minutes + ' minutes between meetings, with 15 minutes either side to change and get there.';
+      : 'I found you ' + plan.minutes + ' minutes ' + (mineCal ? 'in your free time' : 'between meetings') + ', with 15 minutes either side to change and get there.';
     var cap = el('div', 'day-cap'); cap.appendChild(tedFace('happy', 'mini')); cap.appendChild(el('span', '', line)); box.appendChild(cap);
     return box;
   }
@@ -4302,6 +4321,7 @@ var PF_CORE = (function () {
       links.appendChild(btnEl('Try a morning', 'w-sec-btn', function () { load(scenFor(EVALS[0])); }, false, 'today'));
       if (!myGym) links.appendChild(btnEl('Map my gym', 'w-sec-btn', function () { view.gymMap = null; view.sheet = { type: 'gymmap' }; }, false, 'camera'));
       cta.appendChild(links);
+      cta.appendChild(btnEl(ME && ME.setup ? 'Open my own Ted' : 'Use Ted with my own data', 'w-sec-btn', meStart, false, 'you'));
       hello.appendChild(cta); root.appendChild(hello); return;
     }
     var hour = Math.floor(view.now / 60); var name = PROFILES[view.world.profileId].name;
@@ -4321,7 +4341,8 @@ var PF_CORE = (function () {
       next.appendChild(el('div', 'next-title', 'That\'s today, done.'));
       var rotG = run.state === 'completed' ? (run.finalPlan || run.plan || {}).group : '';
       next.appendChild(el('p', 'muted', rotG === 'lower' || rotG === 'upper' ? 'Next up: ' + (rotG === 'lower' ? 'upper body' : 'lower body') + '. I rotate so every muscle gets its turn.' : 'Ted plans tomorrow from everything that happened today.'));
-      next.appendChild(btnEl('See tomorrow morning', 'primary wide', nextMorning, false, 'chevron'));
+      if (PROFILES[view.world.profileId].real) next.appendChild(el('p', 'hint', 'Come back tomorrow morning. Check in, and Ted builds your next session from today.'));
+      else next.appendChild(btnEl('See tomorrow morning', 'primary wide', nextMorning, false, 'chevron'));
       root.appendChild(next);
     }
   }
@@ -4349,7 +4370,7 @@ var PF_CORE = (function () {
     if (h.rhr !== null) stat('heart', 'Resting heart', h.rhr + ' bpm', 'Your normal ' + Math.round(h.base.rhr) + ' bpm', 1 - Math.max(0, h.rhr - h.base.rhr) / 15, ctx.rec.rhrDiff >= 3 ? 'low' : '');
     else stat('heart', 'Resting heart', 'Not synced', 'Your normal ' + Math.round(h.base.rhr) + ' bpm', 0, 'missing');
     if (h.hrv !== null) stat('wave', 'HRV', h.hrv + ' ms', 'Your normal ' + Math.round(h.base.hrv) + ' ms', h.hrv / (h.base.hrv * 1.2), ctx.rec.hrvPct < 95 ? 'low' : '');
-    else stat('wave', 'HRV', 'Not synced', 'Your normal ' + Math.round(h.base.hrv) + ' ms', 0, 'missing');
+    else if (h.base.hrv) stat('wave', 'HRV', 'Not synced', 'Your normal ' + Math.round(h.base.hrv) + ' ms', 0, 'missing');
     card.appendChild(stats);
     return card;
   }
@@ -4595,6 +4616,9 @@ var PF_CORE = (function () {
     var x = el('button', 'icon-btn'); x.type = 'button'; x.setAttribute('aria-label', 'Close'); x.appendChild(icon('close')); x.addEventListener('click', closeSheet); top.appendChild(x); sheet.appendChild(top);
     if (sh.type === 'gym') renderGymSheet(sheet, sh);
     else if (sh.type === 'gymmap') renderGymMapper(sheet);
+    else if (sh.type === 'mesetup') renderMeSetup(sheet);
+    else if (sh.type === 'mecheckin') renderMeCheckin(sheet);
+    else if (sh.type === 'meforget') renderMeForget(sheet);
     else if (sh.type === 'stop') {
       var pp = view.player; var setsDone = pp ? pp.log.reduce(function (n, x) { return n + x.done.length; }, 0) : 0;
       var hd = el('div', 'gym-intro'); hd.appendChild(tedFace('happy', 'mini')); hd.appendChild(el('span', '', 'Totally fine. What would you like to do?')); sheet.appendChild(el('h3', 'sheet-title', 'Stop the workout?')); sheet.appendChild(hd);
@@ -4890,6 +4914,7 @@ var PF_CORE = (function () {
     if (!world) { root.appendChild(el('p', 'muted', 'Pick a scene to load a made-up profile.')); return; }
     var profile = PROFILES[world.profileId];
     var me = el('section', 'acard'); me.appendChild(el('b', '', profile.label)); me.appendChild(el('p', 'muted', profile.onboarding)); root.appendChild(me);
+    if (profile.real) meYouCard(root);
     var mem = el('section', 'acard'); mem.appendChild(el('h3', 'card-h', 'What Ted remembers'));
     var list = el('ul', 'mem'); var add = function (text) { list.appendChild(el('li', '', text)); };
     Object.keys(world.progression).forEach(function (id) { var p = world.progression[id]; var lib = LIB[id]; add(lib.name + ': ' + weightText(lib, p.w) + ', ' + (p.streak >= 2 ? 'top of the rep range done, ready for a step up' : 'reps +' + (p.r || 0) + ' of 4 before a step up') + (p.decision === 'yes' ? ', you said yes to the next step' : p.decision === 'no' ? ', you chose to stay' : '') + '.'); });
@@ -4925,6 +4950,7 @@ var PF_CORE = (function () {
   function renderPresenter() {
     var bar = $('presenter'); bar.textContent = '';
     if (renderStoryBar(bar)) return;
+    if (view.base && view.base.mine) { renderMyBar(bar); return; }
     if (!view.base) { bar.appendChild(el('span', 'scene-name', 'Pick a scene to begin')); return; }
     var item = EVALS.filter(function (e) { return e.id === view.base.caseId; })[0];
     bar.appendChild(el('span', 'scene-name', item ? item.id + '  ' + item.story : PROFILES[view.world.profileId].label));
@@ -4968,7 +4994,7 @@ var PF_CORE = (function () {
     var fact = function (list, k, v) { var li = el('li'); li.appendChild(el('b', '', k + ': ')); li.appendChild(document.createTextNode(v)); list.appendChild(li); };
     // 1 Input
     var s1 = step(1, 'Input');
-    s1.appendChild(el('p', '', niceDate(ctx.date) + ', ' + ampm(scen.event.at) + '. ' + (scen.event.kind === 'morning' ? 'Your watch synced overnight, so Ted ran the morning check on its own.' : 'You sent Ted a message.')));
+    s1.appendChild(el('p', '', niceDate(ctx.date) + ', ' + ampm(scen.event.at) + '. ' + (scen.event.kind === 'morning' ? (scen.mine ? (ctx.health.source === 'fitbit' ? 'Your Fitbit data came in' : 'You checked in') + ', so Ted ran the morning check.' : 'Your watch synced overnight, so Ted ran the morning check on its own.') : 'You sent Ted a message.')));
     var f1 = el('ul', 'facts');
     fact(f1, 'Who', profile.label + '. ' + profile.about);
     if (scen.event.text) fact(f1, 'Message', '"' + scen.event.text + '"');
@@ -4979,7 +5005,7 @@ var PF_CORE = (function () {
     var vit = el('div', 'vitals');
     vit.appendChild(h.sleep ? vital('Sleep', short(h.sleep.min), 'normal ' + short(h.base.sleep), h.sleep.min < 300 ? 'danger' : h.sleep.min < 420 ? 'warn' : 'ok') : vital('Sleep', 'missing', 'normal ' + short(h.base.sleep), 'missing'));
     vit.appendChild(h.rhr !== null ? vital('Resting HR', h.rhr + ' bpm', 'normal ' + Math.round(h.base.rhr), ctx.rec.rhrDiff >= 7 ? 'danger' : ctx.rec.rhrDiff >= 3 ? 'warn' : 'ok') : vital('Resting HR', 'missing', 'normal ' + Math.round(h.base.rhr), 'missing'));
-    vit.appendChild(h.hrv !== null ? vital('HRV', h.hrv + ' ms', 'normal ' + Math.round(h.base.hrv), ctx.rec.hrvPct < 80 ? 'danger' : ctx.rec.hrvPct < 95 ? 'warn' : 'ok') : vital('HRV', 'missing', 'normal ' + Math.round(h.base.hrv), 'missing'));
+    vit.appendChild(h.hrv !== null ? vital('HRV', h.hrv + ' ms', 'normal ' + Math.round(h.base.hrv), ctx.rec.hrvPct < 80 ? 'danger' : ctx.rec.hrvPct < 95 ? 'warn' : 'ok') : vital('HRV', 'missing', h.base.hrv ? 'normal ' + Math.round(h.base.hrv) : 'not tracked', 'missing'));
     s2.appendChild(vit);
     var ready = el('p'); ready.style.marginTop = 'var(--sp-2)'; ready.appendChild(el('span', 'badge ' + (ctx.level === 'push' ? 'ok' : ctx.level === 'moderate' ? 'warn' : 'danger'), 'Readiness: ' + LEVEL_WORDS[ctx.level])); s2.appendChild(ready);
     var strip = el('div', 'daystrip'); var pos = function (m) { return ((Math.min(Math.max(m, 390), 1290) - 390) / 900 * 100) + '%'; };
@@ -5067,6 +5093,399 @@ var PF_CORE = (function () {
     var link = document.createElement('a'); link.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' })); link.download = 'ted-run-log.csv';
     document.body.appendChild(link); link.click(); link.remove();
   });
+
+  // =====================================================================================================
+  // USE TED YOURSELF: your own setup, a short morning check-in (or your Fitbit data), saved in this browser only.
+  // The sample profiles above stay as they are. "me" is one more profile, built from what you tell Ted.
+  // =====================================================================================================
+  var ME_KEY = 'ted.me.v1';
+  // Fitbit sign-in uses the Google Health API. Paste a Google Cloud OAuth client ID of type "Web application"
+  // (authorized JavaScript origin: https://himanshia30.github.io). Empty = the Fitbit option says "invite only".
+  var GOOGLE_CLIENT_ID = '';
+  var GH_SCOPES = [
+    'https://www.googleapis.com/auth/googlehealth.sleep.readonly',
+    'https://www.googleapis.com/auth/googlehealth.health_metrics_and_measurements.readonly',
+    'https://www.googleapis.com/auth/googlehealth.activity_and_fitness.readonly'
+  ];
+  var ME_TIMES = [
+    ['early', 'Early morning', '6:30 to 8:30 AM', [390, 510]],
+    ['lunch', 'Lunch', '12:00 to 1:30 PM', [720, 810]],
+    ['after', 'After work', '5:00 to 7:30 PM', [1020, 1170]],
+    ['evening', 'Evening', '7:00 to 9:00 PM', [1140, 1260]]
+  ];
+  var ME_GOALS = ['Get stronger', 'More energy', 'Feel at home in the gym', 'Stay strong as I get older'];
+  var ME_EXPERIENCE = ['Never lifted', 'Tried a bit', 'Some experience'];
+  var ME_FEEL = [['great', 'Great'], ['okay', 'Okay'], ['low', 'Low energy'], ['sore', 'Sore']];
+
+  var ME = loadMe();
+  var ghToken = null;
+
+  function loadMe() {
+    try { var raw = localStorage.getItem(ME_KEY); var v = raw ? JSON.parse(raw) : null; return v && v.v === 1 ? v : null; } catch (e) { return null; }
+  }
+  function saveMe() { if (!ME) return; try { localStorage.setItem(ME_KEY, JSON.stringify(ME)); } catch (e) { /* storage blocked: kept for this visit */ } }
+  function localISO(dt) { dt = dt || new Date(); return dt.getFullYear() + '-' + d2(dt.getMonth() + 1) + '-' + d2(dt.getDate()); }
+  function nowMin() { var dt = new Date(); return dt.getHours() * 60 + dt.getMinutes(); }
+  function isMine(world) { return Boolean(world && PROFILES[world.profileId] && PROFILES[world.profileId].real); }
+  function meDay(date) { return (ME && ME.days && ME.days[date]) || {}; }
+  function checkedInToday() { var t = meDay(localISO()); return Boolean(t.checkedAt); }
+
+  // ---------------------------------------------------------------- your profile, rebuilt from your setup each morning
+  function meProfile() {
+    var s = ME.setup; var w = ME.world;
+    var times = ME_TIMES.filter(function (t) { return (s.times || []).indexOf(t[0]) >= 0; }); if (!times.length) times = [ME_TIMES[2]];
+    var done = w ? w.history.filter(function (x) { return x.status === 'completed'; }) : [];
+    return {
+      id: 'me', name: s.name || 'you', label: (s.name || 'You') + ' (your own data)', about: 'You, with your own check-ins. Saved in this browser only.', real: true,
+      today: localISO(), first: done.length ? done.map(function (x) { return x.date; }).sort()[0] : '', setsPct: done.length ? 90 : 0,
+      split: Number(s.days) >= 4 ? 'upper_lower' : 'full', minutes: Number(s.minutes) === 20 ? 20 : 35, tierAllowed: 1,
+      prefs: { windows: times.map(function (t) { return t[3]; }), text: times.map(function (t) { return t[1] + ' (' + t[2] + ')'; }).join(' or ') },
+      onboarding: 'Goal: ' + (s.goal || 'get stronger').toLowerCase() + '. Experience: ' + (s.experience || 'never lifted').toLowerCase() + '. Wants ' + s.days + ' days a week, ' + (Number(s.minutes) === 20 ? 20 : 35) + ' minutes a session.',
+      calendar: meCalendar, history: [], progression: {}, goal: Number(s.days) || 3, baseline: 0, liftLog: {}, firsts: []
+    };
+  }
+  function registerMe() { if (ME && ME.setup) PROFILES.me = meProfile(); }
+
+  // get_calendar for you: busy until now, then your free times for today (or your usual times).
+  function meCalendar(date) {
+    var t = meDay(date); var busyList = [];
+    if (date === localISO()) { var n = nowMin(); if (n > 390) busyList.push({ start: 390, end: Math.min(1290, n + 15), summary: 'Earlier today' }); }
+    if (Array.isArray(t.free) && t.free.length) {
+      var at = 390;
+      t.free.slice().sort(function (a, b) { return a[0] - b[0]; }).forEach(function (f) { if (f[0] > at) busyList.push({ start: at, end: f[0], summary: 'Busy' }); at = Math.max(at, f[1]); });
+      if (at < 1290) busyList.push({ start: at, end: 1290, summary: 'Busy' });
+    }
+    return busyList;
+  }
+  var baseCalendarFor = calendarFor;
+  calendarFor = function (world, date, mode) {
+    if (isMine(world) && meDay(date).free === 'ask') return { status: 'unavailable', busy: [], free: [] };
+    return baseCalendarFor(world, date, mode);
+  };
+
+  // get_health_data for you: your check-ins and Fitbit days. Your normal is your own average, nothing made up.
+  function meSeries() {
+    var today = localISO(); var days = [];
+    Object.keys((ME && ME.days) || {}).sort().forEach(function (date) {
+      if (date >= today || daysBetween(date, today) > 90) return;
+      var t = ME.days[date];
+      if (!t.sleep_min && !t.resting_hr && !t.hrv_ms) return;
+      days.push({ date: date, sleep_min: t.sleep_min || null, resting_hr: t.resting_hr || null, hrv_ms: t.hrv_ms || null, steps: t.steps || null });
+    });
+    var avg = function (key) { var list = days.map(function (x) { return x[key]; }).filter(function (v) { return v !== null && v !== undefined; }); return list.length ? { avg: list.reduce(function (a, b) { return a + b; }, 0) / list.length, count: list.length } : { avg: null, count: 0 }; };
+    var t = meDay(today);
+    var sleepA = avg('sleep_min'); var rhrA = avg('resting_hr'); var hrvA = avg('hrv_ms');
+    var last7 = days.slice(-7).map(function (x) { return x.hrv_ms; }).filter(function (v) { return v; });
+    var avg7 = last7.length ? last7.reduce(function (a, b) { return a + b; }, 0) / last7.length : null;
+    return {
+      days: days, count: days.length,
+      base: { sleep: Math.round(sleepA.avg || t.sleep_min || 450), rhr: rhrA.avg || t.resting_hr || 65, hrv: hrvA.avg || t.hrv_ms || null, hrvMissing: 90 - hrvA.count },
+      declining: Boolean(hrvA.count >= 10 && avg7 !== null && avg7 < hrvA.avg * 0.9), avg7: avg7 === null ? null : Math.round(avg7)
+    };
+  }
+  var baseSeriesFor = seriesFor;
+  seriesFor = function (profile) { return profile && profile.real ? meSeries() : baseSeriesFor(profile); };
+
+  var baseHealthFor = healthFor;
+  healthFor = function (world, date, condition) {
+    if (!isMine(world)) return baseHealthFor(world, date, condition);
+    var series = meSeries(); var t = meDay(date);
+    var health = { date: date, base: series.base, declining: series.declining, avg7: series.avg7, sleep: null, rhr: null, hrv: null, missing: [], steps: t.steps || null,
+      energy: t.energy || '', learning: false, dataDays: series.count + (t.sleep_min || t.resting_hr ? 1 : 0), source: t.src || '' };
+    health.learning = health.dataDays < 14;
+    if (t.sleep_min) health.sleep = { start: t.start || '', end: t.end || '', min: t.sleep_min, stages: t.stages || null };
+    if (t.resting_hr) health.rhr = t.resting_hr;
+    if (t.hrv_ms) health.hrv = t.hrv_ms;
+    if (!health.sleep) health.missing.push('sleep');
+    if (health.rhr === null) health.missing.push('resting heart rate');
+    return health;
+  };
+  var baseFreshness = freshness;
+  freshness = function (health) {
+    if (health.source === undefined) return baseFreshness(health);
+    var how = health.source === 'fitbit' ? 'From your Fitbit, synced this morning.' : 'From your morning check-in.';
+    if (health.sleep && health.rhr !== null) return { status: 'ok', text: how + ' Sleep and resting heart rate are both here.' };
+    return { status: 'partial', text: how + ' Missing: ' + health.missing.join(' and ') + '. Ted goes ahead with what he has, keeps it moderate, and says so.' };
+  };
+  var baseAssess = assess;
+  assess = function (health) {
+    var r = baseAssess(health);
+    if (health.source === undefined) return r;
+    if (health.energy === 'low' || health.energy === 'sore') {
+      r.flags.push('you said ' + (health.energy === 'sore' ? 'you\'re sore' : 'your energy is low') + ' (amber)');
+      if (r.level === 'push') r.level = 'moderate';
+    }
+    if (health.learning && r.level === 'push') { r.level = 'moderate'; r.flags.push('still learning your normal (' + health.dataDays + ' of 14 days), so capped at moderate'); }
+    return r;
+  };
+
+  // ---------------------------------------------------------------- your saved world
+  function meWorld() {
+    if (ME.world) { var w = clone(ME.world); w.profileId = 'me'; ['swaps', 'sent', 'approved', 'progression', 'liftLog'].forEach(function (k) { w[k] = w[k] || {}; }); ['history', 'pain', 'holds', 'counted', 'firsts'].forEach(function (k) { w[k] = w[k] || []; }); return w; }
+    return makeWorld('me');
+  }
+  function saveWorld() {
+    if (!ME || !view.world || !isMine(view.world)) return;
+    var w = view.world; var copy = {};
+    ['date', 'liftLog', 'firsts', 'history', 'progression', 'swaps', 'carry', 'pain', 'caution', 'sent', 'holds', 'counted', 'approved', 'gym'].forEach(function (k) { copy[k] = w[k]; });
+    try { ME.world = JSON.parse(JSON.stringify(copy)); } catch (e) { return; }
+    saveMe();
+  }
+  var baseRenderAll = renderAll;
+  renderAll = function () { baseRenderAll(); saveWorld(); };
+
+  // Opens Ted on your own data: setup first, then the check-in, then the morning plan.
+  function meStart() {
+    if (busy) return;
+    stopSpeech();
+    if (!ME || !ME.setup) { view.meDraft = null; view.sheet = { type: 'mesetup' }; renderAll(); return; }
+    if (!checkedInToday()) { view.meDraft = null; view.sheet = { type: 'mecheckin' }; renderAll(); return; }
+    startMyMorning();
+  }
+  function startMyMorning() {
+    if (busy) return;
+    registerMe();
+    var today = localISO(); var at = Math.max(360, Math.min(nowMin(), 1380));
+    var scen = { profile: 'me', date0: today, date: today, condition: 'normal', calendar: 'normal', event: { kind: 'morning', at: at }, caseId: '', sampleKey: null, mine: true };
+    var world = meWorld(); world.date = today;
+    if (world.gym) myGym = world.gym; else if (myGym) world.gym = myGym;
+    var saved = world.approved[today] || null;
+    var doneToday = world.history.some(function (x) { return x.date === today && x.status === 'completed'; });
+    delete world.sent[sentKey(world)];
+    closePlayer();
+    view = { scen: scen, base: scen, world: world, ctx: buildContext(world, scen), run: null, thread: [], extras: {}, error: '', notice: '', now: at, anchor: null, said: null, screen: 'today', player: null, sheet: null, seen: 0, story: null, lock: null, celebrate: null };
+    push({ t: 'day', text: niceDate(today) });
+    var src = meDay(today).src;
+    sys(ampm(at) + '. ' + (src === 'fitbit' ? 'Ted read your Fitbit data from last night.' : src === 'checkin' ? 'Ted has your check-in.' : 'No data from last night yet.'));
+    addLog('ted', 'Your own morning: ' + (src === 'fitbit' ? 'Fitbit data' : 'check-in') + ' for ' + niceDate(today) + '.', '', null, { source: 'You' });
+    if (doneToday) { sys('Today\'s session is already logged. Nice work. Check in again tomorrow morning.'); renderAll(); return; }
+    renderAll();
+    if (window.matchMedia('(max-width: 1240px)').matches) $('loop').scrollIntoView({ block: 'start' });
+    runCheck({ after: function () { if (saved && view.run) restoreApproval(view.run, saved); } });
+  }
+  // Reopening Ted later the same day keeps the plan you already approved.
+  function restoreApproval(run, saved) {
+    if (!run.plan.rows.length || run.plan.group !== saved.group) return;
+    run.plan.start = saved.start; run.plan.end = saved.end; run.plan.minutes = saved.minutes;
+    run.finalPlan = run.plan; run.state = 'approved'; run.action = 'Approved';
+    run.world.approved[run.date] = saved;
+    run.hold = run.world.holds.filter(function (h) { return h.date === run.date; })[0] || { title: 'Ted session', date: run.date, start: saved.start, end: saved.end };
+    sys('You approved this plan earlier today. It\'s still on.');
+  }
+
+  // ---------------------------------------------------------------- Fitbit, through the Google Health API
+  function ghLoadSignIn() {
+    return new Promise(function (resolve, reject) {
+      if (window.google && google.accounts && google.accounts.oauth2) { resolve(); return; }
+      var s = document.createElement('script'); s.src = 'https://accounts.google.com/gsi/client'; s.async = true;
+      s.onload = function () { resolve(); }; s.onerror = function () { reject(new Error('Google sign-in could not load. Check your connection and try again.')); };
+      document.head.appendChild(s);
+    });
+  }
+  function ghSignIn() {
+    if (ghToken && ghToken.until > Date.now()) return Promise.resolve(ghToken.value);
+    return ghLoadSignIn().then(function () {
+      return new Promise(function (resolve, reject) {
+        var client = google.accounts.oauth2.initTokenClient({
+          client_id: GOOGLE_CLIENT_ID, scope: GH_SCOPES.join(' '),
+          callback: function (r) {
+            if (!r || r.error) { reject(new Error(r && r.error === 'access_denied' ? 'You didn\'t give Ted access, so nothing was read.' : 'Google sign-in didn\'t finish. Try again.')); return; }
+            ghToken = { value: r.access_token, until: Date.now() + (Number(r.expires_in || 3600) - 60) * 1000 }; resolve(ghToken.value);
+          },
+          error_callback: function (e) { reject(new Error(e && e.type === 'popup_closed' ? 'The sign-in window was closed before it finished.' : 'Google sign-in didn\'t finish. If you\'re not on the tester list yet, ask Himanshi for an invite.')); }
+        });
+        client.requestAccessToken({ prompt: ME && ME.fitbit && ME.fitbit.connected ? '' : 'consent' });
+      });
+    });
+  }
+  function ghList(token, type, filter, pageSize, maxPages) {
+    var out = []; var pages = 0;
+    var next = function (pageToken) {
+      var q = 'pageSize=' + pageSize + (filter ? '&filter=' + encodeURIComponent(filter) : '') + (pageToken ? '&pageToken=' + encodeURIComponent(pageToken) : '');
+      return fetch('https://health.googleapis.com/v4/users/me/dataTypes/' + type + '/dataPoints?' + q, { headers: { Authorization: 'Bearer ' + token } }).then(function (res) {
+        if (res.status === 401 || res.status === 403) { ghToken = null; throw new Error('Google said Ted isn\'t allowed to read your ' + type.replace(/-/g, ' ') + ' data. If you\'re not on the tester list yet, ask Himanshi for an invite.'); }
+        if (!res.ok) throw new Error('Couldn\'t read ' + type.replace(/-/g, ' ') + ' from Google Health (error ' + res.status + ').');
+        return res.json();
+      }).then(function (body) {
+        out = out.concat(body.dataPoints || []); pages += 1;
+        if (body.nextPageToken && pages < maxPages) return next(body.nextPageToken);
+        return out;
+      });
+    };
+    return next('');
+  }
+  function ghDate(d) { return d && d.year ? d.year + '-' + d2(d.month) + '-' + d2(d.day) : ''; }
+  function ghTime(t) { return t ? d2(t.hours || 0) + ':' + d2(t.minutes || 0) : ''; }
+  // Maps Google Health data points into Ted's own format: one record per morning.
+  function ghMap(sleeps, rhrs, hrvs, steps, today) {
+    var days = {}; var put = function (date) { return days[date] || (days[date] = {}); };
+    sleeps.forEach(function (p) {
+      var s = p.sleep; if (!s || !s.interval) return;
+      if (s.metadata && s.metadata.mainSleep === false) return;
+      var end = s.interval.civilEndTime || {}; var start = s.interval.civilStartTime || {};
+      var date = ghDate(end.date); if (!date) return;
+      var sum = s.summary || {}; var mins = Number(sum.minutesAsleep) || Math.round((Date.parse(s.interval.endTime) - Date.parse(s.interval.startTime)) / 60000) || 0;
+      var stages = null;
+      if (Array.isArray(sum.stagesSummary) && sum.stagesSummary.length) {
+        stages = { deep: 0, rem: 0, light: 0 };
+        sum.stagesSummary.forEach(function (x) { var k = String(x.type || '').toLowerCase(); if (stages[k] !== undefined) stages[k] += Number(x.minutes) || 0; });
+      }
+      var day = put(date);
+      if (!day.sleep_min || mins > day.sleep_min) { day.sleep_min = mins; day.start = ghTime(start.time); day.end = ghTime(end.time); day.stages = stages; }
+    });
+    rhrs.forEach(function (p) { var r = p.dailyRestingHeartRate; var date = r && ghDate(r.date); if (date && Number(r.beatsPerMinute)) put(date).resting_hr = Math.round(Number(r.beatsPerMinute)); });
+    hrvs.forEach(function (p) { var r = p.dailyHeartRateVariability; var date = r && ghDate(r.date); if (date && Number(r.averageHeartRateVariabilityMilliseconds)) put(date).hrv_ms = Math.round(Number(r.averageHeartRateVariabilityMilliseconds)); });
+    var total = steps.reduce(function (n, p) { return n + (p.steps ? Number(p.steps.count) || 0 : 0); }, 0);
+    if (total) put(today).steps = total;
+    return days;
+  }
+  function ghSync() {
+    if (!GOOGLE_CLIENT_ID) return Promise.reject(new Error('Fitbit sign-in is invite-only for now. Use the check-in instead.'));
+    var today = localISO(); var from = addDays(today, -90); var yesterday = addDays(today, -1);
+    return ghSignIn().then(function (token) {
+      return Promise.all([
+        ghList(token, 'sleep', 'sleep.interval.civil_end_time >= "' + from + '"', 25, 6),
+        ghList(token, 'daily-resting-heart-rate', 'dailyRestingHeartRate.date >= "' + from + '"', 100, 2),
+        ghList(token, 'daily-heart-rate-variability', 'dailyHeartRateVariability.date >= "' + from + '"', 100, 2).catch(function () { return []; }),
+        ghList(token, 'steps', 'steps.interval.civil_start_time >= "' + yesterday + '" AND steps.interval.civil_start_time < "' + today + '"', 10000, 2).catch(function () { return []; })
+      ]);
+    }).then(function (all) {
+      var days = ghMap(all[0], all[1], all[2], all[3], today);
+      ME.days = ME.days || {};
+      Object.keys(days).forEach(function (date) { var d = ME.days[date] || (ME.days[date] = {}); Object.keys(days[date]).forEach(function (k) { if (days[date][k] !== null && days[date][k] !== undefined) d[k] = days[date][k]; }); if (date !== today) d.src = d.src || 'fitbit'; });
+      ME.fitbit = { connected: true, lastSync: new Date().toISOString(), nights: all[0].length };
+      saveMe();
+      return days[today] || {};
+    });
+  }
+
+  // ---------------------------------------------------------------- the sheets: setup and the morning check-in
+  function meChip(label, on, fn) { var b = el('button', 'me-chip' + (on ? ' on' : ''), label); b.type = 'button'; b.setAttribute('aria-pressed', String(Boolean(on))); b.addEventListener('click', function () { fn(); renderOverlay(); }); return b; }
+  function meField(labelText, node, hint) { var l = el('label', 'label me-field'); l.appendChild(document.createTextNode(labelText)); l.appendChild(node); if (hint) l.appendChild(el('span', 'me-hint', hint)); return l; }
+  function meNumber(value, min, max, placeholder, onInput) {
+    var i = el('input', 'input'); i.type = 'number'; i.inputMode = 'numeric'; i.min = String(min); i.max = String(max); i.placeholder = placeholder || ''; i.value = value === null || value === undefined ? '' : String(value);
+    i.addEventListener('input', function () { onInput(i.value === '' ? null : Number(i.value)); }); return i;
+  }
+
+  function renderMeSetup(sheet) {
+    var s = view.meDraft || (view.meDraft = ME && ME.setup ? clone(ME.setup) : { name: '', goal: ME_GOALS[0], experience: ME_EXPERIENCE[0], days: 3, minutes: 35, times: ['after'] });
+    sheet.appendChild(el('h3', 'sheet-title', ME && ME.setup ? 'Your setup' : 'Use Ted yourself'));
+    var intro = el('div', 'gym-intro'); intro.appendChild(tedFace('happy', 'mini')); intro.appendChild(el('span', '', 'A few quick questions, then every morning I\'ll build one workout that fits your day.')); sheet.appendChild(intro);
+    var name = el('input', 'input'); name.placeholder = 'First name'; name.value = s.name || ''; name.maxLength = 30; name.addEventListener('input', function () { s.name = name.value.trim(); });
+    sheet.appendChild(meField('What should Ted call you?', name));
+    var goals = el('div', 'me-chips'); ME_GOALS.forEach(function (g) { goals.appendChild(meChip(g, s.goal === g, function () { s.goal = g; })); }); sheet.appendChild(meField('Your main goal', goals));
+    var exp = el('div', 'me-chips'); ME_EXPERIENCE.forEach(function (g) { exp.appendChild(meChip(g, s.experience === g, function () { s.experience = g; })); }); sheet.appendChild(meField('Lifting experience', exp));
+    var days = el('div', 'me-chips'); [2, 3, 4].forEach(function (n) { days.appendChild(meChip(n + ' days', Number(s.days) === n, function () { s.days = n; })); }); sheet.appendChild(meField('Days a week', days, '2 or 3 days: full body each time. 4 days: Ted alternates lower and upper body.'));
+    var mins = el('div', 'me-chips'); [20, 35].forEach(function (n) { mins.appendChild(meChip(n + ' minutes', Number(s.minutes) === n, function () { s.minutes = n; })); }); sheet.appendChild(meField('Session length', mins));
+    var times = el('div', 'me-chips'); ME_TIMES.forEach(function (t) { var on = (s.times || []).indexOf(t[0]) >= 0; times.appendChild(meChip(t[1] + ' · ' + t[2], on, function () { s.times = on ? s.times.filter(function (x) { return x !== t[0]; }) : (s.times || []).concat([t[0]]); })); });
+    sheet.appendChild(meField('When do you usually have time?', times, 'Pick all that work. You can change today\'s times at each check-in.'));
+    var note = el('div', 'card-note info'); note.appendChild(document.createTextNode('Ted plans for a gym with dumbbells and machines. Map your own gym from photos later in the You tab. Everything you enter stays in this browser.')); sheet.appendChild(note);
+    if (view.meError) sheet.appendChild(el('p', 'error-note', view.meError));
+    sheet.appendChild(btnEl(ME && ME.setup ? 'Save' : 'Save and check in', 'primary wide big', function () {
+      if (!s.times || !s.times.length) { view.meError = 'Pick at least one time of day that usually works.'; renderOverlay(); return; }
+      view.meError = '';
+      var first = !(ME && ME.setup);
+      ME = ME || { v: 1, days: {}, world: null, fitbit: null, created: new Date().toISOString() };
+      ME.setup = { name: (s.name || '').slice(0, 30), goal: s.goal, experience: s.experience, days: Number(s.days) || 3, minutes: Number(s.minutes) === 20 ? 20 : 35, times: s.times.slice() };
+      saveMe(); registerMe(); view.meDraft = null;
+      if (first || !checkedInToday()) view.sheet = { type: 'mecheckin' }; else { view.sheet = null; if (view.world && isMine(view.world)) startMyMorning(); }
+      renderAll();
+    }, false, 'check'));
+  }
+
+  function renderMeCheckin(sheet) {
+    var today = localISO(); var t = meDay(today);
+    var c = view.meDraft || (view.meDraft = {
+      hours: t.sleep_min ? Math.floor(t.sleep_min / 60) : null, minutes: t.sleep_min ? t.sleep_min % 60 : null, rhr: t.resting_hr || null, hrv: t.hrv_ms || null,
+      energy: t.energy || 'okay', when: Array.isArray(t.free) ? 'pick' : t.free === 'ask' ? 'ask' : 'usual', picked: t.picked || [], src: t.src || 'checkin', stages: t.stages || null, start: t.start || '', end: t.end || '', steps: t.steps || null
+    });
+    var name = ME.setup.name; var hour = Math.floor(nowMin() / 60);
+    sheet.appendChild(el('h3', 'sheet-title', (hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening') + (name ? ', ' + name : '')));
+    var intro = el('div', 'gym-intro'); intro.appendChild(tedFace('happy', 'mini')); intro.appendChild(el('span', '', 'Quick check-in. Numbers come from your Fitbit app; skip anything you don\'t know.')); sheet.appendChild(intro);
+
+    var fb = el('div', 'me-fitbit');
+    if (GOOGLE_CLIENT_ID) {
+      fb.appendChild(btnEl(view.meSyncing ? 'Reading your Fitbit…' : ME.fitbit && ME.fitbit.connected ? 'Sync from Fitbit' : 'Connect Fitbit', 'wide', function () {
+        if (view.meSyncing) return; view.meSyncing = true; view.meError = ''; renderOverlay();
+        ghSync().then(function (d) {
+          view.meSyncing = false;
+          if (d.sleep_min) { c.hours = Math.floor(d.sleep_min / 60); c.minutes = d.sleep_min % 60; c.stages = d.stages || null; c.start = d.start || ''; c.end = d.end || ''; }
+          if (d.resting_hr) c.rhr = d.resting_hr; if (d.hrv_ms) c.hrv = d.hrv_ms; if (d.steps) c.steps = d.steps;
+          c.src = 'fitbit';
+          view.meNote = d.sleep_min || d.resting_hr ? 'Filled in from your Fitbit. Check it looks right.' : 'Connected, but last night\'s data hasn\'t reached Google yet. Open the Fitbit app to sync, then try again, or type it in.';
+        }).catch(function (e) { view.meSyncing = false; view.meError = e.message || 'Couldn\'t read your Fitbit data.'; }).then(function () { renderOverlay(); });
+      }, view.meSyncing, 'heart'));
+      fb.appendChild(el('span', 'me-hint', ME.fitbit && ME.fitbit.connected ? 'Reads sleep, resting heart rate, HRV and steps. Nothing is written back.' : 'Invite-only while Google reviews the app. Not invited? Just type your numbers below.'));
+    } else {
+      fb.appendChild(el('span', 'me-hint', 'Direct Fitbit sync is invite-only for now, so type last night\'s numbers from the Fitbit app.'));
+    }
+    sheet.appendChild(fb);
+    if (view.meNote) sheet.appendChild(el('div', 'card-note info', view.meNote));
+
+    var sleepRow = el('div', 'me-row');
+    sleepRow.appendChild(meNumber(c.hours, 0, 16, 'Hours', function (v) { c.hours = v; c.src = c.src === 'fitbit' ? 'fitbit' : 'checkin'; }));
+    sleepRow.appendChild(meNumber(c.minutes, 0, 59, 'Minutes', function (v) { c.minutes = v; }));
+    sheet.appendChild(meField('Time asleep last night', sleepRow, 'Fitbit app: Today, then Sleep.'));
+    sheet.appendChild(meField('Resting heart rate (bpm)', meNumber(c.rhr, 30, 130, 'e.g. 64', function (v) { c.rhr = v; }), 'Fitbit app: Today, then Resting heart rate. Optional.'));
+    sheet.appendChild(meField('Heart rate variability (ms)', meNumber(c.hrv, 5, 250, 'e.g. 40', function (v) { c.hrv = v; }), 'Fitbit app: Health metrics. Optional.'));
+    var feel = el('div', 'me-chips'); ME_FEEL.forEach(function (f) { feel.appendChild(meChip(f[1], c.energy === f[0], function () { c.energy = f[0]; })); }); sheet.appendChild(meField('How do you feel?', feel));
+
+    var when = el('div', 'me-chips');
+    when.appendChild(meChip('My usual times', c.when === 'usual', function () { c.when = 'usual'; }));
+    ME_TIMES.forEach(function (tm) { var on = c.when === 'pick' && c.picked.indexOf(tm[0]) >= 0; when.appendChild(meChip(tm[1], on, function () { if (c.when !== 'pick') { c.when = 'pick'; c.picked = []; } c.picked = on ? c.picked.filter(function (x) { return x !== tm[0]; }) : c.picked.concat([tm[0]]); if (!c.picked.length) c.when = 'usual'; })); });
+    when.appendChild(meChip('Not sure yet', c.when === 'ask', function () { c.when = 'ask'; }));
+    sheet.appendChild(meField('When could you train today?', when, c.when === 'ask' ? 'Ted will plan the session and ask you when.' : 'Ted won\'t schedule anything earlier than right now.'));
+
+    if (view.meError) sheet.appendChild(el('p', 'error-note', view.meError));
+    sheet.appendChild(btnEl('Get today\'s plan', 'primary wide big', function () {
+      var mins = c.hours === null && c.minutes === null ? null : (c.hours || 0) * 60 + (c.minutes || 0);
+      if (mins !== null && (mins < 30 || mins > 960)) { view.meError = 'That sleep time looks off. Check the hours and minutes.'; renderOverlay(); return; }
+      if (c.rhr !== null && (c.rhr < 30 || c.rhr > 130)) { view.meError = 'Resting heart rate is usually between 40 and 100. Check the number, or leave it blank.'; renderOverlay(); return; }
+      if (c.hrv !== null && (c.hrv < 5 || c.hrv > 250)) { view.meError = 'HRV is usually between 10 and 150 ms. Check the number, or leave it blank.'; renderOverlay(); return; }
+      view.meError = ''; view.meNote = '';
+      ME.days = ME.days || {};
+      var free = c.when === 'ask' ? 'ask' : c.when === 'pick' ? ME_TIMES.filter(function (tm) { return c.picked.indexOf(tm[0]) >= 0; }).map(function (tm) { return tm[3]; }) : null;
+      ME.days[today] = { sleep_min: mins, start: c.start || '', end: c.end || '', stages: c.stages || null, resting_hr: c.rhr ? Math.round(c.rhr) : null, hrv_ms: c.hrv ? Math.round(c.hrv) : null, steps: c.steps || null,
+        energy: c.energy, free: free, picked: c.when === 'pick' ? c.picked.slice() : [], src: c.src === 'fitbit' ? 'fitbit' : 'checkin', checkedAt: new Date().toISOString() };
+      saveMe(); view.meDraft = null; view.sheet = null;
+      startMyMorning();
+    }, false, 'chevron'));
+    var priv = el('p', 'me-hint'); priv.textContent = 'Saved in this browser only. ' + (PFAI.connected() ? 'With AI connected, today\'s numbers are sent to Claude to write Ted\'s message.' : 'Nothing is sent anywhere.'); sheet.appendChild(priv);
+  }
+
+  function renderMeForget(sheet) {
+    sheet.appendChild(el('h3', 'sheet-title', 'Delete your data?'));
+    sheet.appendChild(el('p', 'muted', 'This removes your setup, check-ins, sessions and progress from this browser. It can\'t be undone.'));
+    var yes = el('button', 'choice danger-choice'); yes.type = 'button'; yes.appendChild(el('b', '', 'Delete everything')); yes.appendChild(el('span', 'choice-sub', 'Ted forgets you completely.'));
+    yes.addEventListener('click', function () { try { localStorage.removeItem(ME_KEY); } catch (e) { /* nothing stored */ } ME = null; ghToken = null; delete PROFILES.me; closePlayer(); view = { scen: null, base: null, world: null, ctx: null, run: null, thread: [], extras: {}, error: '', notice: '', now: 410, anchor: null, screen: 'today', player: null, sheet: null }; renderAll(); });
+    sheet.appendChild(yes);
+    sheet.appendChild(btnEl('Keep my data', 'primary wide', function () { view.sheet = null; }));
+  }
+
+  // The You tab, for your own profile: setup, Fitbit and your data.
+  function meYouCard(root) {
+    var card = el('section', 'acard'); card.appendChild(el('h3', 'card-h', 'Your data'));
+    var days = Object.keys(ME.days || {}).filter(function (d) { return ME.days[d].sleep_min || ME.days[d].resting_hr; }).length;
+    card.appendChild(el('p', 'muted', days + ' morning' + (days === 1 ? '' : 's') + ' of data so far' + (days < 14 ? '. Ted learns your normal over 14 mornings and keeps things moderate until then.' : '.') + (ME.fitbit && ME.fitbit.lastSync ? ' Last Fitbit sync ' + new Date(ME.fitbit.lastSync).toLocaleString() + '.' : '')));
+    card.appendChild(btnEl('Edit my setup', 'wide', function () { view.meDraft = null; view.sheet = { type: 'mesetup' }; }, false, 'you'));
+    card.appendChild(btnEl('Check in again', 'wide', function () { view.meDraft = null; view.sheet = { type: 'mecheckin' }; }, false, 'today'));
+    card.appendChild(btnEl('Delete my data', 'wide danger', function () { view.sheet = { type: 'meforget' }; }));
+    card.appendChild(el('p', 'hint', 'Stored in this browser only: no account, no server. Clearing your browser data also clears Ted.'));
+    root.appendChild(card);
+  }
+
+  function renderMyBar(bar) {
+    bar.appendChild(el('span', 'scene-name', 'Your own Ted' + (ME && ME.setup && ME.setup.name ? ': ' + ME.setup.name : '')));
+    var b = function (label, fn) { var x = el('button', 'btn', label); x.type = 'button'; x.disabled = busy; x.addEventListener('click', function () { if (!busy) { fn(); renderAll(); } }); bar.appendChild(x); };
+    b('Check in again', function () { view.meDraft = null; view.sheet = { type: 'mecheckin' }; });
+    b('Edit setup', function () { view.meDraft = null; view.sheet = { type: 'mesetup' }; });
+    bar.appendChild(el('p', 'hint', 'Your data stays in this browser. Pick a scene on the left to go back to the sample profiles.'));
+  }
+
+  registerMe();
+  $('me-start').addEventListener('click', meStart);
+  $('me-start').textContent = ME && ME.setup ? (checkedInToday() ? 'Open today\'s plan' : 'Check in for today') : 'Start with your own data';
+
 
   // ---------------------------------------------------------------- try any morning
   PROFILE_ORDER.forEach(function (id) { var o = el('option', '', PROFILES[id].label); o.value = id; $('fp-profile').appendChild(o); });
