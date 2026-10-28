@@ -22,7 +22,7 @@ SWAN is a prototype of a proactive, always-on agent for supply chains. It watche
 
 ## Featured project: PM Interview Coach
 
-PM Interview Coach is a voice practice app for product manager interviews. You answer out loud, an AI interviewer or a panel of two or three asks follow-ups, and a calibrated AI judge scores your answer across five PM competencies, quoting your own words as evidence. It covers Product Design, AI Product, Strategy, Analytics and Metrics, and Behavioral rounds.
+PM Interview Coach is an AI interview coach for product managers. You answer out loud, an AI interviewer or a panel of two or three asks follow-ups, and an AI judge scores your answer on five PM competencies and tells you exactly what to fix. It covers Product Design, AI Product, Strategy, Analytics and Metrics, and Behavioral rounds.
 
 - [Read the case study](https://himanshia30.github.io/projects/interview-coach/)
 - [Try the prototype](https://himanshia30.github.io/projects/interview-coach/prototype.html): works best in Chrome or Edge. Add an AI key in Settings (Groq's free tier works) for follow-ups and scoring; without one you still get transcription and delivery feedback.
