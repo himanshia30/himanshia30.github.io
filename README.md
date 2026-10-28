@@ -20,12 +20,12 @@ SWAN is a prototype of a proactive, always-on agent for supply chains. It watche
 - [Read the case study](https://himanshia30.github.io/projects/swan/)
 - Three demos that play themselves: [incident response](https://himanshia30.github.io/projects/swan/incident-response.html), [exception management](https://himanshia30.github.io/projects/swan/exceptions.html), and [control tower](https://himanshia30.github.io/projects/swan/tower.html)
 
-## Featured project: PM Interview Coach
+## Featured project: AI PM Coach
 
-PM Interview Coach is an AI interview coach for product managers. You answer out loud, an AI interviewer or a panel of two or three asks follow-ups, and an AI judge scores your answer on five PM competencies and tells you exactly what to fix. It covers Product Design, AI Product, Strategy, Analytics and Metrics, and Behavioral rounds.
+AI PM Coach is an AI coach for product managers. You talk through a product problem out loud, an AI interviewer or a panel of two or three asks follow-ups, and an AI judge scores your answer on five PM competencies and tells you exactly what to fix. It covers Product Design, AI Product, Strategy, Analytics and Metrics, and Behavioral rounds.
 
-- [Read the case study](https://himanshia30.github.io/projects/interview-coach/)
-- [Try the prototype](https://himanshia30.github.io/projects/interview-coach/prototype.html): works best in Chrome or Edge. Add an AI key in Settings (Groq's free tier works) for follow-ups and scoring; without one you still get transcription and delivery feedback.
+- [Read the case study](https://himanshia30.github.io/projects/ai-pm-coach/)
+- [Try the prototype](https://himanshia30.github.io/projects/ai-pm-coach/prototype.html): works best in Chrome or Edge. Add an AI key in Settings (Groq's free tier works) for follow-ups and scoring; without one you still get transcription and delivery feedback.
 
 ## What's in this repository
 
@@ -38,9 +38,9 @@ PM Interview Coach is an AI interview coach for product managers. You answer out
 | `projects/swan/index.html` | SWAN project page |
 | `projects/swan/*.html` | SWAN's three demos, each with its own `css/` and `js/` |
 | `projects/swan/img/` | Screens captured from the demos |
-| `projects/interview-coach/index.html` | PM Interview Coach case study |
-| `projects/interview-coach/prototype.html` | The coach's working prototype, a single self-contained page |
-| `projects/interview-coach/img/` | Screens captured from the prototype |
+| `projects/ai-pm-coach/index.html` | AI PM Coach case study |
+| `projects/ai-pm-coach/prototype.html` | The coach's working prototype, a single self-contained page |
+| `projects/ai-pm-coach/img/` | Screens captured from the prototype |
 | `styles.css` | Shared styles for the site |
 
 The site is plain HTML and CSS with no build step, hosted on GitHub Pages. I built it with Claude as my collaborator.
